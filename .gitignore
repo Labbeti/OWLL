@@ -1,3 +1,7 @@
 data
 owlready2
 venv
+__pycache__
+
+notes.txt
+test.py
