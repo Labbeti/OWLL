@@ -2,14 +2,14 @@
 DEBUG_MODE: bool = True
 
 
-def load_vectors(filename: str, limit: int = 1000000) -> (map, int, int):
+def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
     file = open(filename, 'r', encoding='utf-8', newline='\n', errors='ignore')
     n, d = map(int, file.readline().split())
     data = {}
     i = 1
     for line in file:
         if DEBUG_MODE and i % 1000 == 0:
-            print("DEBUG: Line: ", i, "/", min(n, limit))  # DEBUG
+            print("DEBUG: Line: %7d / %7d" % (i, min(n, limit)))
         tokens = line.rstrip().split(' ')
         data[tokens[0]] = list(map(float, tokens[1:]))
         i += 1

@@ -1,2 +1,3 @@
 owlready2
 numpy
+scikit-learn

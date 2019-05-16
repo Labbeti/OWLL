@@ -1,8 +1,11 @@
 
 from csv_fcts import *
+from sklearn.cluster import KMeans
 from time import time
 from utils import *
+
 import owlready2 as owl
+import sklearn as sk
 
 
 def split_name(word: str) -> list:
@@ -112,11 +115,13 @@ def gen_default_words():
 
 
 def test_1():
-    nb_words_read_ft = 100000
+    nb_words_read_ft = 10_000
     data_all_w, nAll, dAll = load_vectors("data/wiki-news-300d-1M.vec", nb_words_read_ft)
     data_def_w, _, _ = load_vectors("data/default_words.csv")
 
-    onto = owl.get_ontology("data/dbpedia_2016-10.owl")
+    file_DBpedia = "data/dbpedia_2016-10.owl"
+    file_foaf = "data/foaf.owl"
+    onto = owl.get_ontology(file_DBpedia)
     onto.load()
     obj_prop_names = get_obj_prop_names(onto)
 
@@ -128,7 +133,7 @@ def test_1():
         decomp = str(split_name(name))
         print("%4d/%4d: " % (i, len(obj_prop_names)), end='')
         if vec is not None:
-            min = 100000000
+            min = 100_000_000
             max = -1
             keymin = None
             for key, vect_def in data_def_w.items():
@@ -147,9 +152,43 @@ def test_1():
     print("%d/%d correspondances trouvées pour les %d premiers mots de FT." % (nb_links_found, len(obj_prop_names), nb_words_read_ft))
 
 
+def test_learning():
+    file_DBpedia = "data/dbpedia_2016-10.owl"
+    onto = owl.get_ontology(file_DBpedia)
+    onto.load()
+    obj_prop_names = get_obj_prop_names(onto)
+
+    nb_words_read_ft = 10_000
+    data_all_w, nAll, dAll = load_vectors("data/wiki-news-300d-1M.vec", nb_words_read_ft)
+
+    vecs = []
+    obj_prop_names_filtered = []
+    for name in obj_prop_names:
+        vec = get_vec(name, data_all_w, dAll)
+        if vec is not None:
+            vecs.append(vec)
+            obj_prop_names_filtered.append(name)
+
+    nb_clusters = 10
+    preds_kmeans = KMeans(n_clusters=nb_clusters).fit_predict(vecs)
+
+    groups = [[] for _ in range(nb_clusters)]
+    i = 0
+    for pred in preds_kmeans:
+        name = obj_prop_names_filtered[i]
+        groups[pred].append(name)
+        i += 1
+    for group in groups:
+        print(group, "\n")
+
+    print("Nb de clusters: %d" % nb_clusters)
+    print("Nb de noms non-classifiés: %s / %s" % (len(obj_prop_names) - len(obj_prop_names_filtered), len(obj_prop_names)))
+
+
 def main():
     # gen_default_words()
-    test_1()
+    # test_1()
+    test_learning()
 
 
 if __name__ == "__main__":
