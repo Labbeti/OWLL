@@ -1,2 +1,2 @@
 # OWL Learning
-Clustering on object properties in order to simplify building of ontologies.
+The goal is to create clusters on object properties in order to simplify building of ontologies.
