@@ -1,3 +1,5 @@
 owlready2
 numpy
 scikit-learn
+matplotlib
+rdflib

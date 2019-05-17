@@ -1,11 +1,15 @@
 
 from csv_fcts import *
+from matplotlib.font_manager import FontProperties
+from owl import *
+from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans
+from sklearn.cluster import SpectralClustering
 from time import time
 from utils import *
 
-import owlready2 as owl
 import sklearn as sk
+import matplotlib.pyplot as plt
 
 
 def split_name(word: str) -> list:
@@ -15,7 +19,7 @@ def split_name(word: str) -> list:
         if chr.isupper():
             if buf != "":
                 res.append(buf)
-                buf = chr
+            buf = chr
         else:
             buf += chr
     if buf != "":
@@ -23,27 +27,58 @@ def split_name(word: str) -> list:
     return res
 
 
+def _get_vec_composed_word_mean(word: str, data: map, d: int):
+    if not word.islower():
+        subwords = split_name(word)
+        mean = np.zeros(d)
+        nb = 0
+        for subword in subwords:
+            subvec = data.get(subword.lower())
+            if subvec is not None:
+                mean += subvec
+                nb += 1
+        if nb != 0:
+            mean /= nb
+            return mean
+        else:
+            return None
+    else:
+        return None
+
+
+# TODO : update if necessary
+IGNORED_WORDS: list = ["a", "as", "at", "by", "for", "has", "in", "is", "of", "so", "the", "to"]
+
+
+def _get_vec_composed_word_max_length(word: str, data: map, d: int):
+    if not word.islower():
+        subwords = split_name(word)
+        max_length = -1
+        subvec_chosen = None
+        for subword in subwords:
+            subvec = data.get(subword.lower())
+            if subvec is not None and (len(subwords) == 1 or subword.lower() not in IGNORED_WORDS):
+                max_length = len(subword)
+                subvec_chosen = subvec
+        return subvec_chosen
+    else:
+        return None
+
+
 def get_vec(word: str, data: map, d: int) -> np.ndarray:
-    vec = data.get(word.lower())
+    word = word.strip()
+    vec = data.get(word)
     if vec is not None:
         return vec
     else:
-        if not word.islower():
-            subwords = split_name(word)
-            mean = np.zeros(d)
-            nb = 0
-            for subword in subwords:
-                subvec = get_vec(subword, data, d)
-                if subvec is not None:
-                    mean += subvec
-                    nb += 1
-            if nb != 0:
-                mean /= nb
-                return mean
-            else:
-                return None
+        if word.islower():
+            vec = data.get(word.title())
         else:
-            return None
+            vec = data.get(word.lower())
+        if vec is not None:
+            return vec
+        else:
+            return _get_vec_composed_word_max_length(word, data, d)
 
 
 def gen_default_words():
@@ -53,7 +88,7 @@ def gen_default_words():
 
     onto = owl.get_ontology(owl_file)
     onto.load()
-    obj_prop_names = get_obj_prop_names(onto)
+    obj_prop_names = get_object_properties(onto)
 
     #print(onto.name)
     #print(obj_prop)
@@ -123,7 +158,7 @@ def test_1():
     file_foaf = "data/foaf.owl"
     onto = owl.get_ontology(file_DBpedia)
     onto.load()
-    obj_prop_names = get_obj_prop_names(onto)
+    obj_prop_names = get_object_properties(onto)
 
     nb_links_found = 0
     i = 1
@@ -152,37 +187,105 @@ def test_1():
     print("%d/%d correspondances trouvées pour les %d premiers mots de FT." % (nb_links_found, len(obj_prop_names), nb_words_read_ft))
 
 
-def test_learning():
-    file_DBpedia = "data/dbpedia_2016-10.owl"
-    onto = owl.get_ontology(file_DBpedia)
-    onto.load()
-    obj_prop_names = get_obj_prop_names(onto)
+def get_partition(nb_clusters, dim, preds, names, vecs):
+    groups = [[] for _ in range(nb_clusters)]
+    cluster_centers = [np.zeros(dim) for _ in range(nb_clusters)]
+    i = 0
+    for pred in preds:
+        groups[pred].append(names[i])
+        cluster_centers[pred] += vecs[i]
+        i += 1
+    for i in range(nb_clusters):
+        cluster_centers[i] /= len(groups[i])
 
-    nb_words_read_ft = 10_000
-    data_all_w, nAll, dAll = load_vectors("data/wiki-news-300d-1M.vec", nb_words_read_ft)
+    nearest_pt = [-1 for _ in range(nb_clusters)]
+    i = 0
+    for pred in preds:
+        if nearest_pt[pred] == -1 or sq_dist(cluster_centers[pred], vecs[i]) < sq_dist(cluster_centers[pred], vecs[nearest_pt[pred]]):
+            nearest_pt[pred] = i
+        i += 1
+    cluster_center_names = np.array(names, dtype=str)[nearest_pt]
+    return groups, cluster_centers, cluster_center_names
+
+
+def draw_data(vecs, cluster_centers, preds, file):
+    nb_clusters = len(cluster_centers)
+    pca = sk.decomposition.PCA(n_components=2)
+    all_pts = np.concatenate((vecs, cluster_centers))
+    reduced = pca.fit_transform(all_pts)
+    vec_reduced = reduced[:len(reduced)-len(cluster_centers)]
+    centers_reduced = reduced[-len(cluster_centers):]
+
+    colors = np.array([
+        '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
+        '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'
+    ])
+    colors_for_pt = colors[preds]
+
+    font = FontProperties()
+    font.set_weight('bold')
+    font.set_size(22)
+
+    for i in range(nb_clusters):
+        plt.text(centers_reduced[i, 0], centers_reduced[i, 1], s=str(i), color=colors[i], fontproperties=font)
+    plt.scatter(vec_reduced[:, 0], vec_reduced[:, 1], s=6, color=colors_for_pt)
+    plt.title("Clusterisation pour \"%s\" avec %d clusters" % (file, nb_clusters))
+
+
+def test_learning():
+    file = "data/tabletopgames_V3.owl"
+    file = "data/WeatherOntology.owl"
+    file = "data/dbpedia_2016-10.owl"
+    fasttext_file = "data/wiki-news-300d-1M.vec"
+    nb_words_read_ft = 30_000
+
+    names = get_object_properties(file)
+    data_all_w, n_vec, dim = load_vectors(fasttext_file, nb_words_read_ft)
 
     vecs = []
-    obj_prop_names_filtered = []
-    for name in obj_prop_names:
-        vec = get_vec(name, data_all_w, dAll)
+    names_filtered = []
+    names_out = []
+    for name in names:
+        vec = get_vec(name, data_all_w, dim)
         if vec is not None:
             vecs.append(vec)
-            obj_prop_names_filtered.append(name)
+            names_filtered.append(name)
+        else:
+            names_out.append(name)
 
-    nb_clusters = 10
-    preds_kmeans = KMeans(n_clusters=nb_clusters).fit_predict(vecs)
+    nb_clusters = 5  # NOTE: max is currently 10 because we have only 10 colors
+    print("§ Applying KMeans with %d clusters..." % nb_clusters)
+    kmeans = KMeans(n_clusters=nb_clusters)
+    agglo = AgglomerativeClustering(n_clusters=nb_clusters)
+    spectral = SpectralClustering(n_clusters=nb_clusters)
 
-    groups = [[] for _ in range(nb_clusters)]
-    i = 0
-    for pred in preds_kmeans:
-        name = obj_prop_names_filtered[i]
-        groups[pred].append(name)
+    i = 1
+    clustering_algorithms = [("AgglomerativeClustering", agglo), ("SpectralClustering", spectral), ("KMeans", kmeans)]
+    for name, algorithm in clustering_algorithms:
+        print("§ Computing %s..." % name)
+        preds = algorithm.fit_predict(vecs)
+        groups, cluster_centers, cluster_center_names = get_partition(nb_clusters, dim, preds, names, vecs)
+
+        #for group in groups:
+            #print("§ => ", group)
+        print("§ GROUPS :")
+        for j in range(nb_clusters):
+            print("§ Groupe %2d: Size: %3d (%d%%), Center: %-25s" % (j, len(groups[j]), 100*len(groups[j])/len(vecs), cluster_center_names[j]))
+        print("§ Nb de relations = %d / %d" % (len(vecs), len(names)))
+        # print("§ Fichier = %s" % file)
+        # print("§ Pourcentage de FastText utilisé = %.1f %%" % (100 * nb_words_read_ft / n_vec))
+        # print("§ Nb de clusters = %d" % nb_clusters)
+        print("§ Nb de noms NON-classifiés = %s / %s" % (len(names_out), len(names)))
+        # print("§ Exemple de 5 noms NON-classifiés = ", names_out[0:5])
+        # Note: quelques mots non trouvé dans FastText :
+        # ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
+
+        plt.figure(i)
+        plt.suptitle(name)
+        draw_data(vecs, cluster_centers, preds, file)
         i += 1
-    for group in groups:
-        print(group, "\n")
-
-    print("Nb de clusters: %d" % nb_clusters)
-    print("Nb de noms non-classifiés: %s / %s" % (len(obj_prop_names) - len(obj_prop_names_filtered), len(obj_prop_names)))
+    plt.show()
+    plt.close()
 
 
 def main():
