@@ -2,9 +2,8 @@
 from csv_fcts import *
 from matplotlib.font_manager import FontProperties
 from owl import *
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.cluster import KMeans
-from sklearn.cluster import SpectralClustering
+from sklearn.cluster import *
+from sklearn import mixture
 from time import time
 from utils import *
 
@@ -187,7 +186,8 @@ def test_1():
     print("%d/%d correspondances trouvées pour les %d premiers mots de FT." % (nb_links_found, len(obj_prop_names), nb_words_read_ft))
 
 
-def get_partition(nb_clusters, dim, preds, names, vecs):
+def get_partition(dim, preds, names, vecs):
+    nb_clusters = max(preds) - min(preds) + 1
     groups = [[] for _ in range(nb_clusters)]
     cluster_centers = [np.zeros(dim) for _ in range(nb_clusters)]
     i = 0
@@ -208,6 +208,12 @@ def get_partition(nb_clusters, dim, preds, names, vecs):
     return groups, cluster_centers, cluster_center_names
 
 
+COLORS = np.array([
+    '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
+    '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'
+])
+
+
 def draw_data(vecs, cluster_centers, preds, file):
     nb_clusters = len(cluster_centers)
     pca = sk.decomposition.PCA(n_components=2)
@@ -216,18 +222,15 @@ def draw_data(vecs, cluster_centers, preds, file):
     vec_reduced = reduced[:len(reduced)-len(cluster_centers)]
     centers_reduced = reduced[-len(cluster_centers):]
 
-    colors = np.array([
-        '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
-        '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'
-    ])
-    colors_for_pt = colors[preds]
+    # TODO : create new to not duplicate colors
+    colors_for_pt = COLORS[preds % len(COLORS)]
 
     font = FontProperties()
     font.set_weight('bold')
     font.set_size(22)
 
     for i in range(nb_clusters):
-        plt.text(centers_reduced[i, 0], centers_reduced[i, 1], s=str(i), color=colors[i], fontproperties=font)
+        plt.text(centers_reduced[i, 0], centers_reduced[i, 1], s=str(i), color=COLORS[i % len(COLORS)], fontproperties=font)
     plt.scatter(vec_reduced[:, 0], vec_reduced[:, 1], s=6, color=colors_for_pt)
     plt.title("Clusterisation pour \"%s\" avec %d clusters" % (file, nb_clusters))
 
@@ -253,35 +256,51 @@ def test_learning():
         else:
             names_out.append(name)
 
-    nb_clusters = 5  # NOTE: max is currently 10 because we have only 10 colors
-    print("§ Applying KMeans with %d clusters..." % nb_clusters)
-    kmeans = KMeans(n_clusters=nb_clusters)
+    nb_clusters = 4  # NOTE: max is currently 10 because we have only 10 differents colors
+
     agglo = AgglomerativeClustering(n_clusters=nb_clusters)
+    affinity = AffinityPropagation()
+    birch = Birch(n_clusters=nb_clusters)
+    gauss = sk.mixture.GaussianMixture(n_components=nb_clusters)
+    kmeans = KMeans(n_clusters=nb_clusters)
+    mean_shift = MeanShift()
+    mini_batch = MiniBatchKMeans(n_clusters=nb_clusters)
     spectral = SpectralClustering(n_clusters=nb_clusters)
 
     i = 1
-    clustering_algorithms = [("AgglomerativeClustering", agglo), ("SpectralClustering", spectral), ("KMeans", kmeans)]
+    clustering_algorithms = [
+        #("AgglomerativeClustering", agglo),
+        #("AffinityPropagation", affinity),
+        #("Birch", birch),
+        ("GaussianMixture", gauss),
+        ("KMeans", kmeans),
+        #("MeanShift", mean_shift),
+        #("MiniBatchKMeans", mini_batch),
+        #("SpectralClustering", spectral)
+    ]
     for name, algorithm in clustering_algorithms:
         print("§ Computing %s..." % name)
+        start = time()
         preds = algorithm.fit_predict(vecs)
-        groups, cluster_centers, cluster_center_names = get_partition(nb_clusters, dim, preds, names, vecs)
+        end = time()
+        groups, cluster_centers, cluster_center_names = get_partition(dim, preds, names, vecs)
 
+        #print("§ GROUPES :")
         #for group in groups:
             #print("§ => ", group)
-        print("§ GROUPS :")
         for j in range(nb_clusters):
             print("§ Groupe %2d: Size: %3d (%d%%), Center: %-25s" % (j, len(groups[j]), 100*len(groups[j])/len(vecs), cluster_center_names[j]))
-        print("§ Nb de relations = %d / %d" % (len(vecs), len(names)))
+        # print("§ Nb de relations = %d / %d" % (len(vecs), len(names)))
         # print("§ Fichier = %s" % file)
         # print("§ Pourcentage de FastText utilisé = %.1f %%" % (100 * nb_words_read_ft / n_vec))
         # print("§ Nb de clusters = %d" % nb_clusters)
-        print("§ Nb de noms NON-classifiés = %s / %s" % (len(names_out), len(names)))
+        # print("§ Nb de noms NON-classifiés = %s / %s" % (len(names_out), len(names)))
         # print("§ Exemple de 5 noms NON-classifiés = ", names_out[0:5])
         # Note: quelques mots non trouvé dans FastText :
         # ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
 
         plt.figure(i)
-        plt.suptitle(name)
+        plt.suptitle("%s in %.2fs" % (name, end - start))
         draw_data(vecs, cluster_centers, preds, file)
         i += 1
     plt.show()
