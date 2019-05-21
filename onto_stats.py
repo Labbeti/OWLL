@@ -61,7 +61,7 @@ def gen_object_properties_database():
 
 def classify_names():
     filepath_opd = "results/object_properties_database.txt"
-    filepath_words = "results/words.txt"
+    filepath_words = "results/affixes.txt"
 
     prefixes = ["a", "as", "at", "by", "for", "has", "in", "is", "of", "so", "the", "to"]
     suffixes = ["a", "as", "at", "by", "for", "has", "in", "is", "of", "so", "the", "to"]
