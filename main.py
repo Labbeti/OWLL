@@ -1,29 +1,15 @@
 
 from csv_fcts import *
 from matplotlib.font_manager import FontProperties
-from owl import *
+from Ontology import *
+from os.path import join
 from sklearn.cluster import *
 from sklearn import mixture
 from time import time
 from utils import *
 
-import sklearn as sk
 import matplotlib.pyplot as plt
-
-
-def split_name(word: str) -> list:
-    res = []
-    buf = ""
-    for chr in word:
-        if chr.isupper():
-            if buf != "":
-                res.append(buf)
-            buf = chr
-        else:
-            buf += chr
-    if buf != "":
-        res.append(buf)
-    return res
+import sklearn as sk
 
 
 def _get_vec_composed_word_mean(word: str, data: map, d: int):
@@ -85,9 +71,7 @@ def gen_default_words():
     owl_file = "data/dbpedia_2016-10.owl"
     fasttext_file = "data/wiki-news-300d-1M.vec"
 
-    onto = owl.get_ontology(owl_file)
-    onto.load()
-    obj_prop_names = get_object_properties(onto)
+    obj_prop_names = Ontology(owl_file).get_obj_prop_names()
 
     #print(onto.name)
     #print(obj_prop)
@@ -155,9 +139,7 @@ def test_1():
 
     file_DBpedia = "data/dbpedia_2016-10.owl"
     file_foaf = "data/foaf.owl"
-    onto = owl.get_ontology(file_DBpedia)
-    onto.load()
-    obj_prop_names = get_object_properties(onto)
+    obj_prop_names = Ontology(file_DBpedia).get_obj_prop_names()
 
     nb_links_found = 0
     i = 1
@@ -242,7 +224,7 @@ def test_learning():
     fasttext_file = "data/wiki-news-300d-1M.vec"
     nb_words_read_ft = 30_000
 
-    names = get_object_properties(file)
+    names = Ontology(file).get_obj_prop_names()
     data_all_w, n_vec, dim = load_vectors(fasttext_file, nb_words_read_ft)
 
     vecs = []
@@ -256,7 +238,7 @@ def test_learning():
         else:
             names_out.append(name)
 
-    nb_clusters = 4  # NOTE: max is currently 10 because we have only 10 differents colors
+    nb_clusters = 10  # NOTE: max is currently 10 because we have only 10 differents colors
 
     agglo = AgglomerativeClustering(n_clusters=nb_clusters)
     affinity = AffinityPropagation()
@@ -269,14 +251,14 @@ def test_learning():
 
     i = 1
     clustering_algorithms = [
-        #("AgglomerativeClustering", agglo),
-        #("AffinityPropagation", affinity),
-        #("Birch", birch),
+        ("AgglomerativeClustering", agglo),
+        ("AffinityPropagation", affinity),
+        ("Birch", birch),
         ("GaussianMixture", gauss),
         ("KMeans", kmeans),
-        #("MeanShift", mean_shift),
-        #("MiniBatchKMeans", mini_batch),
-        #("SpectralClustering", spectral)
+        ("MeanShift", mean_shift),
+        ("MiniBatchKMeans", mini_batch),
+        ("SpectralClustering", spectral),
     ]
     for name, algorithm in clustering_algorithms:
         print("§ Computing %s..." % name)
@@ -285,9 +267,9 @@ def test_learning():
         end = time()
         groups, cluster_centers, cluster_center_names = get_partition(dim, preds, names, vecs)
 
-        #print("§ GROUPES :")
-        #for group in groups:
-            #print("§ => ", group)
+        print("§ GROUPES :")
+        for group in groups:
+            print("§ => ", group)
         for j in range(nb_clusters):
             print("§ Groupe %2d: Size: %3d (%d%%), Center: %-25s" % (j, len(groups[j]), 100*len(groups[j])/len(vecs), cluster_center_names[j]))
         # print("§ Nb de relations = %d / %d" % (len(vecs), len(names)))
@@ -310,7 +292,8 @@ def test_learning():
 def main():
     # gen_default_words()
     # test_1()
-    test_learning()
+    # test_learning()
+    return
 
 
 if __name__ == "__main__":

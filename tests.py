@@ -1,6 +1,5 @@
 from main import split_name
-from owl import __owlready2_get_object_properties
-from owl import __rdflib_get_object_properties
+from Ontology import *
 
 
 def test_split_name():
@@ -10,15 +9,17 @@ def test_split_name():
         "CoucouToi": ["Coucou", "Toi"],
         "blablaB": ["blabla", "B"],
         "IRIT": ["I", "R", "I", "T"],
-        "Florence Bannay": ["Florence ", "Bannay"],
-        "is_family": ["is_family"],
-        "": []
+        "Florence Bannay": ["Florence", "Bannay"],
+        "": [],
+        "is_family": ["is", "family"],
+        "has given name": ["has", "given", "name"],
+        " _ truc__ _chose ": ["truc", "chose"],
     }
     for value, results_expected in tests.items():
         results = split_name(value)
         if results != results_expected:
             raise Exception("Unit test failed: %s != %s " % (results, results_expected))
-    print("OK: test_split_name")
+    print("§ OK: test_split_name")
 
 
 def test_get_object_properties():
@@ -28,19 +29,24 @@ def test_get_object_properties():
     }
 
     for filepath in tests:
-        names_owlready = __owlready2_get_object_properties(filepath)
-        names_rdflib = __rdflib_get_object_properties(filepath)
+        onto_owl = Ontology(filepath, LoadType.FORCE_OWLREADY2)
+        onto_rdf = Ontology(filepath, LoadType.FORCE_RDFLIB)
+        names_owlready = onto_owl.get_obj_prop_names()
+        names_rdflib = onto_rdf.get_obj_prop_names()
+
         if set(names_owlready) != set(names_rdflib):
             raise Exception("Unit test failed: sizes: \n\towlready2: %d\n\trdflib: %d " %
                             (len(names_owlready), len(names_rdflib)))
 
-    print("OK: test_get_object_properties")
+    print("§ OK: test_get_object_properties")
 
 
 def test_all():
+    print("§ Begin autotests.")
     test_split_name()
     test_get_object_properties()
-    print("OK: All")
+    print("§ OK: All")
+    print("§ End autotests.")
 
 
 if __name__ == "__main__":

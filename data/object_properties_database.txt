@@ -1,0 +1,5 @@
+
+Object property                Domain                         Range                          File                          
+
+hasPermissionProcedure         iridl.AuthorizationRealm       iridl.Permission_Procedure     Authorization.owl             
+requiresAuthorizationRealm     iridl.dataset                  iridl.AuthorizationRealm       Authorization.owl             

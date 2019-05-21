@@ -1,6 +1,8 @@
-data
+data/ontologies
 owlready2
 venv
 __pycache__
 
 _ign_*
+
+wiki-news-300d-1M.vec
