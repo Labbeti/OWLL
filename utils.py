@@ -3,6 +3,14 @@ from os import listdir
 from os.path import isfile, join
 
 
+def rem_empty(string_list: list) -> list:
+    res = []
+    for v in string_list:
+        if v != "":
+            res.append(v)
+    return res
+
+
 def sq_dist(v1: np.ndarray, v2: np.ndarray) -> np.ndarray:
     return np.sum(np.subtract(v1, v2)**2)
 

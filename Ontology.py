@@ -23,7 +23,7 @@ def _get_name_rdflib(string: str) -> str:
 
 @unique
 class LoadType(Enum):
-    INDIFFERENT = 0
+    TRY_BOTH = 0
     FORCE_OWLREADY2 = 1
     FORCE_RDFLIB = 2
 
@@ -34,11 +34,11 @@ class Ontology:
     __rdf_graph: rdf.Graph = None
     __nb_errors: int = 0
 
-    def __init__(self, filepath: str, load_type: LoadType = LoadType.INDIFFERENT):
+    def __init__(self, filepath: str, load_type: LoadType = LoadType.TRY_BOTH):
         self.__filepath = filepath
         self.__errors = 0
 
-        if load_type == LoadType.INDIFFERENT:
+        if load_type == LoadType.TRY_BOTH:
             try:
                 self.__owlready2_load()
                 print("§ Loading with owlready2 successfull.")
@@ -50,7 +50,7 @@ class Ontology:
                     print("§ Loading with rdflib successfull.")
                 except ParserError:
                     self.__rdf_graph = None
-                    print("§ Load \"%s\" failed with rdflib too. Cannot read the file." % filepath)
+                    print("§ Load \"%s\" failed with Rdflib too. Cannot read the file." % filepath)
         elif load_type == LoadType.FORCE_OWLREADY2:
             try:
                 self.__owlready2_load()
@@ -68,7 +68,6 @@ class Ontology:
         else:
             raise Exception("Invalid argument \"load_type\".")
 
-
     # Return the list of object properties names.
     def get_obj_prop_names(self) -> list:
         if self.is_loaded_with_owlready2():
@@ -79,11 +78,11 @@ class Ontology:
             raise Exception("Ontology not loaded.")
 
     # Return the list of RDF triplets.
-    def get_triples(self):
+    def get_owl_triples(self):
         if self.is_loaded_with_owlready2():
-            return self.__owlready2_get_triples()
+            return self.__owlready2_get_owl_triples()
         elif self.is_loaded_with_rdflib():
-            return self.__rdflib_get_triples()
+            return self.__rdflib_get_owl_triples()
         else:
             raise Exception("Ontology not loaded.")
 
@@ -131,19 +130,22 @@ class Ontology:
                     names.append(name)
         return names
 
-    def __owlready2_get_triples(self) -> list:
+    def __owlready2_get_owl_triples(self) -> list:
         self.__nb_errors = 0
         triples = []
         for objprop in self.__owl_onto.object_properties():
             try:
-                for domain in objprop.domain:
-                    for range in objprop.range:
-                        triples.append((domain, objprop.name, range))
-            except TypeError:
+                for op_domain in objprop.domain:
+                    for op_range in objprop.range:
+                        domain_name = _get_name_owlready2(op_domain.name)
+                        objprop_name = _get_name_owlready2(objprop.name)
+                        range_name = _get_name_owlready2(op_range.name)
+                        triples.append((domain_name, objprop_name, range_name))
+            except (TypeError, AttributeError):
                 self.__nb_errors += 1
         return triples
 
-    def __rdflib_get_triples(self) -> list:
+    def __rdflib_get_owl_triples(self) -> list:
         object_properties = set(self.__rdflib_get_obj_prop_names())
 
         triples = [
