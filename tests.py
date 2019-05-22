@@ -31,10 +31,6 @@ def _get_vec_composed_word_mean(word: str, data: map, d: int):
         return None
 
 
-# TODO : update if necessary
-IGNORED_WORDS: list = ["a", "as", "at", "by", "for", "has", "in", "is", "of", "so", "the", "to"]
-
-
 def _get_vec_composed_word_max_length(word: str, data: map, d: int):
     if not word.islower():
         subwords = split_name(word)
@@ -42,7 +38,7 @@ def _get_vec_composed_word_max_length(word: str, data: map, d: int):
         subvec_chosen = None
         for subword in subwords:
             subvec = data.get(subword.lower())
-            if subvec is not None and (len(subwords) == 1 or subword.lower() not in IGNORED_WORDS):
+            if subvec is not None and (len(subwords) == 1 or subword.lower() not in Config.LINK_WORDS):
                 max_length = len(subword)
                 subvec_chosen = subvec
         return subvec_chosen
@@ -71,7 +67,7 @@ def gen_default_words():
     owl_file = "data/dbpedia_2016-10.owl"
     fasttext_file = "data/wiki-news-300d-1M.vec"
 
-    obj_prop_names = Ontology(owl_file).get_obj_prop_names()
+    obj_prop_names = Ontology(owl_file).get_op()
 
     #print(onto.name)
     #print(obj_prop)
@@ -139,7 +135,7 @@ def test_1():
 
     file_DBpedia = "data/dbpedia_2016-10.owl"
     file_foaf = "data/foaf.owl"
-    obj_prop_names = Ontology(file_DBpedia).get_obj_prop_names()
+    obj_prop_names = Ontology(file_DBpedia).get_op()
 
     nb_links_found = 0
     i = 1
@@ -224,7 +220,7 @@ def test_learning():
     fasttext_file = "data/wiki-news-300d-1M.vec"
     nb_words_read_ft = 30_000
 
-    names = Ontology(file).get_obj_prop_names()
+    names = Ontology(file).get_op()
     data_all_w, n_vec, dim = load_vectors(fasttext_file, nb_words_read_ft)
 
     vecs = []
@@ -289,10 +285,20 @@ def test_learning():
     plt.close()
 
 
+def test_go_plus():
+    filepath = "data/ontologies/go-plus.owl"
+    onto = Ontology(filepath, LoadType.FORCE_RDFLIB)
+    triples = onto.get_op_triples()
+    print(triples)
+    print(len(onto.get_op()))
+    print(len(triples))
+
+
 def main():
     # gen_default_words()
     # test_1()
     # test_learning()
+    test_go_plus()
     return
 
 

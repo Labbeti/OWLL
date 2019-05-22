@@ -1,7 +1,5 @@
+from Config import *
 from time import time
-
-
-DEBUG_MODE: bool = True
 
 
 def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
@@ -11,8 +9,8 @@ def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
     data = {}
     i = 1
     for line in file:
-        if DEBUG_MODE and i % 10000 == 0:
-            print("§ DEBUG: Line: %7d / %7d" % (i, min(n, limit)))  # TODO: delete
+        if i % 10000 == 0:
+            prt("Info: Line %7d / %7d" % (i, min(n, limit)))  # TODO: delete
         tokens = line.rstrip().split(' ')
         data[tokens[0]] = list(map(float, tokens[1:]))
         i += 1
@@ -20,7 +18,7 @@ def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
             break
     file.close()
     end = time()
-    print("§ Loading time for %s: %.2f" % (filename, end - start))
+    prt("Loading time for %s: %.2f" % (filename, end - start))
     return data, n, d
 
 

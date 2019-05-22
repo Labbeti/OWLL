@@ -33,12 +33,15 @@ def test_get_object_properties():
     for filepath in tests:
         onto_owl = Ontology(filepath, LoadType.FORCE_OWLREADY2)
         onto_rdf = Ontology(filepath, LoadType.FORCE_RDFLIB)
-        names_owlready = onto_owl.get_obj_prop_names()
-        names_rdflib = onto_rdf.get_obj_prop_names()
+        names_owlready = onto_owl.get_op()
+        names_rdflib = onto_rdf.get_op()
+        triples_owlready = onto_owl.get_op()
+        triples_rdflib = onto_rdf.get_op()
 
-        if set(names_owlready) != set(names_rdflib):
-            raise Exception("Unit test failed: sizes: \n\towlready2: %d\n\trdflib: %d " %
-                            (len(names_owlready), len(names_rdflib)))
+        if set(names_owlready) != set(names_rdflib) or \
+                set(triples_owlready) != set(triples_rdflib):
+            raise Exception("Unit test failed: sizes: \n\towlready2: %d %d\n\trdflib: %d %d" %
+                            (len(names_owlready), len(triples_owlready), len(names_rdflib), len(triples_rdflib)))
 
     print("§ OK: test_get_object_properties")
 
