@@ -36,7 +36,7 @@ def split_name(word: str) -> list:
             if buf != "":
                 res.append(buf)
             buf = chr
-        elif chr == "_" or chr == " ":
+        elif chr == "_" or chr == " " or chr == "-":
             if buf != "":
                 res.append(buf)
             buf = ""

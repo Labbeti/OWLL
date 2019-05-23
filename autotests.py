@@ -1,5 +1,5 @@
 from tests import split_name
-from Ontology import *
+from onto_classes.Ontology import *
 
 
 def test_split_name():
@@ -27,7 +27,8 @@ def test_get_object_properties():
     tests = {
         "data/ontologies/tabletopgames_V3.owl",
         "data/ontologies/dbpedia_2016-10.owl",
-        "data/ontologies/AuthorizationRealms.owl",
+        "data/ontologies/no_op/AuthorizationRealms.owl",
+        "data/ontologies/TTICarOnto.owl"
     }
 
     for filepath in tests:

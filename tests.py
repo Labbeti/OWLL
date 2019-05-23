@@ -1,10 +1,8 @@
 
 from csv_fcts import *
 from matplotlib.font_manager import FontProperties
-from Ontology import *
-from os.path import join
+from onto_classes.Ontology import *
 from sklearn.cluster import *
-from sklearn import mixture
 from time import time
 from utils import *
 
@@ -38,7 +36,7 @@ def _get_vec_composed_word_max_length(word: str, data: map, d: int):
         subvec_chosen = None
         for subword in subwords:
             subvec = data.get(subword.lower())
-            if subvec is not None and (len(subwords) == 1 or subword.lower() not in Config.LINK_WORDS):
+            if subvec is not None and (len(subwords) == 1 or subword.lower() not in Config.CONNECT_WORDS):
                 max_length = len(subword)
                 subvec_chosen = subvec
         return subvec_chosen
@@ -62,108 +60,6 @@ def get_vec(word: str, data: map, d: int) -> np.ndarray:
             return _get_vec_composed_word_max_length(word, data, d)
 
 
-def gen_default_words():
-    #owl_file = "data/tabletopgames_V3.owl"
-    owl_file = "data/dbpedia_2016-10.owl"
-    fasttext_file = "data/wiki-news-300d-1M.vec"
-
-    obj_prop_names = Ontology(owl_file).get_op()
-
-    #print(onto.name)
-    #print(obj_prop)
-    #print(obj_prop_names)
-
-    t1 = time()
-    data, n, d = load_vectors(fasttext_file)
-    t2 = time()
-    print("Load time: ", t2 - t1)
-    #save_vectors(obj_prop_names, data, "data/res2.csv")
-
-    """
-    default_words = [
-        ["characterize", "isSpecificTo", "identifies", "defined", "depicted", "qualifies", "delineated", "specific", "belongs"],
-        ["isA", "illustrationOf", "famous", "higlights", "testifiedTo", "isAnAspectOf", "remindsMeOf", "isAnExampleOf"],
-        ["includes", "gathered", "collects"],
-        ["isComposedOf", "contains", "assimilates"],
-        ["preceding", "comesBefore", "pre-existsAt", "isAPrerequisiteFor", "isPriorTo", "lead", "continuesWith", "isContinuedBy", "endsWith", "isAtTheOriginOf", "isReplacedBy", "isTheFatherOf"],
-        ["isSmallerThan", "isLessThan", "isWorseThan", "isExceededBy"],
-        ["do", "realizes", "assume", "accomplishes", "executes", "proceeds", "manages", "ensures", "order", "trigger", "causes"],
-        ["helps", "contributesTo", "collaboratesIn", "participatesIn", "encourages", "support", "takespartIn", "stimulates", "promotes", "increases", "amplifies", "facilitates"],
-        ["uses", "makeUseOf", "employs", "callsUpon", "hasAtItsDisposal"],
-        ["aimsTo", "isLookingFor", "continues", "tendsTo", "research", "wishes"],
-        ["dependsOn", "requires", "influence", "determines", "allows", "related", "necessary"],
-        ["about", "transforms", "modified", "converts", "trafficking", "affects", "takeCareOf", "concerns"],
-        ["product", "cause", "causes", "generate", "resultsIn", "created", "develops", "deal", "provides"]
-    ]
-    """
-    default_words = [
-        ["characterize", "identifies", "defined", "depicted", "qualifies", "delineated", "specific", "belongs"],
-        [],
-        ["includes", "gathered", "collects"],
-        ["isComposedOf", "contains", "assimilates"],
-        [],
-        [],
-        ["do", "realizes", "assume", "accomplishes", "executes", "proceeds", "manages", "ensures", "order", "trigger",
-         "causes"],
-        ["helps", "contributesTo", "collaboratesIn", "participatesIn", "encourages", "support", "takesPartIn",
-         "stimulates", "promotes", "increases", "amplifies", "facilitates"],
-        ["uses", "makeUseOf", "employs", "callsUpon"],
-        ["aimsTo", "isLookingFor", "continues", "tendsto", "research", "wishes"],
-        ["dependsOn", "requires", "influence", "determines", "allows", "related", "necessary"],
-        ["about", "transforms", "modified", "converts", "trafficking", "affects", "takeCareOf", "concerns"],
-        ["product", "cause", "causes", "generate", "resultsIn", "created", "develops", "deal", "provides"]
-    ]
-    default_words = reshape(default_words)
-
-    # default_words = ["has", "contains", "is"]
-    data2 = {}
-    for word in default_words:
-        if word.islower():
-            if data.get(word) is not None:
-                data2[word] = data.get(word)
-        else:
-            vec = get_vec(word, data, d)
-            if vec is not None:
-                data2[word] = vec
-    save_vectors(data2, "data/default_words.csv")
-
-
-def test_1():
-    nb_words_read_ft = 10_000
-    data_all_w, nAll, dAll = load_vectors("data/wiki-news-300d-1M.vec", nb_words_read_ft)
-    data_def_w, _, _ = load_vectors("data/default_words.csv")
-
-    file_DBpedia = "data/dbpedia_2016-10.owl"
-    file_foaf = "data/foaf.owl"
-    obj_prop_names = Ontology(file_DBpedia).get_op()
-
-    nb_links_found = 0
-    i = 1
-    for name in obj_prop_names:
-        # vec = data_all_w.get(name)
-        vec = get_vec(name, data_all_w, dAll)
-        decomp = str(split_name(name))
-        print("%4d/%4d: " % (i, len(obj_prop_names)), end='')
-        if vec is not None:
-            min = 100_000_000
-            max = -1
-            keymin = None
-            for key, vect_def in data_def_w.items():
-                dist = sq_dist(vec, vect_def)
-                if dist < min:
-                    min = dist
-                    keymin = key
-                if dist > max:
-                    max = dist
-            print("OK %30s => %-30s (proximité=%1.2f)\t(decomposition=%s)" % (name, keymin, 1-min/max, decomp))
-            nb_links_found += 1
-        else:
-            print("KO %30s => Non trouvé dans FastText. \t(decomposition=%s)" % (name, decomp))
-            # print()
-        i += 1
-    print("%d/%d correspondances trouvées pour les %d premiers mots de FT." % (nb_links_found, len(obj_prop_names), nb_words_read_ft))
-
-
 def get_partition(dim, preds, names, vecs):
     nb_clusters = max(preds) - min(preds) + 1
     groups = [[] for _ in range(nb_clusters)]
@@ -184,12 +80,6 @@ def get_partition(dim, preds, names, vecs):
         i += 1
     cluster_center_names = np.array(names, dtype=str)[nearest_pt]
     return groups, cluster_centers, cluster_center_names
-
-
-COLORS = np.array([
-    '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
-    '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'
-])
 
 
 def draw_data(vecs, cluster_centers, preds, file):
@@ -223,6 +113,8 @@ def test_learning():
     names = Ontology(file).get_op()
     data_all_w, n_vec, dim = load_vectors(fasttext_file, nb_words_read_ft)
 
+    nb_clusters = 10  # NOTE: max is currently 10 because we have only 10 differents colors
+
     vecs = []
     names_filtered = []
     names_out = []
@@ -234,14 +126,12 @@ def test_learning():
         else:
             names_out.append(name)
 
-    nb_clusters = 10  # NOTE: max is currently 10 because we have only 10 differents colors
-
     agglo = AgglomerativeClustering(n_clusters=nb_clusters)
     affinity = AffinityPropagation()
     birch = Birch(n_clusters=nb_clusters)
     gauss = sk.mixture.GaussianMixture(n_components=nb_clusters)
     kmeans = KMeans(n_clusters=nb_clusters)
-    mean_shift = MeanShift()
+    meanshift = MeanShift()
     mini_batch = MiniBatchKMeans(n_clusters=nb_clusters)
     spectral = SpectralClustering(n_clusters=nb_clusters)
 
@@ -252,7 +142,7 @@ def test_learning():
         ("Birch", birch),
         ("GaussianMixture", gauss),
         ("KMeans", kmeans),
-        ("MeanShift", mean_shift),
+        ("MeanShift", meanshift),
         ("MiniBatchKMeans", mini_batch),
         ("SpectralClustering", spectral),
     ]
@@ -285,12 +175,13 @@ def test_learning():
     plt.close()
 
 
-def test_go_plus():
-    filepath = "data/ontologies/go-plus.owl"
+def test_load():
+    filepath = "data/ontologies/boardgameontology.owl"
     onto = Ontology(filepath, LoadType.FORCE_RDFLIB)
-    triples = onto.get_op_triples()
+    op = onto.getObjectProperties()
+    triples = onto.getOWLTriples()
     print(triples)
-    print(len(onto.get_op()))
+    print(len(op))
     print(len(triples))
 
 
@@ -298,7 +189,7 @@ def main():
     # gen_default_words()
     # test_1()
     # test_learning()
-    test_go_plus()
+    test_load()
     return
 
 
