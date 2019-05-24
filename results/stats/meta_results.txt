@@ -1,119 +1,147 @@
-#! Version: 23/05/2019_17:05:16
-File                           Owlready?  Rdflib?    Loaded?    NbErrors   Time       NbTriples  OpUnreadable
+#! Version: 24/05/2019_17:02:07
+File                           Owlready?  Rdflib?    Loaded?    NbErrors   Time       NbTriples  OpUnreada. MustKeep  
 
-2016_005_112_465537.owl        True       False      True       0          0.03       110        0         
-aba-amb.owl                    True       False      True       0          0.11       3          0         
-action.owl                     False      True       True       0          0.17       9          0         
-Action_2.owl                   False      True       True       0          3.22       13         0         
-Actor.owl                      False      True       True       0          1.27       2          0         
-adw.owl                        True       False      True       15         1.14       1          0         
-aircraft.owl                   True       False      True       0          7.61       84         0         
-amo.owl                        True       False      True       0          0.03       58         0         
-Authorization.owl              True       False      True       0          0.75       2          0         
-beer.owl                       True       False      True       0          0.00       8          0         
-bibframe.owl                   True       False      True       0          0.05       50         0         
-bibliographic.owl              True       False      True       4          0.02       14         0         
-BibTex.owl                     True       False      True       4          0.03       17         0         
-boardgameontology.owl          False      True       True       0          1.02       42         0         
-BOnSAI.owl                     True       False      True       5          3.65       55         0         
-carlsberg.owl                  True       False      True       0          0.05       6          0         
-Cguide.owl                     True       False      True       13         0.16       19         0         
-cio.owl                        True       False      True       2          0.09       3          0         
-collaborativePizza.owl         True       False      True       0          1.28       149        0         
-COSMO.owl                      False      True       True       0          32.23      1313       0         
-dbpedia_2016-10.owl            True       False      True       23         0.77       685        0         
-ddm.owl                        False      True       True       0          0.53       12         0         
-Delegation.owl                 False      True       True       0          0.70       17         0         
-demlab.owl                     False      True       True       0          0.70       37         0         
-DOLCE-Lite.owl                 True       False      True       0          0.06       143        0         
-DOLCE-QL.owl                   True       False      True       0          0.05       103        0         
-DUL.owl                        True       False      True       4          0.08       103        0         
-ecrm_170309.owl                True       False      True       0          0.14       529        0         
-EDAM.owl                       True       False      True       2          0.39       8          0         
-einsteins_riddle.owl           True       False      True       0          0.05       6          0         
-Entity.owl                     False      True       True       0          0.31       9          0         
-event.n3                       False      True       True       0          0.08       17         0         
-expression.owl                 False      True       True       0          3.20       36         0         
-family.rdf.owl                 True       False      True       0          0.12       52         0         
-foaf.owl                       True       False      True       1          0.03       31         0         
-food.owl                       False      True       True       0          10.84      29         0         
-football.owl                   True       False      True       3          0.05       24         0         
-forms.owl                      True       False      True       1          0.02       5          0         
-fypo.owl                       True       False      True       0          7.98       6          0         
-gamemodel.rdf                  True       False      True       3          0.03       34         0         
-geo_2007.owl                   True       False      True       0          0.03       2          0         
-gfo-basic.owl                  True       False      True       5          0.05       19         0         
-gfo-bio.owl                    True       False      True       1          1.91       34         0         
-gfo.owl                        True       False      True       1          0.05       34         0         
-icontact.owl                   True       False      True       0          0.05       2          0         
-IFC4_ADD1.owl                  True       False      True       0          5.75       1574       0         
-index.rdf                      True       False      True       1          0.05       31         0         
-Information.owl                False      True       True       0          2.50       4          0         
-instOntology.owl               True       False      True       0          0.05       23         0         
-iot-o.owl                      False      True       True       0          0.06       24         0         
-iot-ontology.owl               True       False      True       0          4.92       8          0         
-IPDFull.owl                    True       False      True       1          19.97      13         0         
-iridl.owl                      False      True       True       0          12.26      13         0         
-iridlcontent.owl               True       False      True       1          1.03       10         0         
-iridlsemantics.owl             False      True       True       0          12.12      1          0         
-istexXML.owl                   True       False      True       0          0.06       11         0         
-IT_study1.owl                  True       False      True       0          0.03       4          0         
-leo.owl                        True       False      True       5          0.03       19         0         
-Library Ontology.owl           True       False      True       0          0.03       33         0         
-lkif-rules.owl                 False      True       True       0          3.11       5          0         
-lom.owl                        True       False      True       18         0.08       50         0         
-mamo-xml.owl                   True       False      True       0          0.06       1          0         
-maproom-edited.owl             False      True       True       0          60.29      8          0         
-mereology.owl                  False      True       True       0          0.11       14         0         
-metalex-cen.owl                True       False      True       0          0.09       20         0         
-MGEDOntology.owl               False      True       True       0          2.70       83         0         
-mod-ontology-09092016.owl      True       False      True       0          0.06       22         0         
-Monetary_ontology.rdf-xml.owl  True       False      True       4          0.03       21         0         
-movieontology.owl              False      True       True       0          0.42       39         0         
-ms.owl                         False      True       True       0          6.14       5          0         
-norm.owl                       False      True       True       0          0.28       13         0         
-oboe-core.owl                  True       False      True       1          0.06       25         0         
-omp.owl                        True       False      True       0          0.61       6          0         
-OntoWAWO+.owl                  True       False      True       0          0.06       26         0         
-opl_inferred.owl               True       False      True       0          0.11       6          0         
-owl                            False      True       True       0          0.06       2          0         
-owl.rdf                        True       False      True       0          0.47       2          0         
-pato.owl                       True       False      True       0          0.53       9          0         
-pizza.owl                      True       False      True       0          0.05       3          0         
-Place.owl                      False      True       True       0          0.02       4          0         
-pml-provenance.owl             True       False      True       0          0.45       15         0         
-Policy.owl                     False      True       True       0          2.27       19         0         
-PPOntology.owl                 True       False      True       18         0.13       17         0         
-process.owl                    False      True       True       0          0.11       12         0         
-Process_2.owl                  True       False      True       1          0.97       37         0         
-pro_reasoned.owl               True       False      True       0          127.99     1          0         
-relational.owl                 True       False      True       1          0.06       4          0         
-relative-places.owl            False      True       True       0          0.69       18         0         
-restaurant.owl                 True       False      True       0          0.78       9          0         
-role.owl                       False      True       True       0          0.13       8          0         
-sbpax2.owl                     True       False      True       0          1.67       15         0         
-skos.rdf                       True       False      True       2          0.02       3          0         
-SQWRLCollectionExamples.owl    False      True       True       0          1.25       6          0         
-SQWRLCoreExamples.owl          False      True       True       0          0.86       6          0         
-ss.owl                         True       False      True       1          0.03       3          0         
-ssm.owl                        True       False      True       1          0.05       4          0         
-ssn.owl                        False      True       True       0          0.97       55         0         
-SVECore.owl                    True       False      True       2          0.03       9          0         
-swrli.owl                      False      True       True       0          1.00       9          0         
-SWRLXML.owl                    True       False      True       2          0.05       5          0         
-tabletopgames_V3.owl           True       False      True       0          0.02       4          0         
-TelecomEntity.owl              False      True       True       0          0.34       10         0         
-temporal.owl                   True       False      True       1          0.05       1          0         
-temporalAggregates.owl         True       False      True       1          0.03       6          0         
-time-modification.owl          False      True       True       0          0.22       11         0         
-time.owl                       False      True       True       0          0.16       33         0         
-univ-bench.owl                 True       False      True       0          0.03       17         0         
-v1.owl                         True       False      True       34         0.06       16         0         
-WeatherOntology.owl            False      True       True       0          0.69       21         0         
-wine.owl                       True       False      True       0          0.06       6          0         
-WordNet.owl                    True       False      True       3          36.09      25         0         
-wp1_dolce.owl                  True       False      True       1          0.03       2          0         
+00558.owl                      True       False      True       0          0.01       1          0          True      
+2016_005_112_465537.owl        True       False      True       0          0.13       135        0          True      
+aba-amb.owl                    True       False      True       0          0.16       2          0          True      
+abd.owl                        True       False      True       0          0.11       3          0          True      
+aceso.owl                      True       False      True       0          0.02       93         0          True      
+action.owl                     False      True       True       0          0.25       9          0          True      
+Action_2.owl                   False      True       True       0          3.73       13         0          True      
+Actor.owl                      False      True       True       0          1.29       2          0          True      
+adalab.owl                     True       False      True       0          3.13       3          0          True      
+adw.owl                        True       False      True       6          1.46       8          0          True      
+aeo.owl                        True       False      True       0          0.06       11         0          True      
+AIF-RDF.owl                    True       False      True       0          0.05       129        0          True      
+amo.owl                        True       False      True       0          0.11       31         0          True      
+aro.owl                        True       False      True       0          0.58       10         0          True      
+Authorization.owl              True       False      True       0          0.81       2          0          True      
+beer.owl                       True       False      True       0          0.02       9          0          True      
+bibframe.owl                   True       False      True       0          0.05       127        0          True      
+bibliographic.owl              True       False      True       10         0.02       14         0          True      
+bibliotek-o.owl                True       False      True       5          0.03       16         0          True      
+BibTex.owl                     True       False      True       4          0.04       18         0          True      
+boardgameontology.owl          False      True       True       0          1.02       42         0          True      
+BOnSAI.owl                     True       False      True       3          0.76       45         0          True      
+carlsberg.owl                  True       False      True       0          0.04       6          0          True      
+Cguide.owl                     True       False      True       13         0.15       23         0          True      
+cio.owl                        True       False      True       2          0.05       3          0          True      
+cmo.owl                        True       False      True       0          0.43       2          0          True      
+collaborativePizza.owl         True       False      True       0          1.56       8          0          True      
+COSMO.owl                      False      True       True       0          30.97      1313       0          True      
+dbpedia_2016-10.owl            True       False      True       27         0.76       1078       0          True      
+ddanat.owl                     True       False      True       0          0.04       2          0          True      
+ddm.owl                        False      True       True       0          0.73       12         0          True      
+Delegation.owl                 False      True       True       0          0.33       17         0          True      
+demlab.owl                     False      True       True       0          0.66       37         0          True      
+DOLCE-Lite.owl                 True       False      True       0          0.05       70         0          True      
+DOLCE-QL.owl                   True       False      True       0          0.04       53         0          True      
+DomainOntology-NMS.owl         True       False      True       0          0.01       4          0          True      
+DUL.owl                        True       False      True       4          0.08       103        0          True      
+EDAM.owl                       True       False      True       2          0.41       10         0          True      
+einsteins_riddle.owl           True       False      True       0          0.09       6          0          True      
+emapa.owl                      True       False      True       0          1.11       9          0          True      
+Entity.owl                     False      True       True       0          0.46       9          0          True      
+event.n3                       False      True       True       0          0.03       17         0          True      
+expression.owl                 False      True       True       0          0.23       36         0          True      
+family.rdf.owl                 True       False      True       0          0.42       80         0          True      
+fma.owl                        True       False      True       0          6.26       7          0          True      
+foaf.owl                       True       False      True       1          0.07       32         0          True      
+food.owl                       False      True       True       0          3.93       29         0          True      
+football.owl                   True       False      True       3          0.03       24         0          True      
+forms.owl                      True       False      True       1          0.02       5          0          True      
+gamemodel.rdf                  True       False      True       4          0.03       39         0          True      
+geometry.owl                   True       False      True       0          0.00       1          0          True      
+geo_2007.owl                   True       False      True       0          0.02       2          0          True      
+gfo-basic.owl                  True       False      True       5          0.08       36         0          True      
+gfo.owl                        True       False      True       4          0.05       63         0          True      
+icontact.owl                   True       False      True       0          0.04       16         0          True      
+index.rdf                      True       False      True       1          0.04       32         0          True      
+Information.owl                False      True       True       0          1.41       4          0          True      
+instOntology.owl               True       False      True       0          0.04       24         0          True      
+iot-o.owl                      False      True       True       0          0.16       24         0          True      
+iot-ontology.owl               True       False      True       0          2.01       30         0          True      
+IPDFull.owl                    True       False      True       2          3.39       17         0          True      
+iridl.owl                      False      True       True       0          2.31       13         0          True      
+iridlcontent.owl               True       False      True       1          0.47       15         0          True      
+iridlsemantics.owl             False      True       True       0          3.12       1          0          True      
+istexXML.owl                   True       False      True       0          0.04       14         0          True      
+IT_study1.owl                  True       False      True       0          0.05       20         0          True      
+leo.owl                        True       False      True       3          0.04       23         0          True      
+Library Ontology.owl           True       False      True       0          0.04       34         0          True      
+lkif-rules.owl                 False      True       True       0          0.12       5          0          True      
+lom.owl                        True       False      True       14         0.08       87         0          True      
+ma.owl                         True       False      True       0          0.36       1          0          True      
+mamo-xml.owl                   True       False      True       0          0.10       3          0          True      
+maproom-edited.owl             False      True       True       0          8.27       8          0          True      
+mereology.owl                  False      True       True       0          0.16       14         0          True      
+meta.owl                       True       False      True       2          0.01       7          0          True      
+metalex-cen.owl                True       False      True       0          0.08       44         0          True      
+MF.owl                         True       False      True       0          4.38       1          0          True      
+MFOMD.owl                      True       False      True       0          11.78      11         0          True      
+MGEDOntology.owl               False      True       True       0          2.33       83         0          True      
+mi.owl                         True       False      True       0          0.31       4          0          True      
+mmo.owl                        True       False      True       0          0.11       1          0          True      
+mod-ontology-09092016.owl      True       False      True       0          0.09       22         0          True      
+mod.owl                        True       False      True       0          1.69       4          0          True      
+Monetary_ontology.rdf-xml.owl  True       False      True       4          0.07       23         0          True      
+movieontology.owl              False      True       True       0          0.90       39         0          True      
+mpath.owl                      True       False      True       0          0.16       2          0          True      
+MR-MPS-SW.owl                  True       False      True       0          0.11       50         0          True      
+ms.owl                         False      True       True       0          8.04       5          0          True      
+norm.owl                       False      True       True       0          0.23       13         0          True      
+oboe-core.owl                  True       False      True       1          0.05       25         0          True      
+OntoWAWO+.owl                  True       False      True       0          0.03       34         0          True      
+OSHDO-Core.owl                 True       False      True       0          0.01       6          0          True      
+owl                            False      True       True       0          0.09       2          0          True      
+owl.rdf                        True       False      True       0          0.48       2          0          True      
+peco.owl                       True       False      True       0          11.15      1          0          True      
+pizza.owl                      True       False      True       0          0.09       8          0          True      
+Place.owl                      False      True       True       0          0.04       4          0          True      
+pml-provenance.owl             True       False      True       0          0.42       19         0          True      
+Policy.owl                     False      True       True       0          2.38       19         0          True      
+PPOntology.owl                 True       False      True       2          0.14       13         0          True      
+process.owl                    False      True       True       0          0.13       12         0          True      
+Process_2.owl                  True       False      True       2          1.00       39         0          True      
+protege.owl                    True       False      True       3          0.02       3          0          True      
+pw.owl                         True       False      True       0          0.56       1          0          True      
+relational.owl                 True       False      True       1          0.04       4          0          True      
+relative-places.owl            False      True       True       0          0.14       18         0          True      
+restaurant.owl                 True       False      True       0          1.01       9          0          True      
+role.owl                       False      True       True       0          0.15       8          0          True      
+rs.owl                         True       False      True       0          0.70       1          0          True      
+sbpax2.owl                     True       False      True       0          1.51       15         0          True      
+Service.owl                    True       False      True       8          0.01       3          0          True      
+skos.rdf                       True       False      True       2          0.04       15         0          True      
+so.owl                         True       False      True       0          0.64       50         0          True      
+spd.owl                        True       False      True       0          0.20       4          0          True      
+SQWRLCollectionExamples.owl    False      True       True       0          1.74       6          0          True      
+SQWRLCoreExamples.owl          False      True       True       0          0.93       6          0          True      
+ss.owl                         True       False      True       1          0.05       3          0          True      
+ssm.owl                        True       False      True       2          0.03       6          0          True      
+ssn.owl                        False      True       True       0          1.42       55         0          True      
+STIX.owl                       True       False      True       0          0.04       83         0          True      
+SVECore.owl                    True       False      True       1          0.07       10         0          True      
+swrl.owl                       True       False      True       0          0.01       8          0          True      
+swrli.owl                      False      True       True       0          0.78       9          0          True      
+SWRLXML.owl                    True       False      True       2          0.04       8          0          True      
+symp.owl                       True       False      True       0          0.17       1          0          True      
+tabletopgames_V3 - Copie.owl   True       False      True       0          0.06       6          0          True      
+tabletopgames_V3.owl           True       False      True       0          0.04       6          0          True      
+TelecomEntity.owl              False      True       True       0          0.36       10         0          True      
+temporal.owl                   True       False      True       1          0.06       1          0          True      
+temporalAggregates.owl         True       False      True       1          0.03       5          0          True      
+time-modification.owl          False      True       True       0          0.16       11         0          True      
+time.owl                       False      True       True       0          0.25       33         0          True      
+TTICarOnto.owl                 True       False      True       0          0.01       3          0          True      
+univ-bench.owl                 True       False      True       0          0.05       24         0          True      
+uo.owl                         True       False      True       0          0.12       1          0          True      
+v1.owl                         True       False      True       34         0.08       19         0          True      
+WeatherOntology.owl            False      True       True       0          0.89       21         0          True      
+wine.owl                       True       False      True       0          0.05       12         0          True      
+WordNet.owl                    True       False      True       3          34.06      25         0          True      
+wp1_dolce.owl                  True       False      True       2          0.05       3          0          True      
 
-Total                          75         37         112        186        392.61     6474       0         
+Total                          103        37         140        187        178.17     5243       0          140       
 
-Nb of files: 112
+Nb of files: 140

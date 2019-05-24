@@ -1,6 +1,6 @@
-from csv_fcts import *
-from onto_classes.Ontology import Ontology
-from utils import sq_dist
+from ft_fcts import *
+from ontology.Ontology import Ontology
+from utils import *
 
 
 def class_with_typo_words():
@@ -9,12 +9,16 @@ def class_with_typo_words():
     filepath_results = "results/typoclass/classif.txt"
     limit = 10000
 
+    prt("Classify with typo words on %s...\n" % filepath_dbpedia)
     data, _, dim = load_vectors(filepath_fasttext, limit)
     onto = Ontology(filepath_dbpedia)
     op_names = onto.getObjectProperties()
-    out = open(filepath_results, 'w', encoding='utf-8')
+    out = open(filepath_results, "w", encoding="utf-8")
+    out.write("#! Version: %s\n" % get_time())
+    out.write("# This file has been generated with %s.\n\n" % filepath_dbpedia)
+    out.write("%-7s %-30s %-30s %-10s\n\n" % ("#Found?", "OP name", "Typo word", "Proximity"))
 
-    typo_name, typo_vecs = get_vecs(op_names, data, dim)
+    typo_name, typo_vecs = get_vecs(Config.TYPO_WORDS, data, dim)
 
     nb_vecs_found = 0
     for name in op_names:
@@ -23,7 +27,7 @@ def class_with_typo_words():
         if vec is not None:
             minDist = 10000000
             maxDist = -1
-            minWord = ""
+            minWord = "§OWLL_error§"
             for i in range(len(typo_name)):
                 typo_word = typo_name[i]
                 typo_vec = typo_vecs[i]
@@ -35,12 +39,12 @@ def class_with_typo_words():
                     minDist = dist
                     minWord = typo_word
 
-            out.write("OK %30s => %-30s (proximity=%1.2f)\n" % (name, minWord, 1 - minDist / maxDist))
+            out.write("%-7s %-30s %-30s %1.2f\n" % ("OK", name, minWord, 1 - minDist / maxDist))
             nb_vecs_found += 1
         else:
-            out.write("KO %30s => ?\n" % name)
+            out.write("%-7s %-30s \n" % ("KO", name))
 
-    out.write(("Nb vectors found: %d / %d\n" % (nb_vecs_found, len(op_names))))
+    out.write(("# Nb vectors found: %d / %d\n" % (nb_vecs_found, len(op_names))))
     out.close()
 
 

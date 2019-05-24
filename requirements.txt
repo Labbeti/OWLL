@@ -1,6 +1,6 @@
-owlready2
-numpy
-scikit-learn
-matplotlib
-rdflib
 html5lib
+matplotlib
+numpy
+owlready2
+rdflib
+scikit-learn

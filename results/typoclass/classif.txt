@@ -1,1106 +1,1111 @@
-OK         politicalPartyOfLeader => politicalPartyOfLeader         (proximity=1.00)
-OK                otherOccupation => otherOccupation                (proximity=1.00)
-KO                        shuttle => ?
-OK                     subClassis => subClassis                     (proximity=1.00)
-KO                    illustrator => ?
-OK                     otherMedia => otherMedia                     (proximity=1.00)
-OK                  fastestDriver => fastestDriver                  (proximity=1.00)
-OK                       minority => minority                       (proximity=1.00)
-KO                         massif => ?
-OK            britishComedyAwards => britishComedyAwards            (proximity=1.00)
-KO                       altitude => ?
-OK              firstLaunchRocket => firstLaunchRocket              (proximity=1.00)
-OK        sourceConfluenceCountry => sourceConfluenceCountry        (proximity=1.00)
-OK                   largestMetro => largestMetro                   (proximity=1.00)
-OK                     firstOwner => firstOwner                     (proximity=1.00)
-OK                        species => species                        (proximity=1.00)
-OK               managementRegion => managementRegion               (proximity=1.00)
-OK                  winsAtSenEuro => winsAtSenEuro                  (proximity=1.00)
-OK                   gymApparatus => gymApparatus                   (proximity=1.00)
-OK                        senator => senator                        (proximity=1.00)
-OK                        mission => mission                        (proximity=1.00)
-OK                        fileURL => fileURL                        (proximity=1.00)
-OK                attorneyGeneral => attorneyGeneral                (proximity=1.00)
-OK             maidenFlightRocket => maidenFlightRocket             (proximity=1.00)
-OK                      raceTrack => raceTrack                      (proximity=1.00)
-OK                   jurisdiction => jurisdiction                   (proximity=1.00)
-OK grossDomesticProductNominalPerCapita => grossDomesticProductNominalPerCapita (proximity=1.00)
-OK                     percentage => percentage                     (proximity=1.00)
-OK                          guest => guest                          (proximity=1.00)
-KO                    torchBearer => ?
-KO                       copilote => ?
-OK                         format => format                         (proximity=1.00)
-OK                         mother => mother                         (proximity=1.00)
-OK                secondCommander => secondCommander                (proximity=1.00)
-KO                   spokesperson => ?
-OK                    royalAnthem => royalAnthem                    (proximity=1.00)
-OK                  targetAirport => targetAirport                  (proximity=1.00)
-OK                   sportCountry => sportCountry                   (proximity=1.00)
-OK                 aircraftPatrol => aircraftPatrol                 (proximity=1.00)
-OK               musicFusionGenre => musicFusionGenre               (proximity=1.00)
-OK                        network => network                        (proximity=1.00)
-KO                        eparchy => ?
-OK                 bronzeMedalist => bronzeMedalist                 (proximity=1.00)
-OK                     followedBy => followedBy                     (proximity=1.00)
-OK                         school => school                         (proximity=1.00)
-OK              childOrganisation => childOrganisation              (proximity=1.00)
-OK                        monarch => monarch                        (proximity=1.00)
-OK                         parent => parent                         (proximity=1.00)
-KO                   alpsSubgroup => ?
-OK                   construction => construction                   (proximity=1.00)
-OK                    notableWork => notableWork                    (proximity=1.00)
-KO                         spurOf => ?
-OK     administrativeCollectivity => administrativeCollectivity     (proximity=1.00)
-OK                    chiefEditor => chiefEditor                    (proximity=1.00)
-OK           collectivityMinority => minority                       (proximity=1.00)
-OK                 educationPlace => educationPlace                 (proximity=1.00)
-KO                           vein => ?
-OK                       relative => relative                       (proximity=1.00)
-OK                      powerType => powerType                      (proximity=1.00)
-OK                         author => author                         (proximity=1.00)
-OK                       ncaaTeam => ncaaTeam                       (proximity=1.00)
-OK                   organisation => organisation                   (proximity=1.00)
-OK                     museumType => museumType                     (proximity=1.00)
-KO                hasJunctionWith => ?
-OK                      subTribus => subClassis                     (proximity=1.00)
-OK                     juniorTeam => juniorTeam                     (proximity=1.00)
-OK                      opponents => opponents                      (proximity=1.00)
-OK                         series => series                         (proximity=1.00)
-OK                      newspaper => newspaper                      (proximity=1.00)
-OK                     listItemOf => listItemOf                     (proximity=1.00)
-OK                         mentor => mentor                         (proximity=1.00)
-OK                           city => city                           (proximity=1.00)
-OK              ruralMunicipality => ruralMunicipality              (proximity=1.00)
-OK       populationTotalReference => populationTotalReference       (proximity=1.00)
-KO                    veneratedIn => ?
-OK                      mediaType => mediaType                      (proximity=1.00)
-OK                    geminiAward => geminiAward                    (proximity=1.00)
-OK         formerBroadcastNetwork => formerBroadcastNetwork         (proximity=1.00)
-OK                          plant => plant                          (proximity=1.00)
-OK                  sisterStation => sisterStation                  (proximity=1.00)
-OK      wikiPageInterLanguageLink => wikiPageInterLanguageLink      (proximity=1.00)
-OK                     boxerStyle => boxerStyle                     (proximity=1.00)
-OK                     wineRegion => wineRegion                     (proximity=1.00)
-KO                        honours => ?
-OK                      foundedBy => foundedBy                      (proximity=1.00)
-OK                       cemetery => cemetery                       (proximity=1.00)
-OK                     mainIsland => mainIsland                     (proximity=1.00)
-OK                  collaboration => collaboration                  (proximity=1.00)
-OK                       designer => designer                       (proximity=1.00)
-OK                    lowestPlace => lowestPlace                    (proximity=1.00)
-OK                    leaderParty => leaderParty                    (proximity=1.00)
-OK                          woRMS => woRMS                          (proximity=1.00)
-OK                    trainerClub => trainerClub                    (proximity=1.00)
-OK                  literaryGenre => literaryGenre                  (proximity=1.00)
-KO                          lymph => ?
-KO                     complexion => ?
-OK                    mouthRegion => mouthRegion                    (proximity=1.00)
-KO                   primogenitor => ?
-OK                        channel => channel                        (proximity=1.00)
-OK             firstDriverCountry => firstDriverCountry             (proximity=1.00)
-OK                 silverMedalist => silverMedalist                 (proximity=1.00)
-OK                  lchfDraftTeam => lchfDraftTeam                  (proximity=1.00)
-OK                     blockAlloy => blockAlloy                     (proximity=1.00)
-OK                 generalCouncil => generalCouncil                 (proximity=1.00)
-OK                    homeStadium => homeStadium                    (proximity=1.00)
-OK                       causedBy => causedBy                       (proximity=1.00)
-OK                         source => source                         (proximity=1.00)
-OK          typeOfElectrification => typeOfElectrification          (proximity=1.00)
-KO                      statistic => ?
-OK                fourthCommander => fourthCommander                (proximity=1.00)
-OK             architecturalStyle => architecturalStyle             (proximity=1.00)
-OK             originalStartPoint => originalStartPoint             (proximity=1.00)
-OK             targetSpaceStation => targetSpaceStation             (proximity=1.00)
-OK                        founder => founder                        (proximity=1.00)
-OK                    endingTheme => endingTheme                    (proximity=1.00)
-OK             availableSmartCard => availableSmartCard             (proximity=1.00)
-OK                  vicePrincipal => vicePrincipal                  (proximity=1.00)
-KO                     prefecture => ?
-OK                          genre => genre                          (proximity=1.00)
-OK               sourceConfluence => source                         (proximity=1.00)
-OK                namedByLanguage => namedByLanguage                (proximity=1.00)
-OK                 notableStudent => notableStudent                 (proximity=1.00)
-OK                      president => president                      (proximity=1.00)
-OK                    storyEditor => storyEditor                    (proximity=1.00)
-OK            formerChoreographer => formerChoreographer            (proximity=1.00)
-OK               relatedFunctions => relatedFunctions               (proximity=1.00)
-OK         daylightSavingTimeZone => daylightSavingTimeZone         (proximity=1.00)
-OK                            dam => dam                            (proximity=1.00)
-OK       subsequentInfrastructure => subsequentInfrastructure       (proximity=1.00)
-OK                   photographer => photographer                   (proximity=1.00)
-OK                programmeFormat => programmeFormat                (proximity=1.00)
-OK                       starring => starring                       (proximity=1.00)
-OK                     subsidiary => subsidiary                     (proximity=1.00)
-KO                      bishopric => ?
-OK                     influenced => influenced                     (proximity=1.00)
-OK                  pictureFormat => pictureFormat                  (proximity=1.00)
-OK                           show => show                           (proximity=1.00)
-OK                       mostWins => mostWins                       (proximity=1.00)
-OK                   mainInterest => mainInterest                   (proximity=1.00)
-OK                      musicians => musicians                      (proximity=1.00)
-OK                        student => student                        (proximity=1.00)
-OK                       location => location                       (proximity=1.00)
-KO                       explorer => ?
-OK                viceLeaderParty => viceLeaderParty                (proximity=1.00)
-OK                     parliament => parliament                     (proximity=1.00)
-OK             soccerLeagueWinner => soccerLeagueWinner             (proximity=1.00)
-OK                       lastRace => lastRace                       (proximity=1.00)
-OK               originalLanguage => originalLanguage               (proximity=1.00)
-OK                   makeupArtist => makeupArtist                   (proximity=1.00)
-OK                 poleDriverTeam => poleDriverTeam                 (proximity=1.00)
-KO                  agglomeration => ?
-OK                       branchTo => branchTo                       (proximity=1.00)
-OK                          organ => organ                          (proximity=1.00)
-OK                    alpsSection => alpsSection                    (proximity=1.00)
-OK                       relation => relation                       (proximity=1.00)
-OK           laurenceOlivierAward => geminiAward                    (proximity=1.00)
-OK                foundationPlace => foundationPlace                (proximity=1.00)
-OK                    superTribus => superTribus                    (proximity=1.00)
-OK                          march => march                          (proximity=1.00)
-OK                      usedInWar => usedInWar                      (proximity=1.00)
-OK                    winsAtJLPGA => winsAtJLPGA                    (proximity=1.00)
-OK               wikiPageEditLink => wikiPageEditLink               (proximity=1.00)
-OK              distributingLabel => distributingLabel              (proximity=1.00)
-OK               championInSingle => championInSingle               (proximity=1.00)
-OK                   aircraftUser => aircraftUser                   (proximity=1.00)
-KO                       animator => ?
-OK                       ideology => ideology                       (proximity=1.00)
-OK                 aircraftBomber => aircraftBomber                 (proximity=1.00)
-OK                     chairLabel => chairLabel                     (proximity=1.00)
-OK                      voiceType => voiceType                      (proximity=1.00)
-KO                      varietals => ?
-OK                  formerPartner => formerPartner                  (proximity=1.00)
-OK                       endPoint => endPoint                       (proximity=1.00)
-OK                          field => field                          (proximity=1.00)
-KO                 enshrinedDeity => ?
-OK    relatedMeanOfTransportation => relatedMeanOfTransportation    (proximity=1.00)
-OK                     poleDriver => poleDriver                     (proximity=1.00)
-OK                   lowestRegion => lowestRegion                   (proximity=1.00)
-KO                       sheading => ?
-OK              wikiPageRedirects => wikiPageRedirects              (proximity=1.00)
-OK            aircraftInterceptor => aircraftBomber                 (proximity=1.00)
-OK                         border => border                         (proximity=1.00)
-KO                         unesco => ?
-OK                           lake => lake                           (proximity=1.00)
-OK                         writer => writer                         (proximity=1.00)
-OK                          state => state                          (proximity=1.00)
-KO                         anthem => ?
-OK                doctoralAdvisor => doctoralAdvisor                (proximity=1.00)
-OK             thirdDriverCountry => thirdDriverCountry             (proximity=1.00)
-OK                            map => map                            (proximity=1.00)
-OK                           land => land                           (proximity=1.00)
-OK                    majorIsland => majorIsland                    (proximity=1.00)
-OK         championInDoubleFemale => championInDoubleFemale         (proximity=1.00)
-OK                   regionServed => regionServed                   (proximity=1.00)
-OK           wikiPageRevisionLink => wikiPageRevisionLink           (proximity=1.00)
-OK                  previousEvent => previousEvent                  (proximity=1.00)
-OK                 capitalCountry => capitalCountry                 (proximity=1.00)
-OK                      athletics => athletics                      (proximity=1.00)
-KO                    affiliation => ?
-OK             pictureDescription => pictureDescription             (proximity=1.00)
-OK                   openingTheme => openingTheme                   (proximity=1.00)
-KO                        diocese => ?
-OK                 viceChancellor => viceChancellor                 (proximity=1.00)
-OK                    winsAtNWIDE => winsAtNWIDE                    (proximity=1.00)
-OK              principalEngineer => principalEngineer              (proximity=1.00)
-OK                   playerSeason => playerSeason                   (proximity=1.00)
-KO                        damsire => ?
-OK            wikiPageHistoryLink => wikiPageHistoryLink            (proximity=1.00)
-OK                   elementAbove => elementAbove                   (proximity=1.00)
-OK                        similar => similar                        (proximity=1.00)
-OK             owningOrganisation => organisation                   (proximity=1.00)
-OK                  capitalRegion => capitalRegion                  (proximity=1.00)
-OK                participatingIn => participatingIn                (proximity=1.00)
-KO                       disciple => ?
-OK                      thirdTeam => thirdTeam                      (proximity=1.00)
-OK                   olivierAward => geminiAward                    (proximity=1.00)
-OK                      alpsGroup => alpsGroup                      (proximity=1.00)
-OK                          event => event                          (proximity=1.00)
-KO                         tenant => ?
-OK                      tonyAward => geminiAward                    (proximity=1.00)
-OK                            sea => sea                            (proximity=1.00)
-OK                  currentMember => currentMember                  (proximity=1.00)
-OK              languageRegulator => languageRegulator              (proximity=1.00)
-OK             projectCoordinator => projectCoordinator             (proximity=1.00)
-OK                          radio => radio                          (proximity=1.00)
-OK               originalEndPoint => originalEndPoint               (proximity=1.00)
-OK                     zodiacSign => zodiacSign                     (proximity=1.00)
-OK                 militaryBranch => militaryBranch                 (proximity=1.00)
-OK            significantBuilding => significantBuilding            (proximity=1.00)
-OK                   usingCountry => usingCountry                   (proximity=1.00)
-OK                          style => boxerStyle                     (proximity=1.00)
-OK                    runningMate => runningMate                    (proximity=1.00)
-OK                  routeJunction => routeJunction                  (proximity=1.00)
-KO                        provost => ?
-OK                        project => project                        (proximity=1.00)
-OK                   familyMember => familyMember                   (proximity=1.00)
-OK                        vehicle => vehicle                        (proximity=1.00)
-OK            philosophicalSchool => philosophicalSchool            (proximity=1.00)
-OK                    aspectRatio => aspectRatio                    (proximity=1.00)
-OK                          world => world                          (proximity=1.00)
-OK             governmentMountain => governmentMountain             (proximity=1.00)
-KO                      subregion => ?
-OK               unitaryAuthority => unitaryAuthority               (proximity=1.00)
-OK                     cesarAward => geminiAward                    (proximity=1.00)
-OK                      bloodType => bloodType                      (proximity=1.00)
-OK                        follows => follows                        (proximity=1.00)
-OK                     termPeriod => termPeriod                     (proximity=1.00)
-OK                     mouthPlace => mouthPlace                     (proximity=1.00)
-OK                     leaderName => leaderName                     (proximity=1.00)
-OK                       conflict => conflict                       (proximity=1.00)
-OK                  musicComposer => musicComposer                  (proximity=1.00)
-OK                   prospectTeam => prospectTeam                   (proximity=1.00)
-KO                       hometown => ?
-OK                    isRouteStop => isRouteStop                    (proximity=1.00)
-OK         administrativeDistrict => administrativeDistrict         (proximity=1.00)
-OK            nationalAffiliation => nationalAffiliation            (proximity=1.00)
-KO                   demographics => ?
-OK           soccerLeaguePromoted => soccerLeaguePromoted           (proximity=1.00)
-OK                        closeTo => closeTo                        (proximity=1.00)
-OK                           uses => uses                           (proximity=1.00)
-OK                     population => population                     (proximity=1.00)
-OK                      successor => successor                      (proximity=1.00)
-OK           previousDemographics => previousDemographics           (proximity=1.00)
-OK                 rightTributary => rightTributary                 (proximity=1.00)
-OK    countryWithFirstSpaceflight => countryWithFirstSpaceflight    (proximity=1.00)
-KO                reffBourgmestre => ?
-OK                         league => league                         (proximity=1.00)
-OK                     producedBy => producedBy                     (proximity=1.00)
-OK                  touristicSite => touristicSite                  (proximity=1.00)
-KO                       frazioni => ?
-OK                       shipCrew => shipCrew                       (proximity=1.00)
-OK                         friend => friend                         (proximity=1.00)
-OK                           head => head                           (proximity=1.00)
-OK               commandStructure => commandStructure               (proximity=1.00)
-OK                  mainCharacter => mainCharacter                  (proximity=1.00)
-OK                    mastersWins => mastersWins                    (proximity=1.00)
-OK                    citizenship => citizenship                    (proximity=1.00)
-OK             routeStartLocation => routeStartLocation             (proximity=1.00)
-OK      olympicOathSwornByAthlete => olympicOathSwornByAthlete      (proximity=1.00)
-OK                    winsAtJapan => winsAtJapan                    (proximity=1.00)
-OK                           hand => hand                           (proximity=1.00)
-KO                         jockey => ?
-OK           wikiPageExternalLink => wikiPageExternalLink           (proximity=1.00)
-OK                      wholeArea => wholeArea                      (proximity=1.00)
-OK                    nextMission => nextMission                    (proximity=1.00)
-OK               calculationNeeds => calculationNeeds               (proximity=1.00)
-KO                       compiler => ?
-OK                         domain => domain                         (proximity=1.00)
-OK             numberOfClassrooms => numberOfClassrooms             (proximity=1.00)
-OK                         spouse => spouse                         (proximity=1.00)
-OK                         battle => battle                         (proximity=1.00)
-OK                 bodyDiscovered => bodyDiscovered                 (proximity=1.00)
-OK                         agency => agency                         (proximity=1.00)
-OK                     fuelSystem => fuelSystem                     (proximity=1.00)
-OK                 northWestPlace => northWestPlace                 (proximity=1.00)
-OK                  launchVehicle => launchVehicle                  (proximity=1.00)
-OK                 aircraftAttack => aircraftAttack                 (proximity=1.00)
-OK                    institution => institution                    (proximity=1.00)
-OK                           club => club                           (proximity=1.00)
-OK                  primeMinister => primeMinister                  (proximity=1.00)
-OK                 previousEntity => previousEntity                 (proximity=1.00)
-OK                       features => features                       (proximity=1.00)
-OK                        painter => painter                        (proximity=1.00)
-OK                   militaryUnit => militaryUnit                   (proximity=1.00)
-OK                      commander => commander                      (proximity=1.00)
-OK                 soundRecording => soundRecording                 (proximity=1.00)
-OK                      youthClub => youthClub                      (proximity=1.00)
-OK                  musicalArtist => musicalArtist                  (proximity=1.00)
-OK                      residence => residence                      (proximity=1.00)
-OK                  principalArea => principalArea                  (proximity=1.00)
-OK                  sisterCollege => sisterCollege                  (proximity=1.00)
-OK                       assembly => assembly                       (proximity=1.00)
-KO                           dean => ?
-KO                         tribus => ?
-OK                    oldProvince => oldProvince                    (proximity=1.00)
-OK                   mouthCountry => mouthCountry                   (proximity=1.00)
-OK                alpsMajorSector => alpsMajorSector                (proximity=1.00)
-OK                      colleague => colleague                      (proximity=1.00)
-OK                      leftChild => leftChild                      (proximity=1.00)
-OK                    managerClub => managerClub                    (proximity=1.00)
-OK               lastFamilyMember => lastFamilyMember               (proximity=1.00)
-OK             aircraftElectronic => aircraftElectronic             (proximity=1.00)
-OK                           bird => bird                           (proximity=1.00)
-KO                      rebuilder => ?
-OK                   restingPlace => restingPlace                   (proximity=1.00)
-OK                    largestCity => largestCity                    (proximity=1.00)
-OK                   secondLeader => secondLeader                   (proximity=1.00)
-OK                       twinTown => twinTown                       (proximity=1.00)
-OK                 fillingStation => fillingStation                 (proximity=1.00)
-OK                         flower => flower                         (proximity=1.00)
-OK                     bandMember => bandMember                     (proximity=1.00)
-OK                   influencedBy => influenced                     (proximity=1.00)
-OK                   winsInEurope => winsAtJapan                    (proximity=1.00)
-OK                        pgaWins => winsAtJapan                    (proximity=1.00)
-KO                         artery => ?
-OK            railwayRollingStock => railwayRollingStock            (proximity=1.00)
-OK                 governmentType => governmentType                 (proximity=1.00)
-OK     soccerTournamentMostSteady => soccerTournamentMostSteady     (proximity=1.00)
-OK      countryWithFirstAstronaut => countryWithFirstSpaceflight    (proximity=1.00)
-OK                 previousEditor => previousEditor                 (proximity=1.00)
-OK                  countryOrigin => countryOrigin                  (proximity=1.00)
-OK                    beltwayCity => city                           (proximity=1.00)
-OK             managementMountain => managementMountain             (proximity=1.00)
-OK             vicePrincipalLabel => vicePrincipalLabel             (proximity=1.00)
-OK       solventWithBadSolubility => solventWithBadSolubility       (proximity=1.00)
-KO                 nobelLaureates => ?
-KO                     commandant => ?
-OK                mergedIntoParty => mergedIntoParty                (proximity=1.00)
-OK                         lyrics => lyrics                         (proximity=1.00)
-OK                     countySeat => countySeat                     (proximity=1.00)
-OK                          award => geminiAward                    (proximity=1.00)
-OK                    ethnicGroup => ethnicGroup                    (proximity=1.00)
-OK              productionCompany => productionCompany              (proximity=1.00)
-OK                          movie => movie                          (proximity=1.00)
-OK               wikidataSplitIri => wikidataSplitIri               (proximity=1.00)
-OK              currentTeamMember => currentTeamMember              (proximity=1.00)
-OK                      winsAtLET => winsAtLET                      (proximity=1.00)
-OK                           crew => crew                           (proximity=1.00)
-KO                         rector => ?
-KO          localizationThumbnail => ?
-OK                     drainsFrom => drainsFrom                     (proximity=1.00)
-OK              governmentCountry => governmentCountry              (proximity=1.00)
-OK                      developer => developer                      (proximity=1.00)
-OK           winsAtProTournaments => winsAtProTournaments           (proximity=1.00)
-KO                    canonizedBy => ?
-OK                       provides => provides                       (proximity=1.00)
-OK                   highestState => highestState                   (proximity=1.00)
-OK                 lowestPosition => lowestPosition                 (proximity=1.00)
-OK                aircraftTrainer => aircraftTrainer                (proximity=1.00)
-OK                          river => river                          (proximity=1.00)
-OK                    notableWine => notableWine                    (proximity=1.00)
-OK              politicalMajority => politicalMajority              (proximity=1.00)
-OK                  administrator => administrator                  (proximity=1.00)
-OK                   locationCity => locationCity                   (proximity=1.00)
-OK                 southEastPlace => southEastPlace                 (proximity=1.00)
-OK                       employer => employer                       (proximity=1.00)
-OK                 hasInsidePlace => hasInsidePlace                 (proximity=1.00)
-OK        presidentGeneralCouncil => presidentGeneralCouncil        (proximity=1.00)
-KO                     ingredient => ?
-OK        aircraftHelicopterCargo => aircraftHelicopterCargo        (proximity=1.00)
-OK                     spacecraft => spacecraft                     (proximity=1.00)
-OK         municipalityAbsorbedBy => municipalityAbsorbedBy         (proximity=1.00)
-OK                previousMission => previousMission                (proximity=1.00)
-OK             managementPosition => managementPosition             (proximity=1.00)
-OK                  governingBody => governingBody                  (proximity=1.00)
-OK                polishFilmAward => polishFilmAward                (proximity=1.00)
-KO                      entourage => ?
-OK                      keyPerson => keyPerson                      (proximity=1.00)
-OK                lieutenancyArea => lieutenancyArea                (proximity=1.00)
-KO                     locomotive => ?
-OK                          voice => voice                          (proximity=1.00)
-OK               governmentRegion => governmentRegion               (proximity=1.00)
-OK             previousPopulation => previousPopulation             (proximity=1.00)
-KO                    connotation => ?
-OK                    lowestPoint => lowestPoint                    (proximity=1.00)
-OK                  currentLeague => currentLeague                  (proximity=1.00)
-OK                      youthWing => youthWing                      (proximity=1.00)
-OK           currentWorldChampion => currentWorldChampion           (proximity=1.00)
-OK                  careerStation => careerStation                  (proximity=1.00)
-OK             governmentPosition => governmentPosition             (proximity=1.00)
-OK                       composer => composer                       (proximity=1.00)
-OK                    openingFilm => openingFilm                    (proximity=1.00)
-OK                       training => training                       (proximity=1.00)
-KO                     innervates => ?
-OK  soccerTournamentClosingSeason => soccerTournamentClosingSeason  (proximity=1.00)
-KO                        builder => ?
-OK                   olympicGames => olympicGames                   (proximity=1.00)
-OK             assistantPrincipal => assistantPrincipal             (proximity=1.00)
-OK                   previousWork => previousWork                   (proximity=1.00)
-KO                      portrayer => ?
-OK humanDevelopmentIndexRankingCategory => humanDevelopmentIndexRankingCategory (proximity=1.00)
-KO                        regency => ?
-OK                    amateurTeam => amateurTeam                    (proximity=1.00)
-OK                       industry => industry                       (proximity=1.00)
-KO                        diploma => ?
-OK                          judge => judge                          (proximity=1.00)
-OK                           owns => owns                           (proximity=1.00)
-OK              poleDriverCountry => poleDriverCountry              (proximity=1.00)
-OK               mainFamilyBranch => mainFamilyBranch               (proximity=1.00)
-OK        hasAbsorbedMunicipality => municipalityAbsorbedBy         (proximity=1.00)
-OK                      associate => associate                      (proximity=1.00)
-OK                            dfE => dfE                            (proximity=1.00)
-OK                      debutTeam => debutTeam                      (proximity=1.00)
-OK                    musicalBand => musicalBand                    (proximity=1.00)
-OK    politicGovernmentDepartment => politicGovernmentDepartment    (proximity=1.00)
-OK                  mouthMountain => mouthMountain                  (proximity=1.00)
-OK                       linkedTo => linkedTo                       (proximity=1.00)
-OK                  highestRegion => highestRegion                  (proximity=1.00)
-OK                hasOutsidePlace => hasOutsidePlace                (proximity=1.00)
-OK                     southPlace => southPlace                     (proximity=1.00)
-OK  soccerTournamentOpeningSeason => soccerTournamentOpeningSeason  (proximity=1.00)
-OK                       spokenIn => spokenIn                       (proximity=1.00)
-OK                      variantOf => variantOf                      (proximity=1.00)
-OK                         fossil => fossil                         (proximity=1.00)
-OK                  stateOfOrigin => stateOfOrigin                  (proximity=1.00)
-OK                  aircraftRecon => aircraftBomber                 (proximity=1.00)
-OK                   provinceLink => provinceLink                   (proximity=1.00)
-OK                associateEditor => associateEditor                (proximity=1.00)
-OK                 managingEditor => managingEditor                 (proximity=1.00)
-OK          otherSportsExperience => otherSportsExperience          (proximity=1.00)
-OK                 currentPartner => currentPartner                 (proximity=1.00)
-OK                        country => country                        (proximity=1.00)
-OK                      westPlace => westPlace                      (proximity=1.00)
-KO  solventWithMediocreSolubility => ?
-OK                     usopenWins => winsAtJapan                    (proximity=1.00)
-KO                  subprefecture => ?
-OK           fastestDriverCountry => fastestDriverCountry           (proximity=1.00)
-OK           executiveHeadteacher => executiveHeadteacher           (proximity=1.00)
-KO                         dubber => ?
-OK                        nflTeam => ncaaTeam                       (proximity=1.00)
-OK                 personFunction => personFunction                 (proximity=1.00)
-OK                     deathPlace => deathPlace                     (proximity=1.00)
-OK                    nearestCity => city                           (proximity=1.00)
-OK                  mouthPosition => mouthPosition                  (proximity=1.00)
-OK             automobilePlatform => automobilePlatform             (proximity=1.00)
-OK                           fuel => fuel                           (proximity=1.00)
-OK                         leader => leader                         (proximity=1.00)
-OK    aircraftHelicopterTransport => aircraftHelicopterTransport    (proximity=1.00)
-OK               sovereignCountry => sovereignCountry               (proximity=1.00)
-OK                         damage => damage                         (proximity=1.00)
-KO                     discoverer => ?
-OK                       magazine => magazine                       (proximity=1.00)
-OK                    firstFlight => firstFlight                    (proximity=1.00)
-OK                  teachingStaff => teachingStaff                  (proximity=1.00)
-KO                    beatifiedBy => ?
-OK                    firstDriver => firstDriver                    (proximity=1.00)
-KO                 cinematography => ?
-OK                 localAuthority => localAuthority                 (proximity=1.00)
-OK               geolocDepartment => geolocDepartment               (proximity=1.00)
-OK                      oilSystem => oilSystem                      (proximity=1.00)
-OK                        partner => partner                        (proximity=1.00)
-OK           goldenRaspberryAward => goldenRaspberryAward           (proximity=1.00)
-OK          sourceConfluenceState => sourceConfluenceState          (proximity=1.00)
-OK           wikiPageWikiLinkText => wikiPageWikiLinkText           (proximity=1.00)
-OK       nationalOlympicCommittee => nationalOlympicCommittee       (proximity=1.00)
-OK                       satScore => satScore                       (proximity=1.00)
-OK                         season => season                         (proximity=1.00)
-OK                      headAlloy => head                           (proximity=1.00)
-OK                 northEastPlace => northEastPlace                 (proximity=1.00)
-OK                 computingMedia => computingMedia                 (proximity=1.00)
-OK                capitalDistrict => capitalDistrict                (proximity=1.00)
-OK                 followingEvent => followingEvent                 (proximity=1.00)
-OK          congressionalDistrict => congressionalDistrict          (proximity=1.00)
-KO                      detractor => ?
-KO                          seiyu => ?
-OK               winsAtChallenges => winsAtChallenges               (proximity=1.00)
-OK                  boxerCategory => boxerCategory                  (proximity=1.00)
-OK                        creator => creator                        (proximity=1.00)
-OK                  owningCompany => owningCompany                  (proximity=1.00)
-OK                    achievement => achievement                    (proximity=1.00)
-OK                       building => building                       (proximity=1.00)
-OK                        service => service                        (proximity=1.00)
-KO                         phylum => ?
-OK                          brand => brand                          (proximity=1.00)
-OK                          comic => comic                          (proximity=1.00)
-KO                          crest => ?
-OK                governmentPlace => governmentPlace                (proximity=1.00)
-OK                    coachedTeam => ncaaTeam                       (proximity=1.00)
-OK                        kingdom => kingdom                        (proximity=1.00)
-OK                 leaderFunction => leaderFunction                 (proximity=1.00)
-OK                  leagueManager => leagueManager                  (proximity=1.00)
-OK                      musicType => musicType                      (proximity=1.00)
-OK               wikiPageWikiLink => wikiPageWikiLink               (proximity=1.00)
-OK                    setDesigner => setDesigner                    (proximity=1.00)
-KO                         lounge => ?
-OK                        volumes => volumes                        (proximity=1.00)
-OK                  riverBranchOf => riverBranchOf                  (proximity=1.00)
-OK                        contest => contest                        (proximity=1.00)
-KO                     handedness => ?
-OK                       division => division                       (proximity=1.00)
-OK                      mythology => mythology                      (proximity=1.00)
-OK                     pastMember => pastMember                     (proximity=1.00)
-OK                      iftaAward => geminiAward                    (proximity=1.00)
-OK        associatedMusicalArtist => associatedMusicalArtist        (proximity=1.00)
-OK          soccerLeagueRelegated => soccerLeagueRelegated          (proximity=1.00)
-OK                     gaudiAward => geminiAward                    (proximity=1.00)
-OK                meetingBuilding => meetingBuilding                (proximity=1.00)
-OK                 lastAppearance => lastAppearance                 (proximity=1.00)
-KO                         patron => ?
-OK                      continent => continent                      (proximity=1.00)
-OK                         animal => animal                         (proximity=1.00)
-OK             nationalTournament => nationalTournament             (proximity=1.00)
-OK                      raceHorse => raceHorse                      (proximity=1.00)
-OK                highestPosition => highestPosition                (proximity=1.00)
-OK     soccerTournamentThisSeason => soccerTournamentThisSeason     (proximity=1.00)
-OK                      legalForm => legalForm                      (proximity=1.00)
-OK               secretaryGeneral => secretaryGeneral               (proximity=1.00)
-OK                      routeLine => routeLine                      (proximity=1.00)
-OK                  routePrevious => routePrevious                  (proximity=1.00)
-KO                     lieutenant => ?
-OK                    lowestState => lowestState                    (proximity=1.00)
-KO                    headteacher => ?
-OK                     superOrder => superOrder                     (proximity=1.00)
-OK                    currentTeam => currentTeam                    (proximity=1.00)
-OK                 sourcePosition => sourcePosition                 (proximity=1.00)
-KO                      thumbnail => ?
-OK                    meetingCity => meetingCity                    (proximity=1.00)
-OK                      debutWork => debutWork                      (proximity=1.00)
-OK      aircraftHelicopterUtility => aircraftHelicopterUtility      (proximity=1.00)
-OK                     coatOfArms => coatOfArms                     (proximity=1.00)
-OK                   headOfFamily => headOfFamily                   (proximity=1.00)
-OK                         museum => museum                         (proximity=1.00)
-OK                      emmyAward => geminiAward                    (proximity=1.00)
-KO                         inflow => ?
-OK                     secondTeam => secondTeam                     (proximity=1.00)
-OK                         county => county                         (proximity=1.00)
-OK                     startPoint => startPoint                     (proximity=1.00)
-OK              firstOlympicEvent => firstOlympicEvent              (proximity=1.00)
-KO                         depths => ?
-OK         championInSingleFemale => championInSingleFemale         (proximity=1.00)
-OK                locationCountry => locationCountry                (proximity=1.00)
-OK                  creatorOfDish => creatorOfDish                  (proximity=1.00)
-OK             significantProject => significantProject             (proximity=1.00)
-OK                        license => license                        (proximity=1.00)
-OK  aircraftHelicopterObservation => aircraftHelicopterObservation  (proximity=1.00)
-OK                          child => child                          (proximity=1.00)
-OK                        company => owningCompany                  (proximity=1.00)
-KO               intercommunality => ?
-OK                 thirdCommander => thirdCommander                 (proximity=1.00)
-KO             architectualBureau => ?
-KO                      almaMater => ?
-OK                     viceLeader => viceLeader                     (proximity=1.00)
-OK                  delegateMayor => delegateMayor                  (proximity=1.00)
-OK              stateOfOriginTeam => stateOfOriginTeam              (proximity=1.00)
-OK                      draftTeam => lchfDraftTeam                  (proximity=1.00)
-OK                     department => geolocDepartment               (proximity=1.00)
-OK                       isPartOf => isPartOf                       (proximity=1.00)
-OK                    oldDistrict => oldDistrict                    (proximity=1.00)
-OK                        cluster => cluster                        (proximity=1.00)
-OK                  addressInRoad => addressInRoad                  (proximity=1.00)
-OK                         rocket => rocket                         (proximity=1.00)
-KO                     lunarRover => ?
-OK                      homeArena => homeArena                      (proximity=1.00)
-OK                    formerCoach => formerCoach                    (proximity=1.00)
-KO                 alpsSupergroup => ?
-KO            europeanAffiliation => ?
-OK                     lastFlight => lastFlight                     (proximity=1.00)
-OK                 rocketFunction => rocketFunction                 (proximity=1.00)
-OK            presentMunicipality => presentMunicipality            (proximity=1.00)
-KO                         boiler => ?
-KO                          saint => ?
-OK                operatingSystem => operatingSystem                (proximity=1.00)
-KO                       narrator => ?
-OK            programmingLanguage => programmingLanguage            (proximity=1.00)
-OK                   secondDriver => secondDriver                   (proximity=1.00)
-OK                  placeOfBurial => placeOfBurial                  (proximity=1.00)
-OK              currentProduction => currentProduction              (proximity=1.00)
-OK                         editor => editor                         (proximity=1.00)
-KO                    headquarter => ?
-OK              nonFictionSubject => nonFictionSubject              (proximity=1.00)
-OK                        version => version                        (proximity=1.00)
-OK                worldTournament => worldTournament                (proximity=1.00)
-OK                    roleInEvent => roleInEvent                    (proximity=1.00)
-OK grossDomesticProductPurchasingPowerParityPerCapita => grossDomesticProductPurchasingPowerParityPerCapita (proximity=1.00)
-OK           connectsReferencedTo => connectsReferencedTo           (proximity=1.00)
-OK              significantDesign => significantDesign              (proximity=1.00)
-OK                 religiousOrder => religiousOrder                 (proximity=1.00)
-OK              cultivatedVariety => cultivatedVariety              (proximity=1.00)
-OK                     branchFrom => branchFrom                     (proximity=1.00)
-OK                          drama => drama                          (proximity=1.00)
-OK             settlementAttached => settlementAttached             (proximity=1.00)
-OK                   militaryRank => militaryRank                   (proximity=1.00)
-OK                   playerInTeam => playerInTeam                   (proximity=1.00)
-KO                       garrison => ?
-OK                firstDriverTeam => firstDriverTeam                (proximity=1.00)
-OK                        trainer => trainer                        (proximity=1.00)
-OK                          coach => coach                          (proximity=1.00)
-KO                     derivative => ?
-KO            metropolitanBorough => ?
-OK                  premierePlace => premierePlace                  (proximity=1.00)
-KO                 arrondissement => ?
-OK                academicAdvisor => academicAdvisor                (proximity=1.00)
-OK              summerAppearances => summerAppearances              (proximity=1.00)
-OK                          sport => sport                          (proximity=1.00)
-OK                          genus => genus                          (proximity=1.00)
-OK                  stateDelegate => state                          (proximity=1.00)
-OK                 splitFromParty => splitFromParty                 (proximity=1.00)
-OK                       engineer => engineer                       (proximity=1.00)
-OK                officerInCharge => officerInCharge                (proximity=1.00)
-OK                     raceResult => raceResult                     (proximity=1.00)
-OK                          ratio => ratio                          (proximity=1.00)
-OK                     winsAtAlpg => winsAtJapan                    (proximity=1.00)
-OK                       playRole => playRole                       (proximity=1.00)
-OK                          enemy => enemy                          (proximity=1.00)
-OK                  otherFunction => otherFunction                  (proximity=1.00)
-OK                 subsequentWork => subsequentWork                 (proximity=1.00)
-OK               mergedSettlement => mergedSettlement               (proximity=1.00)
-OK               associatedRocket => associatedRocket               (proximity=1.00)
-OK                  sourceCountry => sourceConfluenceCountry        (proximity=1.00)
-KO      agglomerationDemographics => ?
-OK                   sourceRegion => sourceRegion                   (proximity=1.00)
-OK                  otherFuelType => otherFuelType                  (proximity=1.00)
-OK                        climate => climate                        (proximity=1.00)
-OK                   winsAtMajors => winsAtMajors                   (proximity=1.00)
-OK                        related => related                        (proximity=1.00)
-KO                            ceo => ?
-OK               otherAppearances => otherAppearances               (proximity=1.00)
-OK       presidentRegionalCouncil => presidentRegionalCouncil       (proximity=1.00)
-OK                       subOrder => subOrder                       (proximity=1.00)
-OK                      education => education                      (proximity=1.00)
-OK                    closingFilm => closingFilm                    (proximity=1.00)
-OK          championInMixedDouble => championInMixedDouble          (proximity=1.00)
-OK                     northPlace => northPlace                     (proximity=1.00)
-OK                     government => government                     (proximity=1.00)
-OK              largestSettlement => largestSettlement              (proximity=1.00)
-OK                  associatedAct => associatedAct                  (proximity=1.00)
-OK                   alpsMainPart => alpsMainPart                   (proximity=1.00)
-OK                       language => language                       (proximity=1.00)
-OK                          board => board                          (proximity=1.00)
-OK                 southWestPlace => southWestPlace                 (proximity=1.00)
-OK                         ground => ground                         (proximity=1.00)
-OK       sourceConfluencePosition => sourcePosition                 (proximity=1.00)
-OK               lastLaunchRocket => lastLaunchRocket               (proximity=1.00)
-OK              fastestDriverTeam => fastestDriverTeam              (proximity=1.00)
-KO                      custodian => ?
-OK               foresterDistrict => foresterDistrict               (proximity=1.00)
-OK                          party => party                          (proximity=1.00)
-OK                     otherParty => otherParty                     (proximity=1.00)
-KO                  choreographer => ?
-OK                     crewMember => crewMember                     (proximity=1.00)
-OK                 jointCommunity => jointCommunity                 (proximity=1.00)
-OK                        capital => capital                        (proximity=1.00)
-OK    isPartOfAnatomicalStructure => isPartOfAnatomicalStructure    (proximity=1.00)
-KO                        deanery => ?
-OK                 sourceDistrict => sourceDistrict                 (proximity=1.00)
-OK                      presenter => presenter                      (proximity=1.00)
-OK                         grades => grades                         (proximity=1.00)
-OK                    recordLabel => recordLabel                    (proximity=1.00)
-KO                       homeport => ?
-OK                   notSolubleIn => notSolubleIn                   (proximity=1.00)
-KO                      coemperor => ?
-OK                  routeActivity => routeActivity                  (proximity=1.00)
-OK                      territory => territory                      (proximity=1.00)
-OK                      terytCode => terytCode                      (proximity=1.00)
-OK                educationSystem => educationSystem                (proximity=1.00)
-OK                   recentWinner => recentWinner                   (proximity=1.00)
-OK                    majorShrine => majorShrine                    (proximity=1.00)
-OK                      mainOrgan => mainOrgan                      (proximity=1.00)
-OK                          sales => sales                          (proximity=1.00)
-OK                subdivisionName => subdivisionName                (proximity=1.00)
-OK                     recordedIn => recordedIn                     (proximity=1.00)
-OK                   areaOfSearch => areaOfSearch                   (proximity=1.00)
-OK              nationalSelection => nationalSelection              (proximity=1.00)
-OK                 specialEffects => specialEffects                 (proximity=1.00)
-OK                     winsAtLAGT => winsAtLAGT                     (proximity=1.00)
-OK                     riverMouth => riverMouth                     (proximity=1.00)
-OK             parentOrganisation => parentOrganisation             (proximity=1.00)
-KO                    patronSaint => ?
-OK                     resolution => resolution                     (proximity=1.00)
-OK               officialLanguage => officialLanguage               (proximity=1.00)
-OK                         supply => supply                         (proximity=1.00)
-OK                          order => order                          (proximity=1.00)
-OK                    thirdDriver => thirdDriver                    (proximity=1.00)
-KO                        orogeny => ?
-OK                          house => house                          (proximity=1.00)
-OK                        lastWin => lastWin                        (proximity=1.00)
-OK                          rival => rival                          (proximity=1.00)
-OK                         artist => artist                         (proximity=1.00)
-KO                   denomination => ?
-KO                      grandsire => ?
-OK                      promotion => promotion                      (proximity=1.00)
-OK   soccerTournamentLastChampion => soccerTournamentLastChampion   (proximity=1.00)
-KO                         wilaya => ?
-OK                     rightChild => rightChild                     (proximity=1.00)
-OK                        manager => manager                        (proximity=1.00)
-OK             adjacentSettlement => adjacentSettlement             (proximity=1.00)
-OK                      selection => selection                      (proximity=1.00)
-OK                       operator => operator                       (proximity=1.00)
-OK                         father => father                         (proximity=1.00)
-OK          clubsRecordGoalscorer => clubsRecordGoalscorer          (proximity=1.00)
-OK                   juniorSeason => juniorSeason                   (proximity=1.00)
-OK                         origin => origin                         (proximity=1.00)
-OK                    riverBranch => riverBranchOf                  (proximity=1.00)
-OK                  associateStar => associateStar                  (proximity=1.00)
-OK                     formerTeam => formerTeam                     (proximity=1.00)
-OK         winsAtOtherTournaments => winsAtOtherTournaments         (proximity=1.00)
-OK                           race => race                           (proximity=1.00)
-KO                      precursor => ?
-OK               regionalLanguage => regionalLanguage               (proximity=1.00)
-OK                        silCode => terytCode                      (proximity=1.00)
-OK                    councilArea => councilArea                    (proximity=1.00)
-OK                      publisher => publisher                      (proximity=1.00)
-OK                     winsAtLPGA => winsAtJLPGA                    (proximity=1.00)
-OK                         colour => colour                         (proximity=1.00)
-KO                          daira => ?
-OK                      alongside => alongside                      (proximity=1.00)
-OK countryWithFirstSatelliteLaunched => countryWithFirstSatelliteLaunched (proximity=1.00)
-OK                  highwaySystem => highwaySystem                  (proximity=1.00)
-OK                managementPlace => managementPlace                (proximity=1.00)
-OK                       director => director                       (proximity=1.00)
-OK               televisionSeries => televisionSeries               (proximity=1.00)
-OK               creativeDirector => creativeDirector               (proximity=1.00)
-OK                      winsAtPGA => winsAtPGA                      (proximity=1.00)
-KO                 superintendent => ?
-OK                   wineProduced => wineProduced                   (proximity=1.00)
-OK                deFactoLanguage => deFactoLanguage                (proximity=1.00)
-OK              computingPlatform => computingPlatform              (proximity=1.00)
-OK                     chancellor => chancellor                     (proximity=1.00)
-KO                          taxon => ?
-OK        europeanParliamentGroup => europeanParliamentGroup        (proximity=1.00)
-OK                       nrhpType => typeOfElectrification          (proximity=1.00)
-KO                    subdivision => ?
-OK                     management => management                     (proximity=1.00)
-OK                       produces => produces                       (proximity=1.00)
-OK                      routeNext => routeNext                      (proximity=1.00)
-OK                         hybrid => hybrid                         (proximity=1.00)
-KO                            cpu => ?
-KO                    bourgmestre => ?
-OK                  musicSubgenre => musicSubgenre                  (proximity=1.00)
-OK                     university => university                     (proximity=1.00)
-OK                      nextEvent => nextEvent                      (proximity=1.00)
-OK            distributingCompany => owningCompany                  (proximity=1.00)
-KO                       chaplain => ?
-OK                       leadTeam => leadTeam                       (proximity=1.00)
-OK                 alpsSubsection => alpsSubsection                 (proximity=1.00)
-OK                       endReign => endReign                       (proximity=1.00)
-OK                 collectionSize => collectionSize                 (proximity=1.00)
-OK                 boilerPressure => boilerPressure                 (proximity=1.00)
-OK                         alumni => alumni                         (proximity=1.00)
-OK                  religiousHead => religiousHead                  (proximity=1.00)
-OK                    nationality => nationality                    (proximity=1.00)
-OK          waterwayThroughTunnel => waterwayThroughTunnel          (proximity=1.00)
-OK                           team => ncaaTeam                       (proximity=1.00)
-OK              aircraftTransport => aircraftTransport              (proximity=1.00)
-OK                    systemOfLaw => systemOfLaw                    (proximity=1.00)
-OK             parentMountainPeak => parentMountainPeak             (proximity=1.00)
-OK                  filmFareAward => filmFareAward                  (proximity=1.00)
-OK               ceremonialCounty => county                         (proximity=1.00)
-OK               goldenGlobeAward => goldenGlobeAward               (proximity=1.00)
-KO                        usurper => ?
-KO                          wagon => ?
-KO                       binomial => ?
-OK                      principal => principal                      (proximity=1.00)
-OK               competitionTitle => competitionTitle               (proximity=1.00)
-OK                         person => person                         (proximity=1.00)
-OK            winsAtChampionships => winsAtChampionships            (proximity=1.00)
-OK                  vicePresident => vicePresident                  (proximity=1.00)
-OK             projectParticipant => projectParticipant             (proximity=1.00)
-OK                politicalLeader => politicalLeader                (proximity=1.00)
-OK         sourceConfluenceRegion => sourceRegion                   (proximity=1.00)
-OK             sportGoverningBody => sportGoverningBody             (proximity=1.00)
-OK                       province => province                       (proximity=1.00)
-OK                       routeEnd => routeEnd                       (proximity=1.00)
-OK                highestMountain => highestMountain                (proximity=1.00)
-OK               notableCommander => notableCommander               (proximity=1.00)
-OK               officialOpenedBy => officialOpenedBy               (proximity=1.00)
-OK                     profession => profession                     (proximity=1.00)
-OK                regionalCouncil => regionalCouncil                (proximity=1.00)
-OK                       alliance => alliance                       (proximity=1.00)
-OK                 generalManager => generalManager                 (proximity=1.00)
-OK                   cyclistGenre => genre                          (proximity=1.00)
-OK                    coverArtist => coverArtist                    (proximity=1.00)
-OK                  broadcastArea => broadcastArea                  (proximity=1.00)
-OK                          media => media                          (proximity=1.00)
-OK               heritageRegister => heritageRegister               (proximity=1.00)
-OK                releaseLocation => releaseLocation                (proximity=1.00)
-OK                         region => region                         (proximity=1.00)
-OK               formerBandMember => formerBandMember               (proximity=1.00)
-OK                      goyaAward => geminiAward                    (proximity=1.00)
-OK                     routeStart => routeStart                     (proximity=1.00)
-OK                      ethnicity => ethnicity                      (proximity=1.00)
-OK                      winsAtAus => winsAtJapan                    (proximity=1.00)
-OK                       currency => currency                       (proximity=1.00)
-OK                doctoralStudent => student                        (proximity=1.00)
-OK                populationPlace => populationPlace                (proximity=1.00)
-OK   associationOfLocalGovernment => associationOfLocalGovernment   (proximity=1.00)
-OK              managementCountry => managementCountry              (proximity=1.00)
-KO                   reigningPope => ?
-KO                       medalist => ?
-KO                    distributor => ?
-OK                     discipline => discipline                     (proximity=1.00)
-OK                        picture => picture                        (proximity=1.00)
-OK                     contractor => contractor                     (proximity=1.00)
-OK                capitalPosition => capitalPosition                (proximity=1.00)
-KO                  constellation => ?
-OK                       category => boxerCategory                  (proximity=1.00)
-OK                       approach => approach                       (proximity=1.00)
-OK                   apcPresident => president                      (proximity=1.00)
-KO                        breeder => ?
-KO                         billed => ?
-OK                      artPatron => artPatron                      (proximity=1.00)
-OK               structuralSystem => structuralSystem               (proximity=1.00)
-OK                        basedOn => basedOn                        (proximity=1.00)
-OK                sisterNewspaper => sisterNewspaper                (proximity=1.00)
-OK                    sourceState => sourceConfluenceState          (proximity=1.00)
-KO                      prefaceBy => ?
-OK                     winsAtAsia => winsAtJapan                    (proximity=1.00)
-OK                         skills => skills                         (proximity=1.00)
-OK                     comparable => comparable                     (proximity=1.00)
-OK                     baftaAward => geminiAward                    (proximity=1.00)
-OK                 statisticLabel => distributingLabel              (proximity=1.00)
-OK               routeEndLocation => routeEndLocation               (proximity=1.00)
-OK                       position => position                       (proximity=1.00)
-OK                      musicBand => musicBand                      (proximity=1.00)
-OK                 languageFamily => languageFamily                 (proximity=1.00)
-OK                       opponent => opponent                       (proximity=1.00)
-OK              vicePrimeMinister => vicePrimeMinister              (proximity=1.00)
-OK      solventWithGoodSolubility => solventWithGoodSolubility      (proximity=1.00)
-OK                       fundedBy => fundedBy                       (proximity=1.00)
-OK                          class => class                          (proximity=1.00)
-OK                 landingVehicle => landingVehicle                 (proximity=1.00)
-OK                       knownFor => knownFor                       (proximity=1.00)
-OK                     hubAirport => hubAirport                     (proximity=1.00)
-OK                          album => album                          (proximity=1.00)
-OK                    britishWins => winsAtJapan                    (proximity=1.00)
-OK                    teamCoached => ncaaTeam                       (proximity=1.00)
-OK       aircraftHelicopterAttack => aircraftHelicopterAttack       (proximity=1.00)
-OK                           tree => tree                           (proximity=1.00)
-OK            secondDriverCountry => secondDriverCountry            (proximity=1.00)
-OK                    twinCountry => twinCountry                    (proximity=1.00)
-OK                     hasChannel => channel                        (proximity=1.00)
-OK                          place => restingPlace                   (proximity=1.00)
-OK               solicitorGeneral => solicitorGeneral               (proximity=1.00)
-OK                 sportSpecialty => sportSpecialty                 (proximity=1.00)
-OK                            era => era                            (proximity=1.00)
-OK                     gameArtist => gameArtist                     (proximity=1.00)
-OK                      equipment => equipment                      (proximity=1.00)
-OK                       spurType => typeOfElectrification          (proximity=1.00)
-OK                    grammyAward => geminiAward                    (proximity=1.00)
-OK             academicDiscipline => academicDiscipline             (proximity=1.00)
-KO                        booster => ?
-OK                     nextEntity => nextEntity                     (proximity=1.00)
-OK                          nerve => nerve                          (proximity=1.00)
-OK                    firstWinner => firstWinner                    (proximity=1.00)
-KO                        commune => ?
-OK                          shape => shape                          (proximity=1.00)
-KO                        outflow => ?
-OK                         weapon => weapon                         (proximity=1.00)
-KO                      cousurper => ?
-OK             currentTeamManager => currentTeamManager             (proximity=1.00)
-OK                       movement => movement                       (proximity=1.00)
-OK                       supplies => supplies                       (proximity=1.00)
-OK                     startReign => startReign                     (proximity=1.00)
-OK                     namedAfter => namedAfter                     (proximity=1.00)
-KO                           heir => ?
-OK                   highestPoint => highestPoint                   (proximity=1.00)
-OK                       champion => champion                       (proximity=1.00)
-OK                      launchPad => launchPad                      (proximity=1.00)
-OK                     gameEngine => gameEngine                     (proximity=1.00)
-OK                      bodyStyle => bodyStyle                      (proximity=1.00)
-OK                 firstPublisher => firstPublisher                 (proximity=1.00)
-OK                orthologousGene => orthologousGene                (proximity=1.00)
-OK             organisationMember => organisationMember             (proximity=1.00)
-KO                        sibling => ?
-OK                          owner => owner                          (proximity=1.00)
-OK                        stadium => stadium                        (proximity=1.00)
-OK                   federalState => federalState                   (proximity=1.00)
-OK                     inCemetery => cemetery                       (proximity=1.00)
-OK                     hasVariant => variantOf                      (proximity=1.00)
-OK                        proTeam => proTeam                        (proximity=1.00)
-OK               firstPopularVote => firstPopularVote               (proximity=1.00)
-OK                    competition => competition                    (proximity=1.00)
-OK               astrologicalSign => zodiacSign                     (proximity=1.00)
-OK           restingPlacePosition => restingPlacePosition           (proximity=1.00)
-OK                      tradeMark => tradeMark                      (proximity=1.00)
-OK                      firstRace => firstRace                      (proximity=1.00)
-OK              binomialAuthority => unitaryAuthority               (proximity=1.00)
-OK                        editing => editing                        (proximity=1.00)
-OK                      existence => existence                      (proximity=1.00)
-KO                       regentOf => ?
-OK         committeeInLegislature => committeeInLegislature         (proximity=1.00)
-OK           championInSingleMale => championInSingleMale           (proximity=1.00)
-OK                           part => isPartOf                       (proximity=1.00)
-OK                         layout => layout                         (proximity=1.00)
-OK                           road => road                           (proximity=1.00)
-OK                      coachClub => coachClub                      (proximity=1.00)
-OK        neighboringMunicipality => neighboringMunicipality        (proximity=1.00)
-KO                      taoiseach => ?
-OK                       firstWin => firstWin                       (proximity=1.00)
-OK                  parentCompany => parentCompany                  (proximity=1.00)
-OK                     chiefPlace => chiefPlace                     (proximity=1.00)
-OK              nationalFilmAward => nationalFilmAward              (proximity=1.00)
-OK                       actScore => actScore                       (proximity=1.00)
-OK                 oldTeamCoached => oldTeamCoached                 (proximity=1.00)
-OK                          mayor => delegateMayor                  (proximity=1.00)
-OK                   manufacturer => manufacturer                   (proximity=1.00)
-OK                   academyAward => academyAward                   (proximity=1.00)
-OK                     launchSite => launchSite                     (proximity=1.00)
-OK                 computingInput => computingInput                 (proximity=1.00)
-OK                  managerSeason => managerSeason                  (proximity=1.00)
-OK                 associatedBand => associatedBand                 (proximity=1.00)
-OK                        dynasty => dynasty                        (proximity=1.00)
-OK            athleticsDiscipline => athleticsDiscipline            (proximity=1.00)
-OK                       religion => religion                       (proximity=1.00)
-OK        agglomerationPopulation => population                     (proximity=1.00)
-KO                          biome => ?
-OK                naacpImageAward => naacpImageAward                (proximity=1.00)
-OK                aircraftFighter => aircraftFighter                (proximity=1.00)
-OK         screenActorsGuildAward => screenActorsGuildAward         (proximity=1.00)
-OK                           type => typeOfElectrification          (proximity=1.00)
-OK                      birthSign => birthSign                      (proximity=1.00)
-OK              otherFamilyBranch => otherFamilyBranch              (proximity=1.00)
-OK                         island => island                         (proximity=1.00)
-OK                       hasInput => hasInput                       (proximity=1.00)
-OK      countryWithFirstSatellite => countryWithFirstSatellite      (proximity=1.00)
-OK                        musicBy => musicSubgenre                  (proximity=1.00)
-OK                   khlDraftTeam => lchfDraftTeam                  (proximity=1.00)
-OK                       governor => governor                       (proximity=1.00)
-OK           championInDoubleMale => championInDoubleMale           (proximity=1.00)
-OK                      mediaItem => mediaItem                      (proximity=1.00)
-OK                         victim => victim                         (proximity=1.00)
-OK                   goldMedalist => goldMedalist                   (proximity=1.00)
-OK                      incumbent => incumbent                      (proximity=1.00)
-OK                       district => foresterDistrict               (proximity=1.00)
-KO             olympicOathSwornBy => ?
-OK                        crosses => crosses                        (proximity=1.00)
-KO                     translator => ?
-OK                     occupation => occupation                     (proximity=1.00)
-OK                     birthPlace => birthPlace                     (proximity=1.00)
-OK                   municipality => municipalityAbsorbedBy         (proximity=1.00)
-KO                        webcast => ?
-OK          wikiPageDisambiguates => wikiPageDisambiguates          (proximity=1.00)
-OK       sourceConfluenceMountain => sourceConfluenceMountain       (proximity=1.00)
-OK         administrativeHeadCity => administrativeHeadCity         (proximity=1.00)
-OK                      subFamily => subFamily                      (proximity=1.00)
-OK    aircraftHelicopterMultirole => aircraftHelicopterMultirole    (proximity=1.00)
-OK                    organSystem => organSystem                    (proximity=1.00)
-OK                 lowestMountain => lowestMountain                 (proximity=1.00)
-OK                       activity => activity                       (proximity=1.00)
-OK                     mouthState => mouthState                     (proximity=1.00)
-OK                          novel => novel                          (proximity=1.00)
-OK                   geneLocation => geneLocation                   (proximity=1.00)
-OK                  retiredRocket => retiredRocket                  (proximity=1.00)
-KO                        caterer => ?
-OK             aircraftHelicopter => aircraftHelicopterMultirole    (proximity=1.00)
-OK                    livingPlace => livingPlace                    (proximity=1.00)
-OK                           chef => chef                           (proximity=1.00)
-OK             soccerLeagueSeason => soccerLeagueSeason             (proximity=1.00)
-OK      soccerTournamentTopScorer => soccerTournamentTopScorer      (proximity=1.00)
-KO                          origo => ?
-KO                     federation => ?
-OK        giniCoefficientCategory => boxerCategory                  (proximity=1.00)
-OK                   maintainedBy => maintainedBy                   (proximity=1.00)
-OK                 sourceMountain => sourceConfluenceMountain       (proximity=1.00)
-OK          horseRidingDiscipline => horseRidingDiscipline          (proximity=1.00)
-OK             memberOfParliament => memberOfParliament             (proximity=1.00)
-OK              winterAppearances => winterAppearances              (proximity=1.00)
-OK           administrativeCenter => administrativeCenter           (proximity=1.00)
-KO                landeshauptmann => ?
-KO                        curator => ?
-OK                         family => family                         (proximity=1.00)
-OK              executiveProducer => executiveProducer              (proximity=1.00)
-OK                    meetingRoad => meetingRoad                    (proximity=1.00)
-OK                sportDiscipline => sportDiscipline                (proximity=1.00)
-OK                    winsAtKLPGA => winsAtKLPGA                    (proximity=1.00)
-OK                    filmVersion => filmVersion                    (proximity=1.00)
-OK                   highestPlace => highestPlace                   (proximity=1.00)
-OK                 canonizedPlace => restingPlace                   (proximity=1.00)
-OK                     settlement => settlement                     (proximity=1.00)
-OK soccerTournamentMostSuccesfull => soccerTournamentMostSuccesfull (proximity=1.00)
-OK              sexualOrientation => sexualOrientation              (proximity=1.00)
-OK       internationalAffiliation => internationalAffiliation       (proximity=1.00)
-OK                         campus => campus                         (proximity=1.00)
-OK                     engineType => engineType                     (proximity=1.00)
-OK                  mouthDistrict => mouthDistrict                  (proximity=1.00)
-KO                        prefect => ?
-OK                    sourcePlace => sourcePlace                    (proximity=1.00)
-OK                governorGeneral => governorGeneral                (proximity=1.00)
-OK               formerHighschool => formerChoreographer            (proximity=1.00)
-OK          continentalTournament => continentalTournament          (proximity=1.00)
-KO                         canton => ?
-OK    politicalPartyInLegislature => politicalPartyInLegislature    (proximity=1.00)
-OK                     arielAward => geminiAward                    (proximity=1.00)
-OK                   whaDraftTeam => lchfDraftTeam                  (proximity=1.00)
-OK              firstAscentPerson => firstAscentPerson              (proximity=1.00)
-OK                     mainDomain => mainDomain                     (proximity=1.00)
-OK              secondPopularVote => secondPopularVote              (proximity=1.00)
-OK                   nationalTeam => nationalTeam                   (proximity=1.00)
-OK            coExecutiveProducer => executiveProducer              (proximity=1.00)
-OK                          chain => chain                          (proximity=1.00)
-OK             servingRailwayLine => servingRailwayLine             (proximity=1.00)
-OK                    currentCity => currentCity                    (proximity=1.00)
-OK                      architect => architect                      (proximity=1.00)
-OK                     flagBearer => flagBearer                     (proximity=1.00)
-OK                   capitalPlace => capitalPlace                   (proximity=1.00)
-OK                         deputy => deputy                         (proximity=1.00)
-OK       isPartOfMilitaryConflict => isPartOfMilitaryConflict       (proximity=1.00)
-OK                    schoolBoard => schoolBoard                    (proximity=1.00)
-OK                      component => component                      (proximity=1.00)
-OK               broadcastNetwork => broadcastNetwork               (proximity=1.00)
-OK                    destination => destination                    (proximity=1.00)
-OK                    teamManager => teamManager                    (proximity=1.00)
-KO                      appointer => ?
-OK                    firstLeader => firstLeader                    (proximity=1.00)
-KO                    chairperson => ?
-OK               championInDouble => championInDouble               (proximity=1.00)
-OK                    biggestCity => biggestCity                    (proximity=1.00)
-KO                           sire => ?
-OK                  leftTributary => leftTributary                  (proximity=1.00)
-OK                       autonomy => autonomy                       (proximity=1.00)
-OK                  mostDownPoint => mostDownPoint                  (proximity=1.00)
-OK                           film => film                           (proximity=1.00)
-OK                goldenCalfAward => goldenRaspberryAward           (proximity=1.00)
-KO                        trustee => ?
-OK                    superFamily => superFamily                    (proximity=1.00)
-OK                    galleryItem => galleryItem                    (proximity=1.00)
-OK                capitalMountain => capitalMountain                (proximity=1.00)
-KO                     decoration => ?
-OK          stellarClassification => stellarClassification          (proximity=1.00)
-OK                   growingGrape => growingGrape                   (proximity=1.00)
-OK                     instrument => instrument                     (proximity=1.00)
-OK                 placeOfWorship => placeOfWorship                 (proximity=1.00)
-OK              actingHeadteacher => actingHeadteacher              (proximity=1.00)
-OK                       millType => millType                       (proximity=1.00)
-OK                   peabodyAward => geminiAward                    (proximity=1.00)
-OK                        college => college                        (proximity=1.00)
-KO                    archipelago => ?
-OK                primaryFuelType => primaryFuelType                (proximity=1.00)
-OK                  locatedInArea => locatedInArea                  (proximity=1.00)
-OK           constructionMaterial => constructionMaterial           (proximity=1.00)
-OK                   buildingType => buildingType                   (proximity=1.00)
-OK                  mountainRange => mountainRange                  (proximity=1.00)
-OK                      eastPlace => eastPlace                      (proximity=1.00)
-OK                costumeDesigner => costumeDesigner                (proximity=1.00)
-OK             religiousHeadLabel => religiousHeadLabel             (proximity=1.00)
-KO                     footedness => ?
-OK                     deathCause => deathCause                     (proximity=1.00)
-OK                         patent => patent                         (proximity=1.00)
-OK                    predecessor => predecessor                    (proximity=1.00)
-OK                      showJudge => showJudge                      (proximity=1.00)
-OK                       timeZone => timeZone                       (proximity=1.00)
-OK                      performer => performer                      (proximity=1.00)
-KO                        borough => ?
-OK              agglomerationArea => lieutenancyArea                (proximity=1.00)
-KO                     highschool => ?
-OK                      winsAtSun => winsAtSun                      (proximity=1.00)
-KO                  hasAnnotation => ?
-OK                         period => period                         (proximity=1.00)
-OK                    notableIdea => notableIdea                    (proximity=1.00)
-OK                            uRN => uRN                            (proximity=1.00)
-OK                stylisticOrigin => origin                         (proximity=1.00)
-KO                   spacestation => ?
-OK                  coolingSystem => coolingSystem                  (proximity=1.00)
-KO                         pastor => ?
-OK                       simcCode => terytCode                      (proximity=1.00)
-OK                  designCompany => designCompany                  (proximity=1.00)
-OK                         engine => engine                         (proximity=1.00)
-OK                       afiAward => geminiAward                    (proximity=1.00)
-OK                  announcedFrom => announcedFrom                  (proximity=1.00)
-OK                       producer => producer                       (proximity=1.00)
-OK         railwayLineUsingTunnel => railwayLineUsingTunnel         (proximity=1.00)
-OK                        created => created                        (proximity=1.00)
-OK                   jureLanguage => language                       (proximity=1.00)
-OK                 prospectLeague => prospectLeague                 (proximity=1.00)
-OK                 beatifiedPlace => restingPlace                   (proximity=1.00)
-OK                        nominee => nominee                        (proximity=1.00)
-OK        olympicOathSwornByJudge => judge                          (proximity=1.00)
-OK                       chairman => chairman                       (proximity=1.00)
-OK           linguisticsTradition => linguisticsTradition           (proximity=1.00)
-OK                        product => product                        (proximity=1.00)
-OK            americanComedyAward => americanComedyAward            (proximity=1.00)
-OK                      authority => unitaryAuthority               (proximity=1.00)
-KO                       drainsTo => ?
-OK          sourceConfluencePlace => sourcePlace                    (proximity=1.00)
-OK                         parish => parish                         (proximity=1.00)
-OK                         gender => gender                         (proximity=1.00)
-OK                       headChef => headChef                       (proximity=1.00)
-OK                  relatedPlaces => relatedPlaces                  (proximity=1.00)
-KO                        classis => ?
-OK         previousInfrastructure => previousInfrastructure         (proximity=1.00)
-OK                   schoolPatron => school                         (proximity=1.00)
-OK                     coProducer => producer                       (proximity=1.00)
-OK                         tvShow => show                           (proximity=1.00)
-OK             isPartOfWineRegion => isPartOfWineRegion             (proximity=1.00)
-OK                       subGenus => subGenus                       (proximity=1.00)
-Nb vectors found: 951 / 1105
+#! Version: 24/05/2019_15:48:13
+# This file has been generated with data/ontologies/dbpedia_2016-10.owl.
+
+#Found? OP name                        Typo word                      Proximity 
+
+OK      developer                      product                        0.52
+OK      parent                         callsUpon                      0.47
+OK      rightTributary                 takesPartIn                    0.57
+OK      climate                        research                       0.50
+OK      coolingSystem                  callsUpon                      0.54
+OK      secondCommander                takesPartIn                    0.61
+KO      solventWithMediocreSolubility  
+OK      baftaAward                     support                        0.50
+OK      educationPlace                 takeCareOf                     0.71
+OK      localAuthority                 callsUpon                      0.59
+OK      winsAtLPGA                     takesPartIn                    0.64
+OK      musicalArtist                  product                        0.54
+OK      type                           specific                       0.59
+OK      rival                          callsUpon                      0.49
+OK      sportSpecialty                 research                       0.56
+OK      photographer                   takesPartIn                    0.41
+OK      astrologicalSign               makeUseOf                      0.60
+OK      incumbent                      callsUpon                      0.49
+OK      successor                      callsUpon                      0.51
+OK      continent                      callsUpon                      0.49
+OK      animal                         research                       0.51
+KO      altitude                       
+OK      managementPosition             takeCareOf                     0.63
+KO      superintendent                 
+OK      aircraftHelicopterTransport    makeUseOf                      0.55
+OK      firstWinner                    takesPartIn                    0.63
+OK      event                          resultsIn                      0.52
+OK      countryWithFirstSatellite      callsUpon                      0.63
+OK      spurType                       specific                       0.59
+OK      designCompany                  product                        0.68
+OK      administrativeHeadCity         takesPartIn                    0.62
+KO      narrator                       
+OK      supply                         makeUseOf                      0.60
+OK      currentCity                    callsUpon                      0.60
+OK      coProducer                     product                        0.54
+KO      provost                        
+OK      managementCountry              callsUpon                      0.58
+OK      nextEvent                      about                          0.65
+OK      created                        created                        1.00
+KO      portrayer                      
+OK      fourthCommander                takesPartIn                    0.59
+KO      billed                         
+OK      silverMedalist                 makeUseOf                      0.44
+OK      president                      takesPartIn                    0.48
+KO      regency                        
+OK      period                         takesPartIn                    0.55
+OK      language                       product                        0.50
+OK      wikidataSplitIri               makeUseOf                      0.59
+KO      thumbnail                      
+OK      locationCity                   callsUpon                      0.58
+OK      relatedPlaces                  related                        0.83
+KO      demographics                   
+OK      secondTeam                     takesPartIn                    0.64
+KO      bourgmestre                    
+OK      judge                          makeUseOf                      0.55
+OK      memberOfParliament             takesPartIn                    0.54
+OK      academicAdvisor                research                       0.63
+OK      costumeDesigner                product                        0.51
+KO      spurOf                         
+OK      subsequentWork                 callsUpon                      0.72
+KO      architectualBureau             
+OK      mostDownPoint                  about                          0.73
+OK      firstDriverTeam                takesPartIn                    0.63
+OK      deathCause                     cause                          0.85
+OK      state                          callsUpon                      0.55
+OK      participatingIn                takesPartIn                    0.51
+OK      managerSeason                  product                        0.55
+OK      countryWithFirstAstronaut      callsUpon                      0.64
+OK      vicePresident                  takesPartIn                    0.46
+KO      europeanAffiliation            
+OK      growingGrape                   about                          0.56
+OK      organSystem                    callsUpon                      0.51
+OK      approach                       takeCareOf                     0.56
+OK      winsAtAus                      takesPartIn                    0.59
+OK      southWestPlace                 takesPartIn                    0.66
+OK      relative                       specific                       0.53
+OK      winsAtOtherTournaments         takesPartIn                    0.60
+OK      northEastPlace                 takesPartIn                    0.66
+OK      gender                         specific                       0.47
+OK      network                        callsUpon                      0.50
+KO      sibling                        
+OK      relation                       related                        0.57
+OK      wikiPageRevisionLink           about                          0.61
+OK      routeStart                     makeUseOf                      0.64
+OK      generalCouncil                 specific                       0.59
+OK      previousPopulation             callsUpon                      0.63
+OK      team                           research                       0.54
+KO      lymph                          
+OK      opponents                      resultsIn                      0.46
+OK      firstLeader                    takesPartIn                    0.66
+OK      whaDraftTeam                   makeUseOf                      0.54
+OK      leaderFunction                 takesPartIn                    0.59
+OK      zodiacSign                     makeUseOf                      0.60
+OK      raceHorse                      about                          0.53
+OK      lowestPosition                 takesPartIn                    0.60
+OK      musicType                      specific                       0.60
+OK      winsAtMajors                   takesPartIn                    0.52
+OK      cyclistGenre                   specific                       0.49
+OK      chain                          order                          0.45
+KO      dean                           
+OK      manager                        product                        0.52
+OK      museumType                     research                       0.57
+OK      flagBearer                     makeUseOf                      0.41
+OK      engineer                       product                        0.48
+KO      eparchy                        
+OK      southEastPlace                 takesPartIn                    0.66
+OK      authority                      order                          0.54
+OK      alliance                       research                       0.45
+OK      youthClub                      about                          0.49
+OK      administrativeCenter           research                       0.55
+OK      secondDriverCountry            callsUpon                      0.61
+OK      languageFamily                 callsUpon                      0.56
+OK      vehicle                        product                        0.49
+OK      agency                         research                       0.49
+OK      announcedFrom                  callsUpon                      0.73
+OK      editor                         takesPartIn                    0.48
+KO      affiliation                    
+OK      pictureDescription             takesPartIn                    0.60
+OK      bloodType                      callsUpon                      0.60
+OK      closeTo                        makeUseOf                      0.59
+OK      child                          takeCareOf                     0.56
+OK      humanDevelopmentIndexRankingCategory research                       0.63
+OK      museum                         research                       0.50
+OK      selection                      callsUpon                      0.49
+OK      city                           callsUpon                      0.51
+KO      lunarRover                     
+OK      architecturalStyle             research                       0.52
+OK      aircraftHelicopterObservation  research                       0.59
+OK      westPlace                      takesPartIn                    0.70
+KO      garrison                       
+OK      nextMission                    callsUpon                      0.63
+OK      capitalRegion                  callsUpon                      0.55
+OK      student                        research                       0.52
+KO      dubber                         
+OK      owningCompany                  product                        0.66
+OK      associatedBand                 related                        0.63
+OK      supplies                       support                        0.46
+OK      island                         callsUpon                      0.46
+OK      associateStar                  makeUseOf                      0.59
+KO      rebuilder                      
+OK      lake                           takesPartIn                    0.43
+OK      father                         callsUpon                      0.54
+OK      creator                        takesPartIn                    0.46
+OK      sourceCountry                  research                       0.58
+OK      releaseLocation                makeUseOf                      0.62
+OK      managementPlace                takeCareOf                     0.69
+OK      firstPopularVote               takesPartIn                    0.67
+OK      countryWithFirstSpaceflight    callsUpon                      0.64
+OK      existence                      about                          0.52
+OK      tvShow                         makeUseOf                      0.67
+OK      giniCoefficientCategory        specific                       0.47
+KO      subdivision                    
+OK      administrativeCollectivity     research                       0.50
+OK      storyEditor                    takesPartIn                    0.58
+OK      computingInput                 research                       0.58
+OK      recordLabel                    makeUseOf                      0.60
+OK      firstFlight                    takesPartIn                    0.63
+OK      influenced                     influence                      0.68
+OK      presidentRegionalCouncil       callsUpon                      0.56
+OK      novel                          research                       0.51
+OK      land                           makeUseOf                      0.53
+OK      restingPlace                   takeCareOf                     0.69
+OK      commandStructure               order                          0.62
+OK      chairman                       takesPartIn                    0.47
+OK      destination                    callsUpon                      0.44
+OK      homeArena                      callsUpon                      0.55
+OK      head                           callsUpon                      0.56
+KO      tribus                         
+OK      nationalOlympicCommittee       research                       0.58
+KO      hasJunctionWith                
+OK      parentCompany                  product                        0.62
+OK      religiousHeadLabel             callsUpon                      0.60
+OK      associatedMusicalArtist        specific                       0.59
+KO      binomial                       
+OK      targetSpaceStation             callsUpon                      0.60
+OK      aspectRatio                    about                          0.51
+OK      governor                       order                          0.43
+OK      stateDelegate                  callsUpon                      0.55
+OK      ethnicGroup                    product                        0.54
+OK      crosses                        takesPartIn                    0.45
+OK      spacecraft                     product                        0.43
+OK      fuelSystem                     makeUseOf                      0.59
+OK      setDesigner                    takesPartIn                    0.62
+OK      formerPartner                  takesPartIn                    0.56
+OK      dynasty                        product                        0.39
+OK      musicSubgenre                  research                       0.53
+KO      choreographer                  
+OK      startReign                     makeUseOf                      0.62
+OK      competition                    resultsIn                      0.52
+OK      grossDomesticProductPurchasingPowerParityPerCapita product                        0.67
+OK      education                      research                       0.64
+OK      internationalAffiliation       research                       0.50
+OK      wineProduced                   makeUseOf                      0.55
+OK      formerTeam                     takesPartIn                    0.60
+KO      entourage                      
+OK      notableWork                    do                             0.64
+OK      automobilePlatform             product                        0.49
+OK      significantBuilding            specific                       0.67
+OK      poleDriverTeam                 takesPartIn                    0.55
+OK      olympicOathSwornByAthlete      product                        0.41
+OK      otherFamilyBranch              callsUpon                      0.62
+OK      screenActorsGuildAward         callsUpon                      0.57
+OK      amateurTeam                    takesPartIn                    0.52
+OK      otherMedia                     about                          0.61
+OK      knownFor                       defined                        0.60
+OK      splitFromParty                 callsUpon                      0.67
+OK      format                         makeUseOf                      0.53
+OK      author                         takesPartIn                    0.51
+OK      broadcastArea                  callsUpon                      0.59
+OK      nrhpType                       specific                       0.59
+OK      composer                       research                       0.47
+OK      cemetery                       research                       0.45
+OK      otherSportsExperience          about                          0.64
+OK      congressionalDistrict          research                       0.50
+OK      sportGoverningBody             takesPartIn                    0.55
+OK      highestPlace                   takesPartIn                    0.65
+OK      performer                      product                        0.50
+OK      boilerPressure                 influence                      0.51
+OK      nearestCity                    callsUpon                      0.51
+OK      instrument                     research                       0.47
+KO      daira                          
+OK      listItemOf                     takesPartIn                    0.57
+OK      locatedInArea                  takesPartIn                    0.62
+OK      wikiPageEditLink               do                             0.60
+OK      assembly                       product                        0.45
+KO      innervates                     
+OK      subsequentInfrastructure       callsUpon                      0.63
+OK      olivierAward                   support                        0.50
+OK      fastestDriver                  takesPartIn                    0.40
+KO      homeport                       
+OK      ethnicity                      research                       0.47
+KO      commandant                     
+OK      statisticLabel                 product                        0.53
+OK      railwayLineUsingTunnel         callsUpon                      0.60
+OK      product                        product                        1.00
+OK      notableStudent                 specific                       0.63
+KO      nobelLaureates                 
+OK      openingFilm                    about                          0.60
+OK      battle                         research                       0.54
+OK      primeMinister                  takesPartIn                    0.47
+OK      grades                         resultsIn                      0.45
+OK      meetingRoad                    callsUpon                      0.61
+OK      managementRegion               callsUpon                      0.58
+OK      championInMixedDouble          makeUseOf                      0.59
+KO      almaMater                      
+OK      border                         takesPartIn                    0.41
+OK      follows                        takesPartIn                    0.72
+KO      shuttle                        
+OK      largestSettlement              about                          0.54
+OK      restingPlacePosition           takeCareOf                     0.68
+OK      britishComedyAwards            research                       0.53
+OK      municipality                   product                        0.37
+OK      executiveProducer              product                        0.54
+KO      rector                         
+OK      mergedSettlement               takesPartIn                    0.54
+OK      assistantPrincipal             takesPartIn                    0.56
+OK      recordedIn                     created                        0.61
+OK      councilArea                    research                       0.58
+OK      managementMountain             callsUpon                      0.59
+OK      leaderParty                    takesPartIn                    0.56
+OK      academicDiscipline             research                       0.65
+KO      origo                          
+OK      musicBy                        research                       0.53
+OK      settlement                     research                       0.46
+OK      oilSystem                      callsUpon                      0.55
+OK      lchfDraftTeam                  makeUseOf                      0.54
+OK      solventWithBadSolubility       necessary                      0.57
+OK      launchPad                      makeUseOf                      0.56
+OK      sourcePlace                    takesPartIn                    0.67
+OK      daylightSavingTimeZone         callsUpon                      0.62
+OK      friend                         callsUpon                      0.50
+OK      sexualOrientation              specific                       0.51
+OK      superOrder                     order                          0.79
+OK      ceremonialCounty               resultsIn                      0.44
+OK      sourceConfluenceMountain       research                       0.61
+OK      britishWins                    takesPartIn                    0.59
+OK      operatingSystem                makeUseOf                      0.58
+OK      house                          callsUpon                      0.55
+OK      drama                          about                          0.44
+OK      naacpImageAward                takesPartIn                    0.55
+OK      provinceLink                   takesPartIn                    0.56
+KO      chaplain                       
+OK      chef                           takesPartIn                    0.42
+OK      artPatron                      research                       0.52
+OK      millType                       makeUseOf                      0.57
+OK      firstPublisher                 takesPartIn                    0.62
+OK      emmyAward                      support                        0.50
+OK      bronzeMedalist                 takesPartIn                    0.42
+OK      winsAtSun                      takesPartIn                    0.63
+KO      beatifiedBy                    
+OK      meetingBuilding                about                          0.61
+OK      agglomerationPopulation        research                       0.50
+OK      county                         resultsIn                      0.44
+OK      mergedIntoParty                takesPartIn                    0.64
+OK      flower                         takeCareOf                     0.47
+OK      damage                         cause                          0.55
+OK      division                       product                        0.54
+OK      jointCommunity                 research                       0.57
+OK      doctoralStudent                research                       0.52
+KO      deanery                        
+OK      geneLocation                   research                       0.55
+OK      largestCity                    takesPartIn                    0.56
+OK      alpsGroup                      product                        0.58
+KO      federation                     
+OK      currentTeam                    about                          0.61
+OK      poleDriverCountry              callsUpon                      0.55
+OK      firstWin                       makeUseOf                      0.71
+KO      jockey                         
+OK      targetAirport                  callsUpon                      0.56
+OK      municipalityAbsorbedBy         product                        0.37
+OK      adjacentSettlement             callsUpon                      0.56
+OK      distributingCompany            product                        0.66
+KO      borough                        
+KO      reffBourgmestre                
+OK      launchVehicle                  makeUseOf                      0.58
+OK      institution                    research                       0.55
+OK      aircraftTrainer                product                        0.50
+OK      fastestDriverTeam              takesPartIn                    0.53
+OK      comic                          about                          0.43
+OK      aircraftTransport              makeUseOf                      0.56
+OK      position                       takesPartIn                    0.57
+KO      anthem                         
+OK      parentOrganisation             callsUpon                      0.53
+OK      fossil                         research                       0.45
+KO      breeder                        
+OK      location                       callsUpon                      0.53
+OK      headOfFamily                   callsUpon                      0.62
+OK      southPlace                     takesPartIn                    0.69
+OK      associatedAct                  related                        0.66
+OK      citizenship                    research                       0.44
+OK      component                      takesPartIn                    0.54
+OK      patent                         research                       0.51
+OK      religion                       research                       0.52
+OK      makeupArtist                   product                        0.54
+OK      aircraftInterceptor            research                       0.50
+OK      cultivatedVariety              specific                       0.56
+OK      principalArea                  takesPartIn                    0.60
+OK      album                          product                        0.52
+KO      heir                           
+OK      hasVariant                     modified                       0.48
+OK      playerSeason                   takesPartIn                    0.54
+OK      athleticsDiscipline            research                       0.54
+OK      populationTotalReference       about                          0.63
+OK      countryOrigin                  about                          0.57
+OK      jureLanguage                   product                        0.50
+OK      galleryItem                    product                        0.53
+OK      relatedFunctions               related                        0.81
+OK      building                       about                          0.56
+OK      showJudge                      makeUseOf                      0.68
+OK      comparable                     related                        0.65
+KO      headteacher                    
+OK      largestMetro                   specific                       0.50
+OK      trainerClub                    product                        0.48
+OK      pgaWins                        takesPartIn                    0.59
+KO      torchBearer                    
+OK      linguisticsTradition           takesPartIn                    0.50
+OK      boxerCategory                  specific                       0.47
+OK      originalStartPoint             makeUseOf                      0.71
+OK      routeJunction                  takesPartIn                    0.50
+OK      river                          callsUpon                      0.44
+OK      stateOfOrigin                  callsUpon                      0.59
+OK      soccerLeagueRelegated          callsUpon                      0.49
+OK      landingVehicle                 callsUpon                      0.57
+KO      diocese                        
+OK      subClassis                     specific                       0.50
+OK      militaryBranch                 research                       0.55
+OK      championInDoubleMale           makeUseOf                      0.58
+OK      formerBandMember               takesPartIn                    0.60
+OK      collaboration                  research                       0.57
+OK      lowestMountain                 callsUpon                      0.55
+OK      subTribus                      specific                       0.50
+OK      march                          takesPartIn                    0.49
+OK      capitalCountry                 callsUpon                      0.56
+OK      service                        product                        0.61
+OK      features                       takesPartIn                    0.56
+OK      officerInCharge                takesPartIn                    0.55
+KO      pastor                         
+OK      version                        product                        0.51
+OK      laurenceOlivierAward           support                        0.50
+OK      fastestDriverCountry           callsUpon                      0.53
+OK      birthSign                      takeCareOf                     0.61
+OK      viceLeaderParty                takesPartIn                    0.56
+KO      constellation                  
+OK      thirdDriverCountry             callsUpon                      0.61
+OK      headAlloy                      callsUpon                      0.56
+OK      winsAtAsia                     takesPartIn                    0.59
+OK      musicFusionGenre               research                       0.59
+OK      population                     research                       0.50
+KO      cousurper                      
+KO      primogenitor                   
+OK      owns                           manages                        0.63
+OK      athletics                      research                       0.41
+OK      governmentCountry              callsUpon                      0.56
+OK      part                           takesPartIn                    0.84
+OK      alpsSubsection                 takesPartIn                    0.49
+OK      radio                          callsUpon                      0.48
+KO      compiler                       
+KO      frazioni                       
+OK      philosophicalSchool            research                       0.58
+OK      mainFamilyBranch               takesPartIn                    0.60
+OK      branchFrom                     callsUpon                      0.65
+OK      soccerTournamentMostSteady     takesPartIn                    0.58
+OK      monarch                        callsUpon                      0.43
+OK      prospectTeam                   callsUpon                      0.56
+KO      caterer                        
+OK      originalEndPoint               makeUseOf                      0.69
+OK      subGenus                       specific                       0.52
+OK      founder                        takesPartIn                    0.52
+KO      massif                         
+OK      gaudiAward                     support                        0.50
+OK      superFamily                    specific                       0.57
+OK      nominee                        research                       0.41
+KO      olympicOathSwornBy             
+KO      localizationThumbnail          
+OK      chancellor                     research                       0.40
+OK      currentMember                  takesPartIn                    0.62
+OK      soccerTournamentLastChampion   takesPartIn                    0.59
+OK      neighboringMunicipality        takesPartIn                    0.47
+OK      bodyDiscovered                 takesPartIn                    0.59
+OK      organisationMember             takesPartIn                    0.54
+OK      campus                         research                       0.49
+OK      nationalFilmAward              research                       0.60
+OK      thirdTeam                      takesPartIn                    0.62
+OK      otherFunction                  specific                       0.64
+OK      religiousHead                  specific                       0.60
+OK      winsAtNWIDE                    takesPartIn                    0.67
+OK      programmeFormat                research                       0.56
+OK      goldenGlobeAward               callsUpon                      0.58
+OK      producer                       product                        0.54
+OK      followingEvent                 callsUpon                      0.66
+OK      organ                          takesPartIn                    0.39
+OK      wholeArea                      takesPartIn                    0.65
+OK      currentProduction              research                       0.61
+OK      twinTown                       callsUpon                      0.54
+OK      isPartOf                       takesPartIn                    0.84
+OK      person                         about                          0.54
+OK      domain                         product                        0.43
+OK      family                         callsUpon                      0.50
+OK      provides                       provides                       1.00
+OK      wikiPageHistoryLink            about                          0.63
+KO      prefect                        
+OK      sourceMountain                 research                       0.61
+KO      handedness                     
+OK      weapon                         makeUseOf                      0.51
+KO      damsire                        
+OK      governmentRegion               callsUpon                      0.58
+OK      hand                           callsUpon                      0.55
+OK      geolocDepartment               research                       0.53
+OK      uses                           uses                           1.00
+OK      leaderName                     takesPartIn                    0.61
+OK      powerType                      callsUpon                      0.62
+OK      ruralMunicipality              takesPartIn                    0.47
+KO      vein                           
+OK      sourceDistrict                 research                       0.58
+OK      usingCountry                   makeUseOf                      0.66
+KO      headquarter                    
+OK      nonFictionSubject              about                          0.66
+KO      canonizedBy                    
+OK      winsAtPGA                      takesPartIn                    0.65
+OK      sisterCollege                  callsUpon                      0.54
+OK      beltwayCity                    callsUpon                      0.51
+OK      nationalTeam                   research                       0.57
+OK      languageRegulator              product                        0.54
+OK      administrator                  takesPartIn                    0.43
+OK      management                     takeCareOf                     0.53
+OK      stateOfOriginTeam              research                       0.62
+OK      partner                        takesPartIn                    0.46
+OK      polishFilmAward                research                       0.57
+KO      diploma                        
+OK      spouse                         callsUpon                      0.43
+OK      ideology                       research                       0.51
+OK      shipCrew                       takesPartIn                    0.53
+OK      previousEvent                  callsUpon                      0.64
+KO      ceo                            
+OK      actingHeadteacher              takesPartIn                    0.49
+OK      notSolubleIn                   do                             0.72
+OK      viceLeader                     takesPartIn                    0.52
+OK      blockAlloy                     makeUseOf                      0.54
+OK      alpsMajorSector                specific                       0.60
+KO      classis                        
+OK      championInSingleFemale         callsUpon                      0.58
+OK      meetingCity                    callsUpon                      0.61
+OK      championInSingle               makeUseOf                      0.56
+KO      outflow                        
+OK      linkedTo                       related                        0.71
+OK      movement                       cause                          0.50
+KO      spacestation                   
+OK      superTribus                    specific                       0.53
+OK      class                          order                          0.50
+OK      lastWin                        makeUseOf                      0.70
+OK      isRouteStop                    makeUseOf                      0.64
+OK      soccerTournamentClosingSeason  takesPartIn                    0.57
+KO      precursor                      
+OK      nerve                          callsUpon                      0.42
+OK      subOrder                       order                          0.81
+OK      previousEntity                 callsUpon                      0.59
+OK      firstAscentPerson              about                          0.66
+OK      capitalDistrict                callsUpon                      0.50
+OK      countySeat                     takesPartIn                    0.52
+OK      retiredRocket                  takesPartIn                    0.58
+OK      isPartOfAnatomicalStructure    takesPartIn                    0.74
+KO      metropolitanBorough            
+OK      gameArtist                     product                        0.59
+OK      majorShrine                    specific                       0.65
+OK      origin                         about                          0.51
+OK      routeStartLocation             makeUseOf                      0.65
+OK      architect                      product                        0.44
+KO      archipelago                    
+OK      mainIsland                     takesPartIn                    0.58
+OK      otherFuelType                  specific                       0.67
+OK      pastMember                     about                          0.62
+KO      custodian                      
+OK      firstRace                      about                          0.63
+OK      nationalSelection              callsUpon                      0.57
+OK      actScore                       makeUseOf                      0.62
+OK      continentalTournament          resultsIn                      0.46
+OK      northWestPlace                 takesPartIn                    0.67
+OK      mouthPosition                  takesPartIn                    0.60
+OK      highestMountain                callsUpon                      0.55
+OK      stellarClassification          research                       0.49
+OK      wikiPageExternalLink           about                          0.62
+OK      bodyStyle                      takesPartIn                    0.55
+KO      illustrator                    
+OK      lyrics                         about                          0.43
+OK      filmFareAward                  callsUpon                      0.57
+KO      landeshauptmann                
+OK      majorIsland                    specific                       0.60
+OK      rocketFunction                 makeUseOf                      0.55
+KO      arrondissement                 
+OK      structuralSystem               callsUpon                      0.55
+OK      childOrganisation              takeCareOf                     0.56
+OK      launchSite                     makeUseOf                      0.62
+OK      currentLeague                  callsUpon                      0.59
+KO      taoiseach                      
+OK      magazine                       about                          0.47
+KO      coemperor                      
+OK      voiceType                      callsUpon                      0.62
+OK      khlDraftTeam                   makeUseOf                      0.54
+OK      doctoralAdvisor                research                       0.45
+OK      lieutenancyArea                research                       0.60
+OK      parentMountainPeak             callsUpon                      0.61
+OK      mouthRegion                    takesPartIn                    0.56
+OK      autonomy                       research                       0.44
+OK      dfE                            takesPartIn                    0.48
+OK      mouthMountain                  callsUpon                      0.56
+OK      keyPerson                      specific                       0.62
+OK      computingMedia                 research                       0.60
+OK      hasChannel                     product                        0.44
+OK      nationalAffiliation            specific                       0.54
+OK      championInDoubleFemale         makeUseOf                      0.58
+OK      associateEditor                makeUseOf                      0.59
+OK      debutTeam                      takesPartIn                    0.57
+OK      leagueManager                  product                        0.55
+KO      lieutenant                     
+OK      deathPlace                     takeCareOf                     0.66
+OK      colour                         makeUseOf                      0.51
+OK      sisterNewspaper                callsUpon                      0.54
+KO      boiler                         
+OK      district                       resultsIn                      0.47
+OK      sportCountry                   callsUpon                      0.53
+KO      unesco                         
+OK      mainInterest                   specific                       0.63
+OK      playerInTeam                   takesPartIn                    0.55
+OK      ncaaTeam                       research                       0.54
+OK      chiefPlace                     takesPartIn                    0.67
+OK      nationality                    specific                       0.43
+OK      apcPresident                   takesPartIn                    0.48
+OK      map                            resultsIn                      0.51
+OK      officialLanguage               specific                       0.56
+OK      wikiPageWikiLink               about                          0.59
+KO      veneratedIn                    
+OK      placeOfBurial                  takeCareOf                     0.64
+OK      capitalPosition                callsUpon                      0.58
+OK      systemOfLaw                    order                          0.59
+OK      musicBand                      product                        0.54
+OK      aircraftHelicopterCargo        research                       0.56
+KO      reigningPope                   
+OK      manufacturer                   product                        0.62
+OK      headChef                       takesPartIn                    0.56
+KO      sire                           
+OK      runningMate                    takeCareOf                     0.59
+OK      discipline                     research                       0.52
+OK      olympicGames                   resultsIn                      0.49
+OK      currentWorldChampion           about                          0.58
+OK      namedByLanguage                callsUpon                      0.61
+OK      award                          support                        0.50
+OK      hasAbsorbedMunicipality        product                        0.37
+OK      producedBy                     created                        0.71
+OK      placeOfWorship                 takeCareOf                     0.66
+OK      stadium                        product                        0.43
+OK      clubsRecordGoalscorer          makeUseOf                      0.54
+OK      countryWithFirstSatelliteLaunched takesPartIn                    0.66
+OK      aircraftElectronic             research                       0.53
+OK      fileURL                        makeUseOf                      0.61
+KO      animator                       
+OK      sea                            callsUpon                      0.50
+OK      source                         research                       0.57
+OK      subdivisionName                callsUpon                      0.58
+OK      region                         callsUpon                      0.52
+OK      sovereignCountry               callsUpon                      0.53
+OK      owner                          takesPartIn                    0.48
+OK      opponent                       cause                          0.45
+OK      formerCoach                    callsUpon                      0.55
+OK      iftaAward                      support                        0.50
+KO      phylum                         
+OK      training                       research                       0.58
+OK      industry                       product                        0.57
+OK      foresterDistrict               resultsIn                      0.47
+OK      voice                          support                        0.51
+KO      agglomeration                  
+OK      sportDiscipline                research                       0.55
+OK      otherParty                     callsUpon                      0.61
+OK      nationalTournament             research                       0.52
+OK      lowestState                    specific                       0.58
+OK      raceTrack                      callsUpon                      0.55
+KO      complexion                     
+OK      winsAtLET                      takesPartIn                    0.63
+OK      publisher                      product                        0.48
+OK      government                     research                       0.55
+OK      highestPoint                   specific                       0.62
+OK      subFamily                      specific                       0.55
+OK      engine                         resultsIn                      0.50
+OK      rightChild                     takeCareOf                     0.61
+OK      twinCountry                    callsUpon                      0.54
+KO      hometown                       
+OK      achievement                    resultsIn                      0.53
+OK      sourceConfluence               research                       0.57
+OK      lowestPlace                    takesPartIn                    0.65
+OK      riverBranchOf                  callsUpon                      0.52
+OK      sport                          research                       0.45
+KO      statistic                      
+OK      roleInEvent                    takesPartIn                    0.63
+OK      recentWinner                   resultsIn                      0.60
+OK      termPeriod                     makeUseOf                      0.59
+KO      builder                        
+OK      leftChild                      takesPartIn                    0.66
+OK      computingPlatform              research                       0.59
+KO      wagon                          
+OK      formerChoreographer            callsUpon                      0.55
+OK      significantDesign              specific                       0.70
+OK      wikiPageDisambiguates          about                          0.59
+OK      isPartOfMilitaryConflict       takesPartIn                    0.69
+OK      riverMouth                     takesPartIn                    0.51
+KO      prefecture                     
+OK      shape                          influence                      0.57
+OK      cluster                        research                       0.48
+OK      routePrevious                  callsUpon                      0.62
+OK      victim                         callsUpon                      0.49
+OK      coachClub                      takesPartIn                    0.50
+OK      foundedBy                      created                        0.70
+OK      uRN                            do                             0.57
+OK      administrativeDistrict         research                       0.53
+KO      hasAnnotation                  
+OK      politicalPartyOfLeader         takesPartIn                    0.58
+OK      routeEnd                       makeUseOf                      0.62
+OK      endReign                       makeUseOf                      0.59
+KO      crest                          
+OK      picture                        takesPartIn                    0.54
+OK      lastFlight                     takesPartIn                    0.65
+OK      woRMS                          takesPartIn                    0.58
+OK      poleDriver                     takesPartIn                    0.47
+OK      country                        callsUpon                      0.51
+OK      sourcePosition                 research                       0.64
+KO      commune                        
+OK      mouthState                     callsUpon                      0.57
+OK      residence                      research                       0.49
+OK      governmentPlace                takesPartIn                    0.67
+OK      minority                       support                        0.46
+OK      namedAfter                     callsUpon                      0.73
+OK      lowestPoint                    makeUseOf                      0.61
+OK      stylisticOrigin                about                          0.51
+OK      lastAppearance                 makeUseOf                      0.64
+OK      solicitorGeneral               specific                       0.71
+OK      university                     research                       0.59
+OK      leadTeam                       takesPartIn                    0.66
+OK      calculationNeeds               callsUpon                      0.62
+OK      isPartOfWineRegion             takesPartIn                    0.67
+OK      organisation                   research                       0.49
+OK      otherOccupation                specific                       0.61
+KO      subprefecture                  
+KO      honours                        
+OK      touristicSite                  research                       0.55
+OK      formerHighschool               callsUpon                      0.55
+OK      otherAppearances               makeUseOf                      0.60
+OK      broadcastNetwork               callsUpon                      0.55
+OK      teamManager                    product                        0.57
+OK      attorneyGeneral                specific                       0.57
+OK      branchTo                       callsUpon                      0.47
+OK      race                           about                          0.50
+OK      sourceConfluenceRegion         research                       0.59
+OK      routeLine                      takesPartIn                    0.59
+OK      vicePrincipal                  takesPartIn                    0.50
+OK      heritageRegister               makeUseOf                      0.54
+OK      summerAppearances              makeUseOf                      0.56
+OK      oldProvince                    takesPartIn                    0.58
+KO      intercommunality               
+OK      officialOpenedBy               takesPartIn                    0.65
+OK      maintainedBy                   created                        0.65
+OK      usedInWar                      makeUseOf                      0.63
+OK      governorGeneral                specific                       0.58
+OK      oldTeamCoached                 takesPartIn                    0.64
+OK      inCemetery                     research                       0.45
+OK      associatedRocket               related                        0.66
+KO      trustee                        
+OK      winterAppearances              makeUseOf                      0.55
+OK      sisterStation                  callsUpon                      0.54
+OK      championInSingleMale           callsUpon                      0.58
+OK      distributingLabel              product                        0.53
+OK      artist                         product                        0.49
+OK      goldMedalist                   callsUpon                      0.43
+OK      agglomerationArea              research                       0.60
+KO      discoverer                     
+OK      orthologousGene                research                       0.44
+OK      militaryRank                   order                          0.60
+OK      coachedTeam                    research                       0.54
+OK      coatOfArms                     callsUpon                      0.47
+OK      alpsMainPart                   takesPartIn                    0.76
+OK      eastPlace                      takesPartIn                    0.70
+OK      draftTeam                      makeUseOf                      0.54
+OK      fundedBy                       created                        0.55
+OK      northPlace                     takesPartIn                    0.70
+OK      order                          order                          1.00
+OK      teachingStaff                  research                       0.66
+OK      musicComposer                  research                       0.53
+OK      soccerLeaguePromoted           takesPartIn                    0.54
+OK      bandMember                     takesPartIn                    0.54
+OK      deFactoLanguage                about                          0.54
+KO      canton                         
+OK      unitaryAuthority               order                          0.54
+OK      club                           about                          0.45
+OK      highwaySystem                  research                       0.55
+OK      ground                         callsUpon                      0.53
+OK      dam                            about                          0.42
+OK      politicGovernmentDepartment    research                       0.60
+OK      senator                        takesPartIn                    0.40
+OK      chairLabel                     callsUpon                      0.56
+OK      highestRegion                  specific                       0.59
+KO      depths                         
+OK      brand                          product                        0.63
+OK      educationSystem                research                       0.62
+OK      winsAtAlpg                     takesPartIn                    0.59
+OK      wikiPageInterLanguageLink      about                          0.61
+KO      cpu                            
+OK      afiAward                       support                        0.50
+OK      show                           makeUseOf                      0.67
+OK      programmingLanguage            research                       0.54
+OK      specialEffects                 specific                       0.67
+KO      derivative                     
+OK      aircraftHelicopterAttack       research                       0.57
+OK      associationOfLocalGovernment   callsUpon                      0.61
+OK      governmentMountain             callsUpon                      0.58
+KO      subregion                      
+KO      inflow                         
+OK      employer                       takesPartIn                    0.43
+OK      endPoint                       makeUseOf                      0.68
+OK      winsAtChampionships            resultsIn                      0.53
+KO      ingredient                     
+OK      capitalPlace                   takesPartIn                    0.62
+OK      mainCharacter                  takesPartIn                    0.61
+OK      homeStadium                    callsUpon                      0.55
+OK      engineType                     product                        0.56
+OK      alongside                      callsUpon                      0.57
+OK      painter                        product                        0.40
+OK      territory                      callsUpon                      0.48
+OK      teamCoached                    research                       0.54
+OK      canonizedPlace                 takeCareOf                     0.69
+OK      academyAward                   research                       0.53
+OK      activity                       research                       0.59
+OK      viceChancellor                 takesPartIn                    0.43
+OK      governingBody                  takesPartIn                    0.54
+OK      principal                      specific                       0.51
+OK      presenter                      research                       0.41
+OK      startPoint                     makeUseOf                      0.71
+OK      maidenFlightRocket             research                       0.54
+OK      chiefEditor                    takesPartIn                    0.54
+OK      filmVersion                    product                        0.57
+OK      mouthDistrict                  takesPartIn                    0.54
+OK      secondPopularVote              takesPartIn                    0.66
+OK      typeOfElectrification          specific                       0.59
+OK      drainsFrom                     callsUpon                      0.66
+OK      produces                       develops                       0.69
+OK      mythology                      about                          0.43
+OK      firstOlympicEvent              takesPartIn                    0.63
+OK      closingFilm                    about                          0.60
+OK      servingRailwayLine             callsUpon                      0.59
+OK      formerBroadcastNetwork         callsUpon                      0.61
+OK      mission                        research                       0.56
+OK      channel                        product                        0.44
+OK      subsidiary                     related                        0.52
+OK      editing                        research                       0.49
+OK      timeZone                       callsUpon                      0.56
+OK      thirdCommander                 takesPartIn                    0.60
+OK      bird                           callsUpon                      0.45
+OK      aircraftBomber                 research                       0.50
+OK      cesarAward                     support                        0.50
+OK      vicePrimeMinister              takesPartIn                    0.50
+KO      wilaya                         
+OK      tonyAward                      support                        0.50
+OK      usopenWins                     takesPartIn                    0.59
+OK      soccerTournamentTopScorer      takesPartIn                    0.54
+OK      world                          callsUpon                      0.50
+OK      schoolPatron                   research                       0.55
+KO      footedness                     
+OK      occupation                     research                       0.48
+OK      aircraftUser                   product                        0.56
+KO      tenant                         
+OK      vicePrincipalLabel             takesPartIn                    0.56
+OK      addressInRoad                  makeUseOf                      0.62
+OK      enemy                          cause                          0.51
+OK      media                          research                       0.49
+OK      populationPlace                takesPartIn                    0.64
+OK      aircraftHelicopterUtility      research                       0.56
+OK      railwayRollingStock            callsUpon                      0.58
+OK      collectionSize                 callsUpon                      0.55
+OK      school                         research                       0.55
+OK      operator                       callsUpon                      0.45
+KO      enshrinedDeity                 
+OK      generalManager                 specific                       0.61
+OK      olympicOathSwornByJudge        makeUseOf                      0.55
+OK      oldDistrict                    takesPartIn                    0.58
+OK      winsAtLAGT                     takesPartIn                    0.62
+OK      gameEngine                     product                        0.58
+OK      juniorSeason                   takesPartIn                    0.54
+OK      director                       takesPartIn                    0.52
+OK      arielAward                     support                        0.50
+KO      patron                         
+OK      religiousOrder                 order                          0.84
+KO      disciple                       
+OK      nflTeam                        research                       0.54
+OK      waterwayThroughTunnel          takesPartIn                    0.55
+OK      leader                         takesPartIn                    0.52
+OK      secondLeader                   takesPartIn                    0.64
+OK      politicalLeader                takesPartIn                    0.58
+KO      highschool                     
+OK      highestState                   specific                       0.61
+OK      crewMember                     takesPartIn                    0.57
+OK      mouthCountry                   takesPartIn                    0.56
+OK      secretaryGeneral               specific                       0.58
+OK      department                     research                       0.53
+OK      fillingStation                 takesPartIn                    0.58
+KO      taxon                          
+OK      season                         resultsIn                      0.54
+OK      tree                           callsUpon                      0.47
+OK      peabodyAward                   support                        0.50
+OK      prospectLeague                 callsUpon                      0.56
+OK      mediaItem                      product                        0.59
+OK      schoolBoard                    research                       0.56
+OK      primaryFuelType                specific                       0.64
+OK      tradeMark                      makeUseOf                      0.66
+OK      aircraftPatrol                 research                       0.53
+OK      board                          takeCareOf                     0.50
+OK      series                         takesPartIn                    0.54
+OK      mastersWins                    takesPartIn                    0.61
+OK      routeEndLocation               makeUseOf                      0.64
+OK      routeActivity                  research                       0.59
+KO      saint                          
+KO      alpsSupergroup                 
+OK      designer                       product                        0.51
+OK      regionalLanguage               specific                       0.58
+OK      televisionSeries               callsUpon                      0.58
+OK      buildingType                   makeUseOf                      0.63
+OK      coach                          takeCareOf                     0.46
+OK      capitalMountain                callsUpon                      0.57
+OK      genus                          product                        0.41
+OK      currentTeamManager             about                          0.61
+OK      college                        research                       0.51
+OK      presentMunicipality            takesPartIn                    0.54
+KO      biome                          
+OK      secondDriver                   takesPartIn                    0.59
+KO      curator                        
+OK      grossDomesticProductNominalPerCapita product                        0.66
+OK      winsAtSenEuro                  takesPartIn                    0.52
+OK      mainDomain                     specific                       0.61
+OK      guest                          callsUpon                      0.48
+OK      goldenCalfAward                callsUpon                      0.54
+OK      causedBy                       causes                         0.68
+OK      worldTournament                takesPartIn                    0.51
+OK      basedOn                        dependsOn                      0.85
+OK      similar                        related                        0.74
+OK      mouthPlace                     takesPartIn                    0.64
+OK      project                        research                       0.62
+OK      managingEditor                 takesPartIn                    0.58
+OK      capital                        callsUpon                      0.45
+OK      simcCode                       callsUpon                      0.44
+OK      related                        related                        1.00
+OK      biggestCity                    takesPartIn                    0.57
+OK      category                       specific                       0.47
+OK      rocket                         research                       0.46
+OK      relatedMeanOfTransportation    related                        0.74
+OK      style                          makeUseOf                      0.51
+OK      currentPartner                 takesPartIn                    0.57
+OK      grammyAward                    support                        0.50
+OK      juniorTeam                     takesPartIn                    0.55
+OK      soundRecording                 makeUseOf                      0.62
+OK      firstDriver                    takesPartIn                    0.60
+KO      chairperson                    
+OK      principalEngineer              takesPartIn                    0.56
+OK      equipment                      research                       0.52
+OK      notableWine                    about                          0.55
+OK      pictureFormat                  makeUseOf                      0.60
+OK      mostWins                       takesPartIn                    0.69
+OK      geminiAward                    support                        0.50
+OK      winsAtJapan                    takesPartIn                    0.59
+KO      copilote                       
+OK      regionServed                   takesPartIn                    0.61
+OK      plant                          product                        0.51
+KO      regentOf                       
+OK      champion                       cause                          0.47
+OK      company                        product                        0.66
+OK      owningOrganisation             research                       0.49
+OK      wikiPageRedirects              about                          0.58
+OK      winsInEurope                   takesPartIn                    0.59
+OK      party                          callsUpon                      0.50
+OK      wineRegion                     callsUpon                      0.53
+OK      delegateMayor                  takesPartIn                    0.43
+OK      kingdom                        order                          0.49
+OK      coverArtist                    makeUseOf                      0.58
+OK      originalLanguage               research                       0.65
+OK      sourceConfluenceCountry        research                       0.58
+OK      presidentGeneralCouncil        about                          0.60
+OK      sourceRegion                   research                       0.59
+OK      aircraftHelicopter             research                       0.51
+OK      road                           takesPartIn                    0.50
+OK      openingTheme                   takesPartIn                    0.58
+OK      jurisdiction                   order                          0.46
+OK      associate                      makeUseOf                      0.58
+OK      firstLaunchRocket              makeUseOf                      0.62
+OK      collectivityMinority           support                        0.46
+OK      locationCountry                callsUpon                      0.59
+KO      cinematography                 
+KO      agglomerationDemographics      
+OK      aircraftRecon                  research                       0.50
+OK      sourceConfluencePlace          takesPartIn                    0.67
+OK      previousWork                   callsUpon                      0.68
+OK      projectParticipant             research                       0.58
+KO      explorer                       
+OK      familyMember                   takesPartIn                    0.57
+OK      previousEditor                 callsUpon                      0.63
+OK      premierePlace                  takesPartIn                    0.65
+KO      connotation                    
+OK      hasOutsidePlace                takesPartIn                    0.69
+OK      foundationPlace                takesPartIn                    0.66
+OK      trainer                        product                        0.39
+OK      silCode                        callsUpon                      0.44
+OK      movie                          about                          0.54
+OK      currency                       product                        0.43
+OK      species                        product                        0.49
+OK      lowestRegion                   specific                       0.56
+KO      sheading                       
+OK      creativeDirector               research                       0.61
+OK      federalState                   callsUpon                      0.53
+OK      gymApparatus                   makeUseOf                      0.39
+OK      winsAtJLPGA                    takesPartIn                    0.64
+OK      mainOrgan                      specific                       0.56
+OK      soccerLeagueSeason             resultsIn                      0.55
+OK      birthPlace                     takeCareOf                     0.64
+OK      writer                         takesPartIn                    0.51
+KO      orogeny                        
+OK      terytCode                      callsUpon                      0.44
+OK      hasInsidePlace                 takesPartIn                    0.69
+OK      sales                          product                        0.57
+OK      lastLaunchRocket               makeUseOf                      0.63
+KO      bishopric                      
+OK      place                          takeCareOf                     0.69
+OK      routeNext                      takesPartIn                    0.63
+OK      constructionMaterial           research                       0.66
+OK      mountainRange                  callsUpon                      0.57
+OK      firstDriverCountry             callsUpon                      0.62
+OK      thirdDriver                    takesPartIn                    0.57
+OK      percentage                     makeUseOf                      0.51
+OK      managerClub                    product                        0.53
+OK      deputy                         takesPartIn                    0.46
+KO      booster                        
+OK      aircraftAttack                 research                       0.57
+OK      competitionTitle               takesPartIn                    0.57
+KO      webcast                        
+OK      literaryGenre                  research                       0.54
+OK      spokenIn                       isComposedOf                   0.53
+OK      leftTributary                  takesPartIn                    0.69
+OK      field                          research                       0.62
+OK      lastFamilyMember               takesPartIn                    0.66
+OK      mediaType                      makeUseOf                      0.59
+KO      prefaceBy                      
+OK      firstOwner                     takesPartIn                    0.64
+KO      patronSaint                    
+OK      mother                         takeCareOf                     0.53
+OK      predecessor                    callsUpon                      0.54
+OK      beatifiedPlace                 takeCareOf                     0.69
+KO      decoration                     
+OK      followedBy                     created                        0.66
+OK      governmentType                 makeUseOf                      0.62
+KO      grandsire                      
+OK      winsAtProTournaments           takesPartIn                    0.54
+OK      governmentPosition             takesPartIn                    0.61
+OK      areaOfSearch                   research                       0.66
+OK      riverBranch                    callsUpon                      0.52
+OK      starring                       takesPartIn                    0.54
+OK      promotion                      research                       0.51
+OK      newspaper                      callsUpon                      0.45
+KO      varietals                      
+KO      distributor                    
+OK      aircraftFighter                product                        0.48
+OK      sourceConfluenceState          research                       0.60
+OK      championInDouble               makeUseOf                      0.57
+OK      fuel                           makeUseOf                      0.50
+KO      denomination                   
+OK      alumni                         research                       0.38
+OK      nextEntity                     callsUpon                      0.62
+OK      construction                   research                       0.55
+OK      satScore                       isComposedOf                   0.62
+KO      drainsTo                       
+OK      europeanParliamentGroup        callsUpon                      0.55
+OK      committeeInLegislature         research                       0.53
+OK      commander                      order                          0.47
+OK      connectsReferencedTo           related                        0.64
+OK      notableCommander               about                          0.58
+OK      era                            callsUpon                      0.50
+OK      americanComedyAward            research                       0.54
+KO      appointer                      
+OK      politicalMajority              support                        0.58
+OK      alpsSection                    about                          0.61
+OK      projectCoordinator             research                       0.55
+OK      careerStation                  research                       0.60
+OK      influencedBy                   influence                      0.68
+OK      volumes                        resultsIn                      0.49
+OK      league                         resultsIn                      0.47
+OK      previousMission                research                       0.62
+OK      license                        makeUseOf                      0.43
+OK      winsAtChallenges               takesPartIn                    0.61
+OK      youthWing                      takesPartIn                    0.53
+OK      raceResult                     resultsIn                      0.66
+OK      musicians                      research                       0.41
+KO      detractor                      
+OK      lastRace                       about                          0.64
+OK      mayor                          takesPartIn                    0.43
+OK      colleague                      research                       0.50
+OK      personFunction                 callsUpon                      0.58
+OK      film                           about                          0.52
+KO      translator                     
+OK      politicalPartyInLegislature    callsUpon                      0.56
+OK      creatorOfDish                  takesPartIn                    0.55
+OK      endingTheme                    takesPartIn                    0.58
+OK      hasInput                       support                        0.51
+KO      lounge                         
+OK      notableIdea                    about                          0.62
+OK      wikiPageWikiLinkText           about                          0.61
+OK      debutWork                      makeUseOf                      0.64
+OK      playRole                       takesPartIn                    0.64
+OK      parish                         research                       0.44
+KO      alpsSubgroup                   
+OK      legalForm                      makeUseOf                      0.66
+OK      hubAirport                     research                       0.49
+OK      boxerStyle                     makeUseOf                      0.51
+KO      medalist                       
+KO      locomotive                     
+OK      militaryUnit                   research                       0.60
+OK      musicalBand                    product                        0.53
+OK      profession                     research                       0.50
+OK      winsAtKLPGA                    takesPartIn                    0.64
+OK      genre                          specific                       0.49
+OK      soccerLeagueWinner             resultsIn                      0.57
+OK      binomialAuthority              order                          0.54
+OK      variantOf                      modified                       0.48
+OK      coExecutiveProducer            product                        0.54
+OK      parliament                     order                          0.46
+OK      conflict                       research                       0.50
+OK      availableSmartCard             makeUseOf                      0.65
+OK      productionCompany              product                        0.68
+OK      mentor                         takeCareOf                     0.47
+OK      highestPosition                takesPartIn                    0.59
+OK      sourceConfluencePosition       research                       0.64
+OK      resolution                     callsUpon                      0.44
+OK      soccerTournamentMostSuccesfull about                          0.56
+OK      province                       resultsIn                      0.46
+OK      solventWithGoodSolubility      necessary                      0.69
+OK      contractor                     product                        0.47
+OK      previousInfrastructure         research                       0.61
+OK      settlementAttached             takesPartIn                    0.59
+OK      numberOfClassrooms             callsUpon                      0.58
+OK      previousDemographics           specific                       0.62
+OK      skills                         research                       0.49
+OK      horseRidingDiscipline          takeCareOf                     0.55
+OK      soccerTournamentThisSeason     about                          0.58
+OK      royalAnthem                    specific                       0.48
+OK      crew                           takesPartIn                    0.46
+OK      hybrid                         callsUpon                      0.47
+OK      contest                        makeUseOf                      0.48
+OK      sourceState                    research                       0.60
+OK      aircraftHelicopterMultirole    research                       0.51
+KO      spokesperson                   
+OK      layout                         makeUseOf                      0.45
+OK      proTeam                        takesPartIn                    0.54
+KO      usurper                        
+KO      seiyu                          
+OK      significantProject             specific                       0.67
+OK      regionalCouncil                callsUpon                      0.53
+OK      livingPlace                    takeCareOf                     0.65
+OK      goldenRaspberryAward           callsUpon                      0.54
+OK      executiveHeadteacher           order                          0.46
+OK      ratio                          callsUpon                      0.42
+OK      elementAbove                   takesPartIn                    0.64
+OK      goyaAward                      support                        0.50
+KO      artery                         
+OK      soccerTournamentOpeningSeason  takesPartIn                    0.57
+OK      currentTeamMember              takesPartIn                    0.63
+# Nb vectors found: 951 / 1105

@@ -1,18 +1,12 @@
 import numpy as np
 
 
-def prt(*arg):
-    if Config.VERBOSE_MODE:
-        print(Config.CONSOLE_PREFIX, end='')
-        print(*arg)
-
-
 class Config:
     VERBOSE_MODE = True
 
     CONSOLE_PREFIX = "§ "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
-    CONNECT_WORDS = ["a", "as", "at", "by", "for", "has", "in", "is", "of", "so", "the", "to", "with"]
+    CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "so", "the", "to", "with"]
 
     COLORS = np.array(['#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
                        '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'])

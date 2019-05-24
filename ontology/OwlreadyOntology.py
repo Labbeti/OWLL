@@ -1,14 +1,15 @@
-
-from onto_classes.AbstractOntology import AbstractOntology
+from Config import *
+from ontology.AbstractOntology import AbstractOntology
 from urllib.error import HTTPError
+from utils import rem_duplicates
 
 import owlready2 as or2
 
 
 # Clean ontology name for each property
 # (ex: tabletopgames_V3.contains -> contains)
-def _get_name_owlready2(string: str) -> str:
-    index = string.rfind(".")
+def _get_name_or2(string: str) -> str:
+    index = max(string.rfind("."), string.rfind("#"))
     return string[index + 1:]
 
 
@@ -36,19 +37,23 @@ class OwlreadyOntology(AbstractOntology):
     # Warning: Does not work with some OWL format like Turtle
     def getObjectProperties(self) -> list:
         objprops = list(self.__or2_onto.object_properties())
-        obj_prop_names = [_get_name_owlready2(objprop.name) for objprop in objprops]
-        return obj_prop_names
+        obj_prop_names = [_get_name_or2(objprop.name) for objprop in objprops]
+        return rem_duplicates(obj_prop_names)
 
     def getOWLTriples(self) -> list:
         self.__nb_errors = 0
+        # Remove duplicates because Owlready2 contains errors (ex: for Restrictions on collaborativePizza.owl)
+        ops = rem_duplicates(self.__or2_onto.object_properties())
         triples = []
-        for objprop in self.__or2_onto.object_properties():
+        for op in ops:
             try:
-                for op_domain in objprop.domain:
-                    for op_range in objprop.range:
-                        domain_name = _get_name_owlready2(op_domain.name)
-                        objprop_name = _get_name_owlready2(objprop.name)
-                        range_name = _get_name_owlready2(op_range.name)
+                domains = [op_domain.name for op_domain in op.domain] if op.domain != [] else [Config.LINK_THING]
+                ranges = [op_range.name for op_range in op.range] if op.range != [] else [Config.LINK_THING]
+                for op_domain in domains:
+                    for op_range in ranges:
+                        domain_name = _get_name_or2(op_domain)
+                        objprop_name = _get_name_or2(op.name)
+                        range_name = _get_name_or2(op_range)
                         triples.append((domain_name, objprop_name, range_name))
             except (TypeError, AttributeError):
                 self.__nb_errors += 1

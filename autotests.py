@@ -1,5 +1,7 @@
-from tests import split_name
-from onto_classes.Ontology import *
+from ontology.Ontology import *
+from utils import equals
+from utils import prt
+from utils import split_name
 
 
 def test_split_name():
@@ -20,38 +22,41 @@ def test_split_name():
         results = split_name(value)
         if results != results_expected:
             raise Exception("Unit test failed: %s != %s " % (results, results_expected))
-    print("§ OK: test_split_name")
+    prt("OK: test_split_name")
 
 
 def test_get_object_properties():
     tests = {
-        "data/ontologies/tabletopgames_V3.owl",
-        "data/ontologies/dbpedia_2016-10.owl",
-        "data/ontologies/no_op/AuthorizationRealms.owl",
-        "data/ontologies/TTICarOnto.owl"
+        # "data/ontologies/tabletopgames_V3.owl",
+        # "data/ontologies/dbpedia_2016-10.owl",
+        # "data/ontologies/no_op/AuthorizationRealms.owl",
+        "data/ontologies/collaborativePizza.owl",
     }
 
     for filepath in tests:
         onto_owl = Ontology(filepath, LoadType.FORCE_OWLREADY2)
         onto_rdf = Ontology(filepath, LoadType.FORCE_RDFLIB)
-        names_owlready = onto_owl.get_op()
-        names_rdflib = onto_rdf.get_op()
-        triples_owlready = onto_owl.get_op()
-        triples_rdflib = onto_rdf.get_op()
 
-        if set(names_owlready) != set(names_rdflib) or \
-                set(triples_owlready) != set(triples_rdflib):
-            raise Exception("Unit test failed: sizes: \n\towlready2: %d %d\n\trdflib: %d %d" %
-                            (len(names_owlready), len(triples_owlready), len(names_rdflib), len(triples_rdflib)))
+        names_owlready = onto_owl.getObjectProperties()
+        names_rdflib = onto_rdf.getObjectProperties()
+        triples_owlready = onto_owl.getOWLTriples()
+        triples_rdflib = onto_rdf.getOWLTriples()
 
-    print("§ OK: test_get_object_properties")
+        if not equals(names_owlready, names_rdflib) or not equals(triples_owlready, triples_rdflib):
+            # prt("DEBUG: auto: ", triples_owlready, "\n\n", triples_rdflib)
+            raise Exception("§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\t"
+                            "Rdflib: nb_names=%d nb_triples=%d" % (filepath, len(names_owlready),
+                                                                   len(triples_owlready), len(names_rdflib),
+                                                                   len(triples_rdflib)))
+
+    prt("OK: test_get_object_properties")
 
 
 def test_all():
-    print("§ Begin autotests.")
+    prt("Begin autotests.")
     test_split_name()
     test_get_object_properties()
-    print("§ OK: All")
+    prt("OK: All")
 
 
 if __name__ == "__main__":

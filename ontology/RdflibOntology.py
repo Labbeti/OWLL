@@ -1,6 +1,6 @@
 
 from Config import *
-from onto_classes.AbstractOntology import AbstractOntology
+from ontology.AbstractOntology import AbstractOntology
 from rdflib.exceptions import ParserError
 
 import rdflib as rl
@@ -17,7 +17,7 @@ def _is_object_property(s, p, o) -> bool:
 
 # Clean ontology name for each property
 # (ex: http://semanticweb.org/tabletopgames_V3#contains -> contains)
-def _get_name_rdflib(string: str) -> str:
+def _get_name_rl(string: str) -> str:
     index = max(string.rfind("#"), string.rfind("/"))
     return string[index + 1:]
 
@@ -54,31 +54,30 @@ class RdflibOntology(AbstractOntology):
 
     # Warning: Not verified for all types of object properties.
     def getObjectProperties(self) -> list:
-        return [_get_name_rdflib(s) for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
+        return [_get_name_rl(s) for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
 
     def getOWLTriples(self) -> list:
         domains = {}
         ranges = {}
-        ops = self.getObjectProperties()
+        opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
         for sUri, pUri, oUri in self.__rl_graph:
-            s = _get_name_rdflib(sUri.toPython())
-            if s in ops:
+            s = sUri.toPython()
+            if s in opsUri:
                 if pUri.toPython() == Config.LINK_DOMAIN:
-                    domains[s] = oUri
+                    domains[s] = oUri.toPython()
                 elif pUri.toPython() == Config.LINK_RANGE:
-                    ranges[s] = oUri
+                    ranges[s] = oUri.toPython()
         triples = []
-        for op in ops:
+        for op in opsUri:
             if op in domains.keys():
-                domain = _get_name_rdflib(domains[op])
+                domain = domains[op]
             else:
-                domain = _get_name_rdflib(Config.LINK_THING)
+                domain = Config.LINK_THING
             if op in ranges.keys():
-                range = _get_name_rdflib(ranges[op])
+                range = ranges[op]
             else:
-                range = _get_name_rdflib(Config.LINK_THING)
-            triples.append((domain, op, range))
-
+                range = Config.LINK_THING
+            triples.append((_get_name_rl(domain), _get_name_rl(op), _get_name_rl(range)))
         return triples
 
     def isLoaded(self) -> bool:
