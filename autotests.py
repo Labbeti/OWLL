@@ -27,10 +27,11 @@ def test_split_name():
 
 def test_get_object_properties():
     tests = {
-        # "data/ontologies/tabletopgames_V3.owl",
-        # "data/ontologies/dbpedia_2016-10.owl",
-        # "data/ontologies/no_op/AuthorizationRealms.owl",
-        "data/ontologies/collaborativePizza.owl",
+        #"data/ontologies/tabletopgames_V3.owl",
+        #"data/ontologies/dbpedia_2016-10.owl",
+        #"data/ontologies/no_op/AuthorizationRealms.owl",
+        #"data/ontologies/collaborativePizza.owl",
+        "data/ontologies/Actor.owl"
     }
 
     for filepath in tests:
@@ -38,8 +39,8 @@ def test_get_object_properties():
         onto_rdf = Ontology(filepath, LoadType.FORCE_RDFLIB)
 
         names_owlready = onto_owl.getObjectProperties()
-        names_rdflib = onto_rdf.getObjectProperties()
         triples_owlready = onto_owl.getOWLTriples()
+        names_rdflib = onto_rdf.getObjectProperties()
         triples_rdflib = onto_rdf.getOWLTriples()
 
         if not equals(names_owlready, names_rdflib) or not equals(triples_owlready, triples_rdflib):

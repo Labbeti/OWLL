@@ -1,9 +1,13 @@
-from Config import *
+from ontology.LoadType import LoadType
 from ontology.Ontology import Ontology
+from ontology.Ontology import RdflibOntology
 from time import time
 from utils import *
 
 import re
+
+
+OP_INDEX: int = 1
 
 
 # The OBO Foundry contains a lot of op names like "BFO_0000050", there are useless for semantic learning.
@@ -21,7 +25,7 @@ def count_unreadables(triples: list) -> int:
 
 
 def can_pass_filter(values: list) -> bool:
-    return not is_unreadable(values[0])
+    return not is_unreadable(values[OP_INDEX])
 
 
 def get_opd(filepath_opd: str) -> (list, str):
@@ -41,37 +45,52 @@ def get_opd(filepath_opd: str) -> (list, str):
 
 # Generate the Object Property Database (OPD) in opd.txt
 def gen_opd():
-    dirpath = "data/ontologies/"
+    dirpath = "data/ontologies"
     filepath_results = "results/stats/opd.txt"
-    filepath_meta = "results/stats/meta_results.txt"
+    filepath_meta = "results/stats/opd_meta.txt"
 
     filenames = get_filenames(dirpath)
-    stats_names = ["Owlready?", "Rdflib?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
+    filenames = ["tabletopgames_V3.owl"]  # TODO clean
+    stats_names = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
     stats = {name: {} for name in stats_names}
     out = open(filepath_results, "w", encoding='utf-8', errors='ignore')
     out.write("#! Version: %s\n" % get_time())
-    out.write("%-30s %-30s %-30s %-30s\n\n" % ("#Object property", "Domain", "Range", "File"))
+    out.write("# Note: Asym = Asymmetric, Func = Functional, InFu = InverseFunctional, Irre = Irreflexive, "
+              "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, Inst = Nb Instances, InOf = Inverse Of\n\n")
+    column_names = ("#File", "Object property", "Domain", "Range", "Asym?", "Func?", "InFu?", "Irre?", "Refl?",
+                    "Symm?", "Tran?", "Inst", "InOf")
+    line_format = "%-30s %-30s %-30s %-30s %-5s %-5s %-5s %-5s %-5s %-5s %-5s %-5s %-5s\n"
+    out.write(line_format % column_names)
+    out.write("\n")
 
     i = 1
     for filename in filenames:
         start = time()
-        prt("LOADING %s... (%d/%d)" % (filename, i, len(filenames)))
+        prt("Load of \"%s\"... (%d/%d)" % (filename, i, len(filenames)))
         filepath = join(dirpath, filename)
-        ontology = Ontology(filepath)
+        ontology = Ontology(filepath, LoadType.FORCE_OWLREADY2)
 
-        triples = []
         if ontology.isLoaded():
-            prt("Load of %s is successfull (%d/%d)" % (filename, i, len(filenames)))
+            prt("Load of \"%s\" is successfull (%d/%d)" % (filename, i, len(filenames)))
             triples = ontology.getOWLTriples()
-            for op_domain, op, op_range in triples:
-                out.write("%-30s %-30s %-30s %-30s\n" % (op, op_domain, op_range, filename))
+            for (domainUri, opUri, rangeUri) in triples:
+                domainName = ontology.getName(domainUri)
+                opName = ontology.getName(opUri)
+                rangeName = ontology.getName(rangeUri)
+                opChars = ontology.getOPCharacteristics(opUri)
+                invName = ontology.getName(opChars.inverseOf)
+                out.write("%-30s %-30s %-30s %-30s %-5d %-5d %-5d %-5d %-5d %-5d %-5d %-5d %-30s\n" %
+                          (filename, opName, domainName, rangeName, opChars.isAsymmetric, opChars.isFunctional,
+                           opChars.isInverseFunctional, opChars.isIrreflexive, opChars.isReflexive, opChars.isSymmetric,
+                           opChars.isTransitive, opChars.nbInstances, invName))
         else:
-            prt("Load of %s has failed (%d/%d)" % (filename, i, len(filenames)))
+            triples = []
+            prt("Load of \"%s\" has failed (%d/%d)" % (filename, i, len(filenames)))
         end = time()
 
         nb_unreadable = count_unreadables(triples)
-        stats["Owlready?"][filename] = ontology.isLoadedWithOR2()
-        stats["Rdflib?"][filename] = ontology.isLoadedWithRL()
+        stats["Rdflib?"][filename] = True  #ontology.isLoadedWithRL()
+        stats["Owlready?"][filename] = False  #ontology.isLoadedWithOR2()
         stats["Loaded?"][filename] = ontology.isLoaded()
         stats["NbErrors"][filename] = ontology.getNbErrors()
         stats["Time"][filename] = end - start
@@ -81,21 +100,21 @@ def gen_opd():
         i += 1
 
     meta = open(filepath_meta, "w", encoding='utf-8', errors='ignore')
-    line_format = "%-30s" + (" %-10s" * len(stats)) + "\n"
+    line_format = "%-40s" + (" %-10s" * len(stats)) + "\n"
     meta.write("#! Version: %s\n" % get_time())
-    meta.write(line_format % ("File", "Owlready?", "Rdflib?", "Loaded?", "NbErrors", "Time", "NbTriples",
-                              "OpUnreada.", "MustKeep"))
+    meta.write(line_format % ("File", "Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreada.",
+                              "MustKeep"))
     meta.write("\n")
 
     for filename in filenames:
         time_str = "%-9.2f" % stats["Time"][filename]
-        meta.write(line_format % (filename, stats["Owlready?"][filename], stats["Rdflib?"][filename],
+        meta.write(line_format % (filename, stats["Rdflib?"][filename], stats["Owlready?"][filename],
                                   stats["Loaded?"][filename], stats["NbErrors"][filename], time_str,
                                   stats["NbTriples"][filename], stats["OpUnreadable"][filename],
                                   stats["MustKeep"][filename]))
     meta.write("\n")
     time_str = "%-9.2f" % sum(stats["Time"].values())
-    meta.write(line_format % ("Total", sum(stats["Owlready?"].values()), sum(stats["Rdflib?"].values()),
+    meta.write(line_format % ("Total", sum(stats["Rdflib?"].values()), sum(stats["Owlready?"].values()),
                               sum(stats["Loaded?"].values()), sum(stats["NbErrors"].values()), time_str,
                               sum(stats["NbTriples"].values()), sum(stats["OpUnreadable"].values()),
                               sum(stats["MustKeep"].values())))
@@ -117,7 +136,7 @@ def connect_words_stats():
 
     data, version_opd = get_opd(filepath_opd)
     for values in data:
-        op_name = values[0]
+        op_name = values[OP_INDEX]
         words_name = split_name(op_name)
         words_name = [word.lower() for word in words_name]
 
@@ -139,14 +158,19 @@ def connect_words_stats():
     out.write("# Words searched are : %s\n" % str(Config.CONNECT_WORDS))
     out.write("\n")
 
+    results_sort = []
     for word_type, _ in results.items():
         for conn_word_found, words in results[word_type].items():
             proportion = 100 * len(words) / len(data)
-            out.write("%s: Word \"%s\" %d/%d (%.2f%%)\n" % (word_type, conn_word_found, len(words), len(data),
-                                                            proportion))
-            for word in words:
-                out.write("%s, " % word)
-            out.write("\n\n")
+            results_sort.append((proportion, word_type, conn_word_found, words))
+
+    results_sort.sort(key=lambda x: x[0], reverse=True)
+    for (proportion, word_type, conn_word_found, words) in results_sort:
+        out.write("%s: Word \"%s\" %d/%d (%.2f%%)\n" % (word_type, conn_word_found, len(words), len(data),
+                                                        proportion))
+        for word in words:
+            out.write("%s, " % word)
+        out.write("\n\n")
 
     out.close()
 
@@ -172,51 +196,66 @@ def filter_opd():
 
 
 # Generate a partition of op names
-# TODO : try extract op name which have domain or range name in op name
 def extract_words():
     filepath_opd = "results/stats/opd.txt"
-    filepath_results = "results/stats/extracted_words.txt"
+    filepath_meta = "results/stats/root_words_meta.txt"
+    filepath_results = "results/stats/root_words.txt"
 
-    root_words = []
-    mult_words = []
+    root_names = []
+    root_words = set()
+    empty_names = []
+    other_names = []
     data, version_opd = get_opd(filepath_opd)
 
     for values in data:
-        op_name = values[0]
+        op_name = values[OP_INDEX]
         words_name = split_name(op_name)
 
         # Rem Connect Words
         words_without_cw = [word for word in words_name if word.lower() not in Config.CONNECT_WORDS]
-        op_domain = values[1].lower()
-        op_range = values[2].lower()
+        op_domain = values[1]
+        op_range = values[2]
         # Rem Connect Words, Domain and Range
         words_without_cwdr = [word for word in words_without_cw
                               if word.lower() != op_domain.lower() and word.lower() != op_range.lower()]
 
         if len(words_without_cwdr) == 1:
-            root_words.append("(" + words_without_cwdr[0] + ", " + op_name + ")")
+            root_names.append(op_name)
+            root_words.add(words_without_cwdr[0].lower())
+        elif len(words_without_cwdr) == 0:
+            empty_names.append(op_name)
         else:
-            mult_words.append(op_name)
+            other_names.append(op_name)
 
-    out = open(filepath_results, "w", encoding="utf-8")
+    out = open(filepath_meta, "w", encoding="utf-8")
     out.write("#! Version: %s\n" % get_time())
     out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepath_opd, version_opd))
     out.write("# Words searched are : %s\n\n" % str(Config.CONNECT_WORDS))
 
-    proportion = 100 * len(root_words) / len(data)
-    out.write("Root words (%.2f%%)\n" % proportion)
+    proportion = 100 * len(root_names) / len(data)
+    out.write("Root words %d/%d (%.2f%%), (unique = %d)\n" % (len(root_names), len(data), proportion, len(root_words)))
     i = 0
-    for word in root_words:
+    for word in root_names:
         out.write("%s, " % word)
         i += 1
         if i % 100 == 0:
             out.write("\n")
     out.write("\n\n")
 
-    proportion = 100 * len(mult_words) / len(data)
-    out.write("Complex words (%.2f%%)\n" % proportion)
+    proportion = 100 * len(empty_names) / len(data)
+    out.write("Empty words %d/%d (%.2f%%)\n" % (len(empty_names), len(data), proportion))
     i = 0
-    for word in mult_words:
+    for word in empty_names:
+        out.write("%s, " % word)
+        i += 1
+        if i % 100 == 0:
+            out.write("\n")
+    out.write("\n\n")
+
+    proportion = 100 * len(other_names) / len(data)
+    out.write("Other words %d/%d (%.2f%%)\n" % (len(other_names), len(data), proportion))
+    i = 0
+    for word in other_names:
         out.write("%s, " % word)
         i += 1
         if i % 100 == 0:
@@ -224,8 +263,16 @@ def extract_words():
     out.write("\n")
     out.close()
 
+    out = open(filepath_results, "w", encoding="utf-8")
+    out.write("#! Version: %s\n" % get_time())
+    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepath_opd, version_opd))
+    out.write("# Root words: \n")
+    for word in root_words:
+        out.write("%s\n" % word)
+    out.close()
+
 
 if __name__ == "__main__":
-    # gen_opd()
-    connect_words_stats()
-    extract_words()
+    gen_opd()
+    #connect_words_stats()
+    #extract_words()

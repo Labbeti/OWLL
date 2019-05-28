@@ -6,7 +6,6 @@ from utils import split_name
 
 # Note: quelques mots non trouvé dans FastText :
 # ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
-
 def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
     start = time()
     file = open(filename, 'r', encoding='utf-8', newline='\n', errors='ignore')

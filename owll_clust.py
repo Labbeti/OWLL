@@ -22,7 +22,7 @@ def get_algos(nb_clusters: int) -> list:
     mini_batch = MiniBatchKMeans(n_clusters=nb_clusters)
     spectral = SpectralClustering(n_clusters=nb_clusters)
     affinity = AffinityPropagation()
-    meanshift = MeanShift()
+    meanshift = MeanShift()  # bandwidth=1.25
 
     algorithms = [
         ("AgglomerativeClustering", agglo),
@@ -81,8 +81,10 @@ def draw_results(preds, op_vecs, clusters_centers):
     font.set_weight('bold')
     font.set_size(20)
 
+    limit_clusters_index = 0
+
     plt.scatter(vecs_reduced[:, 0], vecs_reduced[:, 1], s=6, color=colors_for_pt)
-    for i in range(nb_clusters):
+    for i in range(min(nb_clusters, limit_clusters_index)):
         plt.text(centers_reduced[i, 0], centers_reduced[i, 1], s=str(i), color=Config.COLORS[i % len(Config.COLORS)],
                  fontproperties=font)
 
@@ -93,9 +95,8 @@ def clust_op_names():
     filepath_ft = "data/fasttext/wiki-news-300d-1M.vec"
     filepath_results = "results/clust/clust_op_names.txt"
     limit = 30_000
-    # NOTE: max is currently 10 because we have only 10 differents colors
-    # 10 clusters pour tous les algos sauf MeanShift et AffinityPropagation
-    nb_clusters_default = 20
+    # nb_clusters_default pour tous les algos sauf MeanShift et AffinityPropagation
+    nb_clusters_default = 13
 
     filename_onto = basename(filepath_onto)
     data, nbWords, dim = load_vectors(filepath_ft, limit)

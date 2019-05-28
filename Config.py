@@ -9,13 +9,28 @@ class Config:
     CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "so", "the", "to", "with"]
 
     COLORS = np.array(['#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
-                       '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000'])
+                       '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000',
+                       '#222222', '#cccccc', '#cc00cc'])
 
-    LINK_DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
-    LINK_OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#ObjectProperty"
-    LINK_RANGE = "http://www.w3.org/2000/01/rdf-schema#range"
-    LINK_RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    LINK_THING = "http://www.w3.org/2002/07/owl#Thing"
+    class URI:
+        CLASS = "http://www.w3.org/2002/07/owl#Class"
+        DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
+        INVERSE_OF = "http://www.w3.org/2002/07/owl#inverseOf"
+        OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#ObjectProperty"
+        RANGE = "http://www.w3.org/2000/01/rdf-schema#range"
+        RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        SUB_CLASS_OF = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+        SUB_PROPERTY_OF = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf"
+        THING = "http://www.w3.org/2002/07/owl#Thing"
+
+        class CHARACTERISTIC:
+            ASYMMETRIC = "http://www.w3.org/2002/07/owl#AsymmetricProperty"
+            FUNCTIONAL = "http://www.w3.org/2002/07/owl#FunctionalProperty"
+            INVERSE_FUNCTIONAL = "http://www.w3.org/2002/07/owl#InverseFunctionalProperty"
+            IRREFLEXIVE = "http://www.w3.org/2002/07/owl#IrreflexiveProperty"
+            REFLEXIVE = "http://www.w3.org/2002/07/owl#ReflexiveProperty"
+            SYMMETRIC = "http://www.w3.org/2002/07/owl#SymmetricProperty"
+            TRANSITIVE = "http://www.w3.org/2002/07/owl#TransitiveProperty"
 
     TYPO_WORDS = ["characterize", "identifies", "defined", "depicted", "qualifies", "delineated", "specific",
                   "belongs", "includes", "gathered", "collects", "isComposedOf", "contains", "assimilates", "do",

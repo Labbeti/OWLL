@@ -1,0 +1,8 @@
+#! Version: 28/05/2019_16:28:06
+File                                     Rdflib?    Owlready?  Loaded?    NbErrors   Time       NbTriples  OpUnreada. MustKeep  
+
+tabletopgames_V3.owl                     True       False      True       0          0.01       6          0          True      
+
+Total                                    1          0          1          0          0.01       6          0          1         
+
+Nb of files: 1

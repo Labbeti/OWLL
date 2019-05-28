@@ -1,0 +1,4 @@
+#! Version: 28/05/2019_15:02:53
+# This file has been generated with the file "results/stats/opd.txt" (version 28/05/2019_15:02:53)
+# Words searched are : ['a', 'about', 'as', 'at', 'by', 'for', 'has', 'in', 'is', 'of', 'on', 'so', 'the', 'to', 'with']
+

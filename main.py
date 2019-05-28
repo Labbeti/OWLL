@@ -6,7 +6,7 @@ from owll_typoclass import class_with_typo_words
 from utils import prt
 
 
-def menu():
+def menu_tests():
     switch = {
         "1": class_with_typo_words,
         "2": clust_op_names,
@@ -36,7 +36,7 @@ def menu():
 
 
 def main():
-    menu()
+    menu_tests()
 
 
 if __name__ == "__main__":
