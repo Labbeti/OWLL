@@ -4,6 +4,9 @@ The goal is to create clusters on object properties in order to simplify buildin
 The project is currently in development and all data files and models <b>are not committed</b>.
 
 ### Versions 
+* Indev 0.1.8 (29/05/19)
+  * Regenerate OPD with 151 ontologies.
+  
 * Indev 0.1.7 (28/05/19)
   * Update format of results for "owll_clust.py" and "owll_stats.py".
   * Testing gensim in order to compare sentences.

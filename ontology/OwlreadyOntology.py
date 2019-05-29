@@ -56,7 +56,7 @@ class OwlreadyOntology(AbstractOntology):
         if iFound != -1:
             objprop = objprops[iFound]
             opChars = OPCharacteristics()
-            opChars.inverseOf = objprop.inverse_property.iri
+            opChars.inverseOf = objprop.inverse_property.iri if objprop.inverse_property is not None else ""
             opChars.isAsymmetric = issubclass(objprop, or2.AsymmetricProperty)
             opChars.isFunctional = issubclass(objprop, or2.FunctionalProperty)
             opChars.isInverseFunctional = issubclass(objprop, or2.InverseFunctionalProperty)

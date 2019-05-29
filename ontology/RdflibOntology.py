@@ -60,7 +60,6 @@ class RdflibOntology(AbstractOntology):
                 s = sUri.toPython()
                 p = pUri.toPython()
                 o = oUri.toPython()
-                print("RDF triple = %s %s %s " % (sUri.toPython(), pUri.toPython(), oUri.toPython()))  # TODO clean
                 if s in opsUri:
                     if p == Config.URI.DOMAIN:
                         opProps[s].domains.append(o)
@@ -102,6 +101,8 @@ class RdflibOntology(AbstractOntology):
                 for opDomain in domains:
                     for opRange in ranges:
                         self.__triples.append((opDomain, opUri, opRange))
+        else:
+            self.__rl_graph = None
 
     def getClassCharacteristics(self, clUri) -> ClassCharacteristics:
         return self.__clProps[clUri]

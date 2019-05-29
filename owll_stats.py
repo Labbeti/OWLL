@@ -50,7 +50,6 @@ def gen_opd():
     filepath_meta = "results/stats/opd_meta.txt"
 
     filenames = get_filenames(dirpath)
-    filenames = ["tabletopgames_V3.owl"]  # TODO clean
     stats_names = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
     stats = {name: {} for name in stats_names}
     out = open(filepath_results, "w", encoding='utf-8', errors='ignore')
@@ -68,7 +67,7 @@ def gen_opd():
         start = time()
         prt("Load of \"%s\"... (%d/%d)" % (filename, i, len(filenames)))
         filepath = join(dirpath, filename)
-        ontology = Ontology(filepath, LoadType.FORCE_OWLREADY2)
+        ontology = Ontology(filepath)
 
         if ontology.isLoaded():
             prt("Load of \"%s\" is successfull (%d/%d)" % (filename, i, len(filenames)))
@@ -89,8 +88,8 @@ def gen_opd():
         end = time()
 
         nb_unreadable = count_unreadables(triples)
-        stats["Rdflib?"][filename] = True  #ontology.isLoadedWithRL()
-        stats["Owlready?"][filename] = False  #ontology.isLoadedWithOR2()
+        stats["Rdflib?"][filename] = ontology.isLoadedWithRL()
+        stats["Owlready?"][filename] = ontology.isLoadedWithOR2()
         stats["Loaded?"][filename] = ontology.isLoaded()
         stats["NbErrors"][filename] = ontology.getNbErrors()
         stats["Time"][filename] = end - start
@@ -273,6 +272,6 @@ def extract_words():
 
 
 if __name__ == "__main__":
-    gen_opd()
-    #connect_words_stats()
-    #extract_words()
+    #gen_opd()
+    connect_words_stats()
+    extract_words()
