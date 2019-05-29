@@ -4,6 +4,15 @@ The goal is to create clusters on object properties in order to simplify buildin
 The project is currently in development and all data files and models <b>are not committed</b>.
 
 ### Versions 
+* Indev 0.1.9 (29/05/19)
+  * Regenerate OPD with 151 ontologies.
+  * Regenerate statistics with the new OPD.
+  * Rework main.py with a new sub-terminal class for menu.
+  * Change opd.txt format in order to be more readable.
+  * Add label and subPropertyOf in OPCharacteristics for RdflibOntology.
+  * Create function to compute statistics about roots in "stats.txt".
+  * Add ontologies to git.
+
 * Indev 0.1.8 (29/05/19)
   * Regenerate OPD with 151 ontologies.
   

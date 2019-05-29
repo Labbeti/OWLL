@@ -1,7 +1,10 @@
 # Object Property Properties
 class OPCharacteristics:
+    DEFAULT_INVERSE_OF = "None"
+    DEFAULT_LABEL = "None"
+
     def __init__(self):
-        self.inverseOf: str = "None"
+        self.inverseOf: str = OPCharacteristics.DEFAULT_INVERSE_OF
         self.isAsymmetric: bool = False
         self.isFunctional: bool = False
         self.isInverseFunctional: bool = False
@@ -9,6 +12,7 @@ class OPCharacteristics:
         self.isReflexive: bool = False
         self.isSymmetric: bool = False
         self.isTransitive: bool = False
+        self.label: str = OPCharacteristics.DEFAULT_LABEL
         self.nbInstances: int = 0
         self.domains: list = []
         self.ranges: list = []

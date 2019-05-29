@@ -56,7 +56,8 @@ class OwlreadyOntology(AbstractOntology):
         if iFound != -1:
             objprop = objprops[iFound]
             opChars = OPCharacteristics()
-            opChars.inverseOf = objprop.inverse_property.iri if objprop.inverse_property is not None else ""
+            opChars.inverseOf = objprop.inverse_property.iri if objprop.inverse_property is not None else \
+                OPCharacteristics.DEFAULT_INVERSE_OF
             opChars.isAsymmetric = issubclass(objprop, or2.AsymmetricProperty)
             opChars.isFunctional = issubclass(objprop, or2.FunctionalProperty)
             opChars.isInverseFunctional = issubclass(objprop, or2.InverseFunctionalProperty)
@@ -64,6 +65,7 @@ class OwlreadyOntology(AbstractOntology):
             opChars.isReflexive = issubclass(objprop, or2.ReflexiveProperty)
             opChars.isSymmetric = issubclass(objprop, or2.SymmetricProperty)
             opChars.isTransitive = issubclass(objprop, or2.TransitiveProperty)
+            opChars.label = OPCharacteristics.DEFAULT_LABEL  # TODO : find how to get label with OR2
             opChars.nbInstances = -1  # TODO : find how to gt instances of an OP with OR2
             opChars.subPropertyOf = [ancestor.iri for ancestor in objprop.ancestors() if ancestor.iri != opUri]
             return opChars

@@ -2,11 +2,13 @@ import numpy as np
 
 
 class Config:
+    VERSION = "0.1.9"
     VERBOSE_MODE = True
 
     CONSOLE_PREFIX = "§ "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
-    CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "so", "the", "to", "with"]
+    CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to",
+                     "with"]
 
     COLORS = np.array(['#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628',
                        '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000',
@@ -16,6 +18,7 @@ class Config:
         CLASS = "http://www.w3.org/2002/07/owl#Class"
         DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
         INVERSE_OF = "http://www.w3.org/2002/07/owl#inverseOf"
+        LABEL = "http://www.w3.org/2000/01/rdf-schema#label"
         OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#ObjectProperty"
         RANGE = "http://www.w3.org/2000/01/rdf-schema#range"
         RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"

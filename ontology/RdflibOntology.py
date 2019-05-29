@@ -22,6 +22,8 @@ def _is_object_property(_, p, o) -> bool:
 # Clean ontology name for each property
 # (ex: http://semanticweb.org/tabletopgames_V3#contains -> contains)
 def _get_name_rl(string: str) -> str:
+    if string[-1] == "/":
+        string = string[:len(string)-1]
     index = max(string.rfind("#"), string.rfind("/"))
     return string[index + 1:]
 
@@ -69,6 +71,8 @@ class RdflibOntology(AbstractOntology):
                         opProps[s].subPropertyOf.append(o)
                     elif p == Config.URI.INVERSE_OF:
                         opProps[s].inverseOf = o
+                    elif p == Config.URI.LABEL:
+                        opProps[s].label = o
                     elif p == Config.URI.RDF_TYPE:
                         if o == Config.URI.CHARACTERISTIC.ASYMMETRIC:
                             opProps[s].isAsymmetric = True

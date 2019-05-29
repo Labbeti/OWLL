@@ -2,8 +2,9 @@ import numpy as np
 from collections import Counter
 from Config import Config
 from os import listdir
-from os.path import isfile, join
 from time import strftime
+
+import os.path
 
 
 def prt(*arg):
@@ -25,7 +26,7 @@ def reshape(l: list) -> list:
 
 
 def get_filenames(dirpath: str) -> list:
-    filenames = [f for f in listdir(dirpath) if isfile(join(dirpath, f))]
+    filenames = [f for f in listdir(dirpath) if os.path.isfile(os.path.join(dirpath, f))]
     return filenames
 
 
@@ -71,3 +72,7 @@ def rem_empty(string_list: list) -> list:
         if v != "":
             res.append(v)
     return res
+
+
+def to_percent(num: float, denom: float) -> float:
+    return 100. * num / denom

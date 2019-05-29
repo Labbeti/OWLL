@@ -9,7 +9,7 @@ def class_with_typo_words():
     filepath_results = "results/typoclass/classif.txt"
     limit = 10000
 
-    prt("Classify with typo words on %s...\n" % filepath_dbpedia)
+    prt("Classify with typo words on %s..." % filepath_dbpedia)
     data, _, dim = load_vectors(filepath_fasttext, limit)
     onto = Ontology(filepath_dbpedia)
     op_names = onto.getObjectProperties()
@@ -20,6 +20,7 @@ def class_with_typo_words():
 
     typo_name, typo_vecs = get_vecs(Config.TYPO_WORDS, data, dim)
 
+    prt("Classifying with typo words...")
     nb_vecs_found = 0
     for name in op_names:
         vec = get_vec(name, data, dim)
@@ -46,6 +47,7 @@ def class_with_typo_words():
 
     out.write(("# Nb vectors found: %d / %d\n" % (nb_vecs_found, len(op_names))))
     out.close()
+    prt("Results has been saved in \"%s\"." % filepath_results)
 
 
 if __name__ == "__main__":

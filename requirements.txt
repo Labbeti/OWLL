@@ -4,3 +4,4 @@ numpy
 owlready2
 rdflib
 scikit-learn
+gensim

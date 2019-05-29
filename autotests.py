@@ -2,6 +2,7 @@ from ontology.Ontology import *
 from utils import equals
 from utils import prt
 from utils import split_name
+from utils import trim
 
 
 def test_split_name():
@@ -16,7 +17,8 @@ def test_split_name():
         "is_family": ["is", "family"],
         "has given name": ["has", "given", "name"],
         " _ truc__ _chose ": ["truc", "chose"],
-        "Permission_Procedure": ["Permission", "Procedure"]
+        "Permission_Procedure": ["Permission", "Procedure"],
+        "mitigated_By": ["mitigated", "By"],
     }
     for value, results_expected in tests.items():
         results = split_name(value)
@@ -27,10 +29,10 @@ def test_split_name():
 
 def test_get_object_properties():
     tests = {
-        #"data/ontologies/tabletopgames_V3.owl",
-        #"data/ontologies/dbpedia_2016-10.owl",
-        #"data/ontologies/no_op/AuthorizationRealms.owl",
-        #"data/ontologies/collaborativePizza.owl",
+        "data/ontologies/tabletopgames_V3.owl",
+        "data/ontologies/dbpedia_2016-10.owl",
+        "data/ontologies/no_op/AuthorizationRealms.owl",
+        "data/ontologies/collaborativePizza.owl",
         "data/ontologies/Actor.owl"
     }
 
@@ -44,7 +46,6 @@ def test_get_object_properties():
         triples_rdflib = onto_rdf.getOWLTriples()
 
         if not equals(names_owlready, names_rdflib) or not equals(triples_owlready, triples_rdflib):
-            # prt("DEBUG: auto: ", triples_owlready, "\n\n", triples_rdflib)
             raise Exception("§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\t"
                             "Rdflib: nb_names=%d nb_triples=%d" % (filepath, len(names_owlready),
                                                                    len(triples_owlready), len(names_rdflib),

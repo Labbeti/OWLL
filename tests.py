@@ -6,6 +6,7 @@ from gensim.models import Word2Vec
 from gensim.test.utils import common_texts, get_tmpfile
 from ontology.Ontology import LoadType
 from ontology.Ontology import Ontology
+from owll_opd import read_opd
 from utils import *
 
 
@@ -19,32 +20,17 @@ def test_load():
     print(len(triples))
 
 
-def get_opd(filepath_opd: str) -> (list, str):
-    fopd = open(filepath_opd, "r", encoding='utf-8', errors='ignore')
-    version_opd = "Unknown"
-    data = []
-    for line in fopd:
-        if line != "\n" and not line.startswith("#"):
-            values = rem_empty(line.split(" "))
-            values.pop()  # Remove '\n' at the end of the list
-            data.append(values)
-        elif line.startswith("#!"):
-            version_opd = line.split(" ")[2].replace("\n", "")
-    fopd.close()
-    return data, version_opd
-
-
 def test_gen_model():
     # fname = get_tmpfile("vectors.kv")  # search in "C:\\Users\\invite\\AppData\\Local\\Temp\\"
 
     filepath_opd = "results/stats/opd.txt"
     filepath_model = "results/gensim/word2vec.model"
-    data, version = get_opd(filepath_opd)
+    data, version, _ = read_opd(filepath_opd)
 
     names = []
     nb_names = 0
     for values in data:
-        op_name = values[0]
+        op_name = values["ObjectProperty"]
         words_name = split_name(op_name)
         words_name_lower = [word.lower() for word in words_name]
         names.append(words_name_lower)
@@ -114,5 +100,5 @@ def test_gen_model():
 
 
 if __name__ == "__main__":
-    test_load()
-    #test_gen_model()
+    #test_load()
+    test_gen_model()
