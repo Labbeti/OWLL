@@ -7,3 +7,5 @@ __pycache__
 .idea
 
 OLD_*
+
+results/gensim/distance_matrix.csv
