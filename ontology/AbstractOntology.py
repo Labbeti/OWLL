@@ -4,9 +4,11 @@ from abc import abstractmethod
 from ontology.OPCharacteristics import OPCharacteristics
 
 
+# Interface for Ontology classes.
 class AbstractOntology(object, metaclass=ABCMeta):
     __filepath: str = ""
 
+    # Return the name of the OP or class target by the parameter uri.
     @abstractmethod
     def getName(self, uri: str) -> str:
         raise NotImplementedError("user must define getName")

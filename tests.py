@@ -7,7 +7,7 @@ from gensim.test.utils import common_texts, get_tmpfile
 from ontology.Ontology import LoadType
 from ontology.Ontology import Ontology
 from owll_opd import read_opd
-from utils import *
+from util import *
 
 
 def test_load():

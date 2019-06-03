@@ -1,7 +1,7 @@
+gensim
 html5lib
 matplotlib
 numpy
 owlready2
 rdflib
 scikit-learn
-gensim

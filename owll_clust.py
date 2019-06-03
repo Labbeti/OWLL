@@ -4,7 +4,7 @@ from ontology.Ontology import Ontology
 from os.path import basename
 from sklearn.cluster import *
 from sklearn.mixture import GaussianMixture
-from utils import *
+from util import *
 
 import matplotlib.pyplot as plt
 import sklearn as sk
@@ -63,7 +63,7 @@ def get_centers_names(preds, op_names, op_vecs):
             minDist = dist
             index_nearest_pt[pred] = i
         i += 1
-    return [(op_names[index] if index != -1 else "§ UNKNOWN §") for index in index_nearest_pt]
+    return [(op_names[index] if index != -1 else "UNKNOWN_CENTER_NAME") for index in index_nearest_pt]
 
 
 def draw_results(preds, op_vecs, clusters_centers):
@@ -90,10 +90,10 @@ def draw_results(preds, op_vecs, clusters_centers):
 
 
 # Clusterisation of object properties names.
-def clust_op_names():
+def clust_op_names(args: str = ""):
     filepath_onto = "data/ontologies/dbpedia_2016-10.owl"
     filepath_ft = "data/fasttext/wiki-news-300d-1M.vec"
-    filepath_results = "results/clust/clust_op_names.txt"
+    filepath_results = "results/clust/clusters_stats.txt"
     limit = 30_000
     # nb_clusters_default pour tous les algos sauf MeanShift et AffinityPropagation
     nb_clusters_default = 13

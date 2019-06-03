@@ -1,7 +1,7 @@
 from Config import *
 from time import time
-from utils import prt
-from utils import split_name
+from util import prt
+from util import split_name
 
 
 # Note: quelques mots non trouvé dans FastText :
@@ -14,7 +14,7 @@ def load_vectors(filename: str, limit: int = 1_000_000) -> (map, int, int):
     i = 1
     for line in file:
         if i % 10000 == 0:
-            prt("Info: Line %7d / %7d" % (i, min(n, limit)))  # TODO: delete
+            prt("Reading FastText... (line %7d / %7d)" % (i, min(n, limit)))
         tokens = line.rstrip().split(' ')
         data[tokens[0]] = list(map(float, tokens[1:]))
         i += 1

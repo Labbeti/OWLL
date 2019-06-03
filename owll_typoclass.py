@@ -1,9 +1,12 @@
 from ft_fcts import *
 from ontology.Ontology import Ontology
-from utils import *
+from util import get_time
+from util import prt
+from util import sq_dist
 
 
-def class_with_typo_words():
+# Try to classify names with FastText by searching the nearest vector of Connect words for each vector of OP name.
+def class_with_typo_words(args: str = ""):
     filepath_fasttext = "data/fasttext/wiki-news-300d-1M.vec"
     filepath_dbpedia = "data/ontologies/dbpedia_2016-10.owl"
     filepath_results = "results/typoclass/classif.txt"

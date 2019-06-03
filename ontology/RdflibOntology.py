@@ -8,6 +8,9 @@ from rdflib.exceptions import ParserError
 import rdflib as rl
 
 
+# Patterns:
+# - s type class
+# - s subClassOf o
 def _is_class(_, p, o) -> bool:
     return (p.toPython() == Config.URI.RDF_TYPE and o.toPython() == Config.URI.CLASS) or \
            (p.toPython() == Config.URI.SUB_CLASS_OF)
@@ -21,7 +24,9 @@ def _is_object_property(_, p, o) -> bool:
 
 # Clean ontology name for each property
 # (ex: http://semanticweb.org/tabletopgames_V3#contains -> contains)
-def _get_name_rl(string: str) -> str:
+def _rl_uri_to_name(string: str) -> str:
+    if string == "":
+        return ""
     if string[-1] == "/":
         string = string[:len(string)-1]
     index = max(string.rfind("#"), string.rfind("/"))
@@ -29,10 +34,41 @@ def _get_name_rl(string: str) -> str:
 
 
 class RdflibOntology(AbstractOntology):
+    # --- PUBLIC ---
     def __init__(self, filepath: str, fileformat: str = None):
         self.__filepath = filepath
-        self.__triples = []
-        self.__arrows = {}
+        self.__rl_graph = None
+        self.__opCharacteristics = {}
+        self.__clCharacteristics = {}
+        self.__OWLtriples = []
+
+        self.__load(filepath, fileformat)
+
+    def getClassCharacteristics(self, clUri) -> ClassCharacteristics:
+        return self.__clCharacteristics[clUri]
+
+    def getName(self, uri: str) -> str:
+        return _rl_uri_to_name(uri)
+
+    def getNbErrors(self) -> int:
+        return 0
+
+    # Warning: Not verified for all types of object properties.
+    def getObjectProperties(self) -> list:
+        return [_rl_uri_to_name(s) for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
+
+    def getOPCharacteristics(self, opUri: str) -> OPCharacteristics:
+        return self.__opCharacteristics[opUri]
+
+    def getOWLTriples(self) -> list:
+        return self.__OWLtriples
+
+    def isLoaded(self) -> bool:
+        return self.__rl_graph is not None
+
+    # --- PRIVATE ---
+    def __load(self, filepath: str, fileformat: str):
+        self.__filepath = filepath
 
         if fileformat is None:
             formats_to_test = Config.RDFLIB_FORMATS
@@ -50,82 +86,70 @@ class RdflibOntology(AbstractOntology):
             except (ParserError, ValueError, Exception):
                 pass
             i += 1
-
         if loaded:
             self.__rl_graph = graph
+            self.__updateProperties()
+            self.__updateOWLTriples()
 
-            claUri = [s.toPython() for s, p, o in self.__rl_graph if _is_class(s, p, o)]
-            clProps = {s: ClassCharacteristics() for s in claUri}
-            opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
-            opProps = {s: OPCharacteristics() for s in opsUri}
-            for sUri, pUri, oUri in self.__rl_graph:
-                s = sUri.toPython()
-                p = pUri.toPython()
-                o = oUri.toPython()
-                if s in opsUri:
-                    if p == Config.URI.DOMAIN:
-                        opProps[s].domains.append(o)
-                    elif p == Config.URI.RANGE:
-                        opProps[s].ranges.append(o)
-                    elif p == Config.URI.SUB_PROPERTY_OF:
-                        opProps[s].subPropertyOf.append(o)
-                    elif p == Config.URI.INVERSE_OF:
-                        opProps[s].inverseOf = o
-                    elif p == Config.URI.LABEL:
-                        opProps[s].label = o
-                    elif p == Config.URI.RDF_TYPE:
-                        if o == Config.URI.CHARACTERISTIC.ASYMMETRIC:
-                            opProps[s].isAsymmetric = True
-                        if o == Config.URI.CHARACTERISTIC.FUNCTIONAL:
-                            opProps[s].isFunctional = True
-                        elif o == Config.URI.CHARACTERISTIC.INVERSE_FUNCTIONAL:
-                            opProps[s].isInverseFunctional = True
-                        elif o == Config.URI.CHARACTERISTIC.IRREFLEXIVE:
-                            opProps[s].isIrreflexive = True
-                        elif o == Config.URI.CHARACTERISTIC.REFLEXIVE:
-                            opProps[s].isReflexive = True
-                        elif o == Config.URI.CHARACTERISTIC.SYMMETRIC:
-                            opProps[s].isSymmetric = True
-                        elif o == Config.URI.CHARACTERISTIC.TRANSITIVE:
-                            opProps[s].isTransitive = True
-                elif p == Config.URI.RDF_TYPE and o in opsUri:
-                    opProps[o].nbInstances += 1
+    def __updateProperties(self):
+        # Init class characteristics
+        claUri = [s.toPython() for s, p, o in self.__rl_graph if _is_class(s, p, o)]
+        clChars = {s: ClassCharacteristics() for s in claUri}
+        # Init OP characteristics
+        opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
+        opChars = {s: OPCharacteristics() for s in opsUri}
 
-            self.__opProps = opProps
-            self.__clProps = clProps
-            self.__triples = []
-            for opUri in opsUri:
-                domains = opProps[opUri].domains
-                if len(domains) == 0:
-                    domains = [Config.URI.THING]
-                ranges = opProps[opUri].ranges
-                if len(ranges) == 0:
-                    ranges = [Config.URI.THING]
+        # Update OP characteristics
+        for sUri, pUri, oUri in self.__rl_graph:
+            s = sUri.toPython()
+            p = pUri.toPython()
+            o = oUri.toPython()
+            # if s is an op, check the predicate p
+            if s in opsUri:
+                if p == Config.URI.DOMAIN:
+                    opChars[s].domains.append(o)
+                elif p == Config.URI.RANGE:
+                    opChars[s].ranges.append(o)
+                elif p == Config.URI.SUB_PROPERTY_OF:
+                    opChars[s].subPropertyOf.append(o)
+                elif p == Config.URI.INVERSE_OF:
+                    opChars[s].inverseOf = o
+                elif p == Config.URI.LABEL:
+                    opChars[s].label = o
+                elif p == Config.URI.RDF_TYPE:
+                    if o == Config.URI.CHARACTERISTIC.ASYMMETRIC:
+                        opChars[s].isAsymmetric = True
+                    if o == Config.URI.CHARACTERISTIC.FUNCTIONAL:
+                        opChars[s].isFunctional = True
+                    elif o == Config.URI.CHARACTERISTIC.INVERSE_FUNCTIONAL:
+                        opChars[s].isInverseFunctional = True
+                    elif o == Config.URI.CHARACTERISTIC.IRREFLEXIVE:
+                        opChars[s].isIrreflexive = True
+                    elif o == Config.URI.CHARACTERISTIC.REFLEXIVE:
+                        opChars[s].isReflexive = True
+                    elif o == Config.URI.CHARACTERISTIC.SYMMETRIC:
+                        opChars[s].isSymmetric = True
+                    elif o == Config.URI.CHARACTERISTIC.TRANSITIVE:
+                        opChars[s].isTransitive = True
+            elif p == Config.URI.RDF_TYPE and o in opsUri:
+                opChars[o].nbInstances += 1
 
-                for opDomain in domains:
-                    for opRange in ranges:
-                        self.__triples.append((opDomain, opUri, opRange))
-        else:
-            self.__rl_graph = None
+        self.__opCharacteristics = opChars
+        self.__clCharacteristics = clChars
 
-    def getClassCharacteristics(self, clUri) -> ClassCharacteristics:
-        return self.__clProps[clUri]
+    def __updateOWLTriples(self):
+        # Update OWL triples
+        self.__OWLtriples = []
+        opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
 
-    def getName(self, uri: str) -> str:
-        return _get_name_rl(uri)
+        for opUri in opsUri:
+            domains = self.__opCharacteristics[opUri].domains
+            if len(domains) == 0:
+                domains = [Config.URI.THING]
+            ranges = self.__opCharacteristics[opUri].ranges
+            if len(ranges) == 0:
+                ranges = [Config.URI.THING]
 
-    def getNbErrors(self) -> int:
-        return 0
-
-    # Warning: Not verified for all types of object properties.
-    def getObjectProperties(self) -> list:
-        return [_get_name_rl(s) for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
-
-    def getOPCharacteristics(self, opUri: str) -> OPCharacteristics:
-        return self.__opProps[opUri]
-
-    def getOWLTriples(self) -> list:
-        return self.__triples
-
-    def isLoaded(self) -> bool:
-        return self.__rl_graph is not None
+            for opDomain in domains:
+                for opRange in ranges:
+                    self.__OWLtriples.append((opDomain, opUri, opRange))

@@ -1,46 +1,47 @@
 from ontology.Ontology import Ontology
 from time import time
-from utils import *
+from util import *
 
 import re
 
 
 # The OBO Foundry contains a lot of op names like "BFO_0000050", there are useless for semantic learning.
 # ex unreadable: BFO_0000050, RO_000050, APOLLO_SV_00001, NCIT_R100
-def is_unreadable(name: str) -> bool:
+def __is_unreadable(name: str) -> bool:
     return re.match("[A-Z_]+_[A-Z0-9]+", name) is not None
 
 
-def count_unreadables(triples: list) -> int:
+def __count_unreadables(triples: list) -> int:
     count = 0
     for _, p, _ in triples:
-        if is_unreadable(p):
+        if __is_unreadable(p):
             count += 1
     return count
 
 
-def get_values(line: str) -> list:
+def __get_values(line: str) -> list:
     values = line.split("|")
+    # Values: ["", "File...", "Op...", ..., "SubPropOf...", "\n"]
     values = values[1:len(values)-1]
     values = [value.strip() for value in values]
     return values
 
 
 # Generate the Object Property Database (OPD) in "results/opd/opd.txt".
-def gen_opd():
+def gen_opd(args: str = ""):
     # Parameters
     dirpath = "data/ontologies"
     filepathResults = "results/opd/opd.txt"
     filepathMeta = "results/opd/opd_meta.txt"
 
     # Global values for results format
-    meta_names = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
-    meta = {name: {} for name in meta_names}
-    line_meta_format = "%-40s" + (" %-10s" * len(meta_names)) + "\n"
+    metaNames = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
+    meta = {name: {} for name in metaNames}
+    line_meta_format = "%-40s" + (" %-10s" * len(metaNames)) + "\n"
     column_names = ("File", "ObjectProperty", "Domain", "Range", "Asym?", "Func?", "InFu?", "Irre?", "Refl?", "Symm?",
                     "Tran?", "Inst", "InverseOf", "SubPropertyOf")
-    column_format = ("| %-30s " * 4) + ("| %-5s " * 8) + ("| %-30s " * 2) + "| \n"
-    line_format = ("| %-30s " * 4) + ("| %-5d " * 8) + ("| %-30s " * 2) + "| \n"
+    column_format = ("| %-35s " * 4) + ("| %-5s " * 8) + ("| %-35s " * 2) + "| \n"
+    line_format = ("| %-35s " * 4) + ("| %-5d " * 8) + ("| %-35s " * 2) + "| \n"
 
     # Get the filenames of the ontologies
     filenames = get_filenames(dirpath)
@@ -64,7 +65,8 @@ def gen_opd():
         ontology = Ontology(filepath)
 
         if ontology.isLoaded():
-            prt("Load of \"%s\" is successfull (%d/%d)" % (filename, i, len(filenames)))
+            prt("Load of \"%s\" is successfull (RL=%d,OR=%d) (%d/%d)" % (filename, ontology.isLoadedWithRL(),
+                                                                         ontology.isLoadedWithOR2(), i, len(filenames)))
             triples = ontology.getOWLTriples()
             for (domainUri, opUri, rangeUri) in triples:
                 domainName = ontology.getName(domainUri)
@@ -73,7 +75,8 @@ def gen_opd():
                 opChars = ontology.getOPCharacteristics(opUri)
                 invName = ontology.getName(opChars.inverseOf)
                 parentNames = [ontology.getName(propUri) for propUri in opChars.subPropertyOf]
-                subPropOf = ",".join(parentNames) if len(parentNames) > 0 else "None"
+                subPropOf = ",".join(parentNames) if len(parentNames) > 0 else \
+                    Config.OPD_DEFAULT.SUBPROPERTY_OF
                 out.write(line_format %
                           (filename, opName, domainName, rangeName, opChars.isAsymmetric,
                            opChars.isFunctional, opChars.isInverseFunctional, opChars.isIrreflexive,
@@ -85,7 +88,7 @@ def gen_opd():
         end = time()
 
         # Get some information for "opd_meta"
-        nbUnreadable = count_unreadables(triples)
+        nbUnreadable = __count_unreadables(triples)
         meta["Rdflib?"][filename] = ontology.isLoadedWithRL()
         meta["Owlready?"][filename] = ontology.isLoadedWithOR2()
         meta["Loaded?"][filename] = ontology.isLoaded()
@@ -126,7 +129,7 @@ def gen_opd():
 
 
 # Read the data contained in a OPD file.
-# Return: (data, version, columns names)
+# Returns (data, version, columns names)
 def read_opd(filepath_opd: str) -> (list, str, list):
     fopd = open(filepath_opd, "r", encoding='utf-8')
 
@@ -139,7 +142,7 @@ def read_opd(filepath_opd: str) -> (list, str, list):
             versionOpd = line.split(" ")[2].replace("\n", "")
         elif line.startswith("#! Columns: "):
             line = fopd.readline()
-            values = get_values(line)
+            values = __get_values(line)
             # values => "File | ObjectProperty | ... |\n"
             columnsNames = values
         line = fopd.readline()
@@ -149,16 +152,16 @@ def read_opd(filepath_opd: str) -> (list, str, list):
     elif versionOpd == "Unknown":
         raise Exception("Incorrect OPD Header. Missing version line.")
 
+    # Read data
     data = []
     while line:
         if line != "\n" and not line.startswith("#"):
-            values = get_values(line)
+            values = __get_values(line)
             if values[-1] == "\n":
                 values.pop()  # Remove '\n' at the end of the list
             if len(columnsNames) != len(values):
-                print(columnsNames)
-                print(values)
                 raise Exception("Incorrect OPD \"%s\"" % filepath_opd)
+
             valuesDict = {columnsNames[i]: values[i] for i in range(len(values))}
             data.append(valuesDict)
         line = fopd.readline()
@@ -168,5 +171,5 @@ def read_opd(filepath_opd: str) -> (list, str, list):
 
 
 if __name__ == "__main__":
-    #gen_opd()
+    # gen_opd()
     pass

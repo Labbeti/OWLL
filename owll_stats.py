@@ -1,5 +1,5 @@
 from owll_opd import read_opd
-from utils import *
+from util import *
 
 
 # Generate some stats about connect word (Config.CONNECT_WORDS) in "connect_words_stats.txt"
@@ -206,12 +206,12 @@ def generate_global_stats():
     out.close()
 
 
-def update_all_stats():
+def update_all_stats(args: str):
     prt("Compute statistics with OPD...")
     connect_words_stats()
     extract_roots()
     generate_global_stats()
-    prt("Statistics done.")
+    prt("Statistics done (in directory %s)." % "results/stats/")
 
 
 if __name__ == "__main__":

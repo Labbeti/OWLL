@@ -2,7 +2,6 @@ import numpy as np
 
 
 class Config:
-    VERSION = "0.1.9"
     VERBOSE_MODE = True
 
     CONSOLE_PREFIX = "§ "
@@ -34,6 +33,12 @@ class Config:
             REFLEXIVE = "http://www.w3.org/2002/07/owl#ReflexiveProperty"
             SYMMETRIC = "http://www.w3.org/2002/07/owl#SymmetricProperty"
             TRANSITIVE = "http://www.w3.org/2002/07/owl#TransitiveProperty"
+
+    class OPD_DEFAULT:
+        LABEL = ""
+        NB_INSTANCES = -1
+        INVERSE_OF = ""
+        SUBPROPERTY_OF = ""
 
     TYPO_WORDS = ["characterize", "identifies", "defined", "depicted", "qualifies", "delineated", "specific",
                   "belongs", "includes", "gathered", "collects", "isComposedOf", "contains", "assimilates", "do",

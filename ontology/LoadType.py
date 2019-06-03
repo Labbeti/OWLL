@@ -1,6 +1,7 @@
 from enum import Enum, unique
 
 
+# Enumerate for Ontology class.
 @unique
 class LoadType(Enum):
     TRY_BOTH = 0

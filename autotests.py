@@ -1,8 +1,7 @@
 from ontology.Ontology import *
-from utils import equals
-from utils import prt
-from utils import split_name
-from utils import trim
+from util import equals
+from util import prt
+from util import split_name
 
 
 def test_split_name():

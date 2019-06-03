@@ -2,82 +2,85 @@ from owll_clust import clust_op_names
 from owll_opd import gen_opd
 from owll_stats import update_all_stats
 from owll_typoclass import class_with_typo_words
-from utils import prt
+from util import prt
+from util import rem_empty
 
 
 class Command:
-    def __init__(self, name, description, strings, usage, fct):
+    def __init__(self, name, description, labels, usage, fct):
         self.name = name
         self.description = description
-        self.strings = strings
+        self.labels = labels
         self.usage = usage
         self.fct = fct
+
+    def call(self, args: str):
+        self.fct(args)
 
 
 class Terminal:
     def __init__(self):
+        self.leaving = False
+        self.userInput = ""
         self.commands = [
-            Command("TypoClass", "Basic classification with relational words of \"Typologie des mots de liaisons\"",
+            Command("TypoClass", "Basic classification with relational words of \"Typologie des mots de liaisons\".",
                     ["typo"], "typo", class_with_typo_words),
             Command("Clust", "Test of some clusterisation algorithms on object properties names with FastText.",
                     ["clust"], "clust", clust_op_names),
-            Command("Generate OPD", "Regenerate Object Property Database (OPD)",
+            Command("Generate OPD", "Regenerate Object Property Database (OPD).",
                     ["genopd"], "genopd", gen_opd),
             Command("Get Stats", "Update all statistics from OPD.",
                     ["genstats"], "genstats", update_all_stats),
             Command("Help", "Display list of commands or show description and usage of a specific command.",
                     ["help"], "help [command]", self.help),
-            Command("Quit", "Leave the application.",
-                    ["quit", "exit", "logout"], "quit|exit|logout", self.quit),
+            Command("Quit", "Leave the OWLL terminal.",
+                    ["quit", "exit"], "quit|exit", self.quit),
         ]
-        self.leaving = False
-        self.userInput = ""
 
-    def searchCommand(self, userIn: str) -> Command:
-        found = False
+    def searchCommand(self, userIn: str) -> (Command, str):
         commandFound = None
+        userInSplit = rem_empty(userIn.split(" "))
+        commandName = userInSplit[0]
+        args = " ".join(userInSplit[1:])
+
         for command in self.commands:
-            for string in command.strings:
-                if userIn.startswith(string):
-                    found = True
-                    commandFound = command
-                    break
-            if found:
+            if commandName in command.labels:
+                commandFound = command
                 break
-        return commandFound
+        return commandFound, args
 
     def launch(self):
-        prt("Sub terminal launch. Enter your command: ")
+        prt("OWLL terminal is launched. Enter your command (type \"help\" for details):")
         while not self.leaving:
             self.userInput = input("> ")
-            self.userInput = self.userInput.lower()
-            command = self.searchCommand(self.userInput)
+            self.userInput = self.userInput.lower().strip()
+            command, args = self.searchCommand(self.userInput)
             if command is not None:
-                command.fct()
+                command.call(args)
                 prt("Command \"%s\" finished." % self.userInput)
             else:
                 prt("Unknown command \"%s\"." % self.userInput)
 
-    def help(self):
-        if self.userInput == "help":
+    def help(self, args: str):
+        argsSp = args.split()
+        if len(argsSp) == 0:
             prt("List of availible commands: ")
             for command in self.commands:
-                prt(" - %-20s : %s" % (command.usage, command.description))
+                prt("  %-20s : %s" % (command.usage, command.description))
         else:
-            splitted = self.userInput.split(" ")
-            commandName = " ".join(splitted[1:])
+            commandName = argsSp[0]
             found = False
             for command in self.commands:
-                if commandName == command.name or commandName in command.strings:
-                    prt("%-15s %-20s" % ("Name:", command.name))
-                    prt("%-15s %-20s" % ("Usage:", command.usage))
-                    prt("%-15s %-20s" % ("Description:", command.description))
+                if commandName == command.name or commandName in command.labels:
+                    prt("%-20s %-20s" % ("Name:", command.name))
+                    prt("%-20s %-20s" % ("Usage:", command.usage))
+                    prt("%-20s %-20s" % ("Description:", command.description))
                     found = True
                     break
             if not found:
                 prt("Unknown command \"%s\"." % commandName)
 
-    def quit(self):
+    def quit(self, args: str):
         self.leaving = True
 
 

@@ -8,6 +8,7 @@ from ontology.RdflibOntology import RdflibOntology
 class Ontology(AbstractOntology):
     __onto: AbstractOntology = None
 
+    # --- PUBLIC ---
     def __init__(self, filepath: str, load_type: LoadType = LoadType.TRY_BOTH, fileformat: str = None):
         self.__filepath = filepath
         self.__onto = None
@@ -23,7 +24,7 @@ class Ontology(AbstractOntology):
         if self.isLoaded():
             return self.__onto.getNbErrors()
         else:
-            raise Exception("Ontology %s not loaded." % self.__filepath)
+            return 1
 
     # Return the list of object properties names.
     def getObjectProperties(self) -> list:
@@ -54,6 +55,7 @@ class Ontology(AbstractOntology):
     def isLoadedWithRL(self) -> bool:
         return self.__onto is not None and isinstance(self.__onto, RdflibOntology)
 
+    # --- PRIVATE ---
     def __load(self, filepath, load_type, fileformat):
         if load_type == LoadType.TRY_BOTH:
             onto = RdflibOntology(filepath, fileformat)
