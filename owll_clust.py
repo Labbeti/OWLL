@@ -1,4 +1,4 @@
-from ft_fcts import *
+from fileIO import *
 from matplotlib.font_manager import FontProperties
 from ontology.Ontology import Ontology
 from os.path import basename
@@ -10,16 +10,12 @@ import matplotlib.pyplot as plt
 import sklearn as sk
 
 
-def get_nb_clusters(preds):
-    return max(preds) + 1
-
-
 def get_algos(nb_clusters: int) -> list:
     agglo = AgglomerativeClustering(n_clusters=nb_clusters)
     birch = Birch(n_clusters=nb_clusters)
     gauss = GaussianMixture(n_components=nb_clusters)
     kmeans = KMeans(n_clusters=nb_clusters)
-    mini_batch = MiniBatchKMeans(n_clusters=nb_clusters)
+    miniBatch = MiniBatchKMeans(n_clusters=nb_clusters)
     spectral = SpectralClustering(n_clusters=nb_clusters)
     affinity = AffinityPropagation()
     meanshift = MeanShift()  # bandwidth=1.25
@@ -29,7 +25,7 @@ def get_algos(nb_clusters: int) -> list:
         ("Birch", birch),
         ("GaussianMixture", gauss),
         ("KMeans", kmeans),
-        ("MiniBatchKMeans", mini_batch),
+        ("MiniBatchKMeans", miniBatch),
         ("SpectralClustering", spectral),
         ("AffinityPropagation", affinity),
         ("MeanShift", meanshift),
@@ -37,42 +33,41 @@ def get_algos(nb_clusters: int) -> list:
     return algorithms
 
 
-def get_partition(preds, op_names, op_vecs, dim):
-    nb_clusters = get_nb_clusters(preds)
-    clusters = [[] for _ in range(nb_clusters)]
-    clusters_centers = np.array([np.zeros(dim) for _ in range(nb_clusters)])
+def get_partition(nbClusters: int, preds, opNames, opVecs, dim: int):
+    clusters = [[] for _ in range(nbClusters)]
+    clustersCenters = np.array([np.zeros(dim) for _ in range(nbClusters)])
     i = 0
     for pred in preds:
-        clusters[pred].append(op_names[i])
-        clusters_centers[pred] += op_vecs[i]
+        clusters[pred].append(opNames[i])
+        clustersCenters[pred] += opVecs[i]
         i += 1
 
-    for i in range(nb_clusters):
-        clusters_centers[i] /= len(clusters[i])
-    return clusters, clusters_centers
+    for i in range(nbClusters):
+        clustersCenters[i] /= len(clusters[i])
+    return clusters, clustersCenters
 
 
-def get_centers_names(preds, op_names, op_vecs):
-    nb_clusters = get_nb_clusters(preds)
-    index_nearest_pt = [-1 for _ in range(nb_clusters)]
+def get_centers_names(nbClusters: int, preds, opNames, opVecs):
+    indexNearestPt = [-1 for _ in range(nbClusters)]
     minDist = 10000000
     i = 0
     for pred in preds:
-        dist = sq_dist(op_vecs[i], op_vecs[index_nearest_pt[pred]])
-        if index_nearest_pt[pred] == -1 or dist < minDist:
+        dist = sq_dist(opVecs[i], opVecs[indexNearestPt[pred]])
+        if indexNearestPt[pred] == -1 or dist < minDist:
             minDist = dist
-            index_nearest_pt[pred] = i
+            indexNearestPt[pred] = i
         i += 1
-    return [(op_names[index] if index != -1 else "UNKNOWN_CENTER_NAME") for index in index_nearest_pt]
+    return [(opNames[index] if index != -1 else "UNKNOWN_CENTER_NAME") for index in indexNearestPt]
 
 
-def draw_results(preds, op_vecs, clusters_centers):
-    nb_clusters = get_nb_clusters(preds)
+def draw_results(nbClusters: int, preds, opVecs, clustersCenters):
     pca = sk.decomposition.PCA(n_components=2)
-    all_pts = np.concatenate((op_vecs, clusters_centers))
-    reduced = pca.fit_transform(all_pts)
-    vecs_reduced = reduced[:len(reduced) - len(clusters_centers)]
-    centers_reduced = reduced[-len(clusters_centers):]
+    # Concatenate vectors and clusters centers to reduced all of it.
+    allPts = np.concatenate((opVecs, clustersCenters))
+    reduced = pca.fit_transform(allPts)
+    # Get the vectors and clusters centers reduced.
+    vecsReduced = reduced[:len(reduced) - len(clustersCenters)]
+    centersReduced = reduced[-len(clustersCenters):]
 
     # Duplicate colors if too many clusters
     colors_for_pt = Config.COLORS[preds % len(Config.COLORS)]
@@ -83,64 +78,63 @@ def draw_results(preds, op_vecs, clusters_centers):
 
     limit_clusters_index = 0
 
-    plt.scatter(vecs_reduced[:, 0], vecs_reduced[:, 1], s=6, color=colors_for_pt)
-    for i in range(min(nb_clusters, limit_clusters_index)):
-        plt.text(centers_reduced[i, 0], centers_reduced[i, 1], s=str(i), color=Config.COLORS[i % len(Config.COLORS)],
+    plt.scatter(vecsReduced[:, 0], vecsReduced[:, 1], s=6, color=colors_for_pt)
+    for i in range(min(nbClusters, limit_clusters_index)):
+        plt.text(centersReduced[i, 0], centersReduced[i, 1], s=str(i), color=Config.COLORS[i % len(Config.COLORS)],
                  fontproperties=font)
 
 
 # Clusterisation of object properties names.
 def clust_op_names(args: str = ""):
-    filepath_onto = "data/ontologies/dbpedia_2016-10.owl"
-    filepath_ft = "data/fasttext/wiki-news-300d-1M.vec"
-    filepath_results = "results/clust/clusters_stats.txt"
+    filepathOnto = "data/ontologies/dbpedia_2016-10.owl"
+    filepathFt = Config.PATH.FILE.FASTTEXT
+    filepathResults = "results/clust/clusters_stats.txt"
     limit = 30_000
     # nb_clusters_default pour tous les algos sauf MeanShift et AffinityPropagation
-    nb_clusters_default = 13
+    nbClustersDefault = 13
 
-    filename_onto = basename(filepath_onto)
-    data, nbWords, dim = load_vectors(filepath_ft, limit)
-    onto = Ontology(filepath_onto)
-    op_names = onto.getObjectProperties()
-    op_names, op_vecs = get_vecs(op_names, data, dim)
+    filenameOnto = basename(filepathOnto)
+    data, nbWords, dim = load_ft_vectors(filepathFt, limit)
+    onto = Ontology(filepathOnto)
+    allOpNames = onto.getOpNames()
+    opNames, opVecs = get_vecs(allOpNames, data, dim)
 
-    prt("Ontologie = %s" % filepath_onto)
-    prt("Nb de relations lu par ft = %d / %d" % (len(op_vecs), len(onto.getObjectProperties())))
+    prt("Ontologie = %s" % filepathOnto)
+    prt("Nb de relations lu par ft = %d / %d" % (len(opVecs), len(onto.getOpNames())))
     prt("Pourcentage de FastText utilisé = %.1f %%" % (100 * limit / nbWords))
-    out = open(filepath_results, "w", encoding="utf-8")
-    out.write("#! Version: %s\n" % get_time())
-    out.write("\n")
+
+    out = create_result_file(filepathResults)
 
     i = 0
-    algorithms = get_algos(nb_clusters_default)
+    algorithms = get_algos(nbClustersDefault)
     for algoName, algoObj in algorithms:
         print("§ Computing %s..." % algoName)
         # Compute learning...
         start = time()
-        preds = algoObj.fit_predict(op_vecs)
+        preds = algoObj.fit_predict(opVecs)
         end = time()
 
         # Computing partition...
-        nb_clusters = get_nb_clusters(preds)
-        clusters, clusters_centers = get_partition(preds, op_names, op_vecs, dim)
-        clusters_centers_names = get_centers_names(preds, op_names, op_vecs)
+        nbClusters = max(preds) + 1
+        clusters, clustersCenters = get_partition(nbClusters, preds, opNames, opVecs, dim)
+        clustersCentersNames = get_centers_names(nbClusters, preds, opNames, opVecs)
 
         # Write in file
         nbTooSmallClusters = 0
-        proportionSmall = 100 / (nb_clusters * 2)  # TODO : modif ?
-        for j in range(nb_clusters):
-            proportion = 100 * len(clusters[j]) / len(op_vecs)
+        proportionSmall = 100 / (nbClusters * 2)  # TODO : modif ?
+        for j in range(nbClusters):
+            proportion = 100 * len(clusters[j]) / len(opVecs)
             if proportion < proportionSmall:
                 nbTooSmallClusters += 1
 
         out.write("Algorithm: %s\n" % algoName)
         out.write("Small clusters = %d (with proportion < %.2f%%)\n" % (nbTooSmallClusters, proportionSmall))
-        out.write("Total clusters = %d\n" % nb_clusters)
+        out.write("Total clusters = %d\n" % nbClusters)
         out.write("%-10s %-10s %-10s %-10s\n" % ("N°", "Size", "Part(%)", "Center"))
-        for j in range(nb_clusters):
-            proportion = 100 * len(clusters[j]) / len(op_vecs)
+        for j in range(nbClusters):
+            proportion = 100 * len(clusters[j]) / len(opVecs)
             out.write("%-10s %-10s %-10s %-10s\n" % (str(j), str(len(clusters[j])), "%.2f" % proportion,
-                                                     clusters_centers_names[j]))
+                                                     clustersCentersNames[j]))
         out.write("\n")
         j = 0
         for cluster in clusters:
@@ -152,8 +146,8 @@ def clust_op_names(args: str = ""):
         plt.subplot(221 + (i % 4))
         plt.title("%s in %.2fs (%d clusters)" % (algoName, end - start, max(preds) + 1))
         # (nb_clusters clusters pour tous sauf MeanShift et AffinityPropagation)
-        plt.suptitle("Clusterisation des noms de \"%s\"" % filename_onto)
-        draw_results(preds, op_vecs, clusters_centers)
+        plt.suptitle("Clusterisation des noms de \"%s\"" % filenameOnto)
+        draw_results(nbClusters, preds, opVecs, clustersCenters)
         i += 1
 
     prt("Computing of %d algorithms done." % len(algorithms))

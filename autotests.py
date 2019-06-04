@@ -30,19 +30,24 @@ def test_get_object_properties():
     tests = {
         "data/ontologies/tabletopgames_V3.owl",
         "data/ontologies/dbpedia_2016-10.owl",
-        "data/ontologies/no_op/AuthorizationRealms.owl",
         "data/ontologies/collaborativePizza.owl",
-        "data/ontologies/Actor.owl"
+        "data/ontologies/lom.owl",
+        "data/ontologies/STIX.owl",
     }
 
     for filepath in tests:
         onto_owl = Ontology(filepath, LoadType.FORCE_OWLREADY2)
         onto_rdf = Ontology(filepath, LoadType.FORCE_RDFLIB)
 
-        names_owlready = onto_owl.getObjectProperties()
-        triples_owlready = onto_owl.getOWLTriples()
-        names_rdflib = onto_rdf.getObjectProperties()
-        triples_rdflib = onto_rdf.getOWLTriples()
+        if not onto_owl.isLoaded():
+            raise Exception("Cannot read ontology \"%s\" with Owlready2." % filepath)
+        if not onto_rdf.isLoaded():
+            raise Exception("Cannot read ontology \"%s\" with Rdflib." % filepath)
+
+        names_owlready = onto_owl.getOpNames()
+        triples_owlready = onto_owl.getOwlTriplesUri()
+        names_rdflib = onto_rdf.getOpNames()
+        triples_rdflib = onto_rdf.getOwlTriplesUri()
 
         if not equals(names_owlready, names_rdflib) or not equals(triples_owlready, triples_rdflib):
             raise Exception("§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\t"

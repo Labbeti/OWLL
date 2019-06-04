@@ -1,11 +1,11 @@
 
 from Config import *
 from ontology.AbstractOntology import AbstractOntology
-from ontology.ClassCharacteristics import ClassCharacteristics
-from ontology.OPCharacteristics import OPCharacteristics
+from ontology.ClsProperties import ClsProperties
+from ontology.OpProperties import OpProperties
 from rdflib.exceptions import ParserError
 
-import rdflib as rl
+import rdflib as rdf
 
 
 # Patterns:
@@ -34,18 +34,12 @@ def _rl_uri_to_name(string: str) -> str:
 
 
 class RdflibOntology(AbstractOntology):
-    # --- PUBLIC ---
-    def __init__(self, filepath: str, fileformat: str = None):
-        self.__filepath = filepath
-        self.__rl_graph = None
-        self.__opCharacteristics = {}
-        self.__clCharacteristics = {}
-        self.__OWLtriples = []
+    # ---------------------------------------- PUBLIC ---------------------------------------- #
+    def __init__(self, filepath: str, fileFormat: str = None):
+        super().__init__(filepath)
+        self.__fileFormat = fileFormat
 
-        self.__load(filepath, fileformat)
-
-    def getClassCharacteristics(self, clUri) -> ClassCharacteristics:
-        return self.__clCharacteristics[clUri]
+        self.__load()
 
     def getName(self, uri: str) -> str:
         return _rl_uri_to_name(uri)
@@ -53,54 +47,38 @@ class RdflibOntology(AbstractOntology):
     def getNbErrors(self) -> int:
         return 0
 
-    # Warning: Not verified for all types of object properties.
-    def getObjectProperties(self) -> list:
-        return [_rl_uri_to_name(s) for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
-
-    def getOPCharacteristics(self, opUri: str) -> OPCharacteristics:
-        return self.__opCharacteristics[opUri]
-
-    def getOWLTriples(self) -> list:
-        return self.__OWLtriples
-
-    def isLoaded(self) -> bool:
-        return self.__rl_graph is not None
-
-    # --- PRIVATE ---
-    def __load(self, filepath: str, fileformat: str):
-        self.__filepath = filepath
-
-        if fileformat is None:
+    # ---------------------------------------- PRIVATE ---------------------------------------- #
+    def __load(self):
+        if self.__fileFormat is None:
             formats_to_test = Config.RDFLIB_FORMATS
         else:
-            formats_to_test = [fileformat]
+            formats_to_test = [self.__fileFormat]
 
-        graph = rl.Graph()
+        graph = rdf.Graph()
         i = 0
-        loaded = False
-        while i < len(formats_to_test) and not loaded:
+        self._loaded = False
+        while i < len(formats_to_test) and not self._loaded:
             format_name = formats_to_test[i]
             try:
-                graph.load(self.__filepath, format=format_name)
-                loaded = True
+                graph.load(self.getFilepath(), format=format_name)
+                super()._loaded = True
             except (ParserError, ValueError, Exception):
                 pass
             i += 1
-        if loaded:
-            self.__rl_graph = graph
-            self.__updateProperties()
-            self.__updateOWLTriples()
+        if self.isLoaded():
+            self.__updateProperties(graph)
+            self.__updateOWLTriples(graph)
 
-    def __updateProperties(self):
+    def __updateProperties(self, graph):
         # Init class characteristics
-        claUri = [s.toPython() for s, p, o in self.__rl_graph if _is_class(s, p, o)]
-        clChars = {s: ClassCharacteristics() for s in claUri}
+        clsUri = [s.toPython() for s, p, o in graph if _is_class(s, p, o)]
+        clsChars = {s: ClsProperties() for s in clsUri}
         # Init OP characteristics
-        opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
-        opChars = {s: OPCharacteristics() for s in opsUri}
+        opsUri = [s.toPython() for s, p, o in graph if _is_object_property(s, p, o)]
+        opChars = {s: OpProperties() for s in opsUri}
 
         # Update OP characteristics
-        for sUri, pUri, oUri in self.__rl_graph:
+        for sUri, pUri, oUri in graph:
             s = sUri.toPython()
             p = pUri.toPython()
             o = oUri.toPython()
@@ -133,23 +111,26 @@ class RdflibOntology(AbstractOntology):
                         opChars[s].isTransitive = True
             elif p == Config.URI.RDF_TYPE and o in opsUri:
                 opChars[o].nbInstances += 1
+            elif s in clsUri:
+                if p == Config.URI.SUB_CLASS_OF:
+                    clsChars[s].subClassOf.append(o)
 
-        self.__opCharacteristics = opChars
-        self.__clCharacteristics = clChars
+        self.__opChars = opChars
+        self.__clsChars = clsChars
 
-    def __updateOWLTriples(self):
+    def __updateOWLTriples(self, graph):
         # Update OWL triples
-        self.__OWLtriples = []
-        opsUri = [s.toPython() for s, p, o in self.__rl_graph if _is_object_property(s, p, o)]
+        self._owlTriplesUri = []
+        opsUri = [s.toPython() for s, p, o in graph if _is_object_property(s, p, o)]
 
         for opUri in opsUri:
-            domains = self.__opCharacteristics[opUri].domains
+            domains = self._opProperties[opUri].domains
             if len(domains) == 0:
                 domains = [Config.URI.THING]
-            ranges = self.__opCharacteristics[opUri].ranges
+            ranges = self._opProperties[opUri].ranges
             if len(ranges) == 0:
                 ranges = [Config.URI.THING]
 
             for opDomain in domains:
                 for opRange in ranges:
-                    self.__OWLtriples.append((opDomain, opUri, opRange))
+                    self._owlTriplesUri.append((opDomain, opUri, opRange))

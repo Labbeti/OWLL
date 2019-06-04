@@ -11,13 +11,9 @@ from util import *
 
 
 def test_load():
-    filepath = "data/ontologies/Actor.owl"
+    filepath = "data/ontologies/tabletopgames_V3.owl"
     onto = Ontology(filepath, LoadType.FORCE_OWLREADY2)
-    op = onto.getObjectProperties()
-    triples = onto.getOWLTriples()
-    print(triples)
-    print(len(op))
-    print(len(triples))
+    print("Loaded = %d" % onto.isLoaded())
 
 
 def test_gen_model():
@@ -100,5 +96,5 @@ def test_gen_model():
 
 
 if __name__ == "__main__":
-    #test_load()
-    test_gen_model()
+    test_load()
+    # test_gen_model()

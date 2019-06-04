@@ -1,3 +1,4 @@
+from fileIO import create_result_file
 from ontology.Ontology import Ontology
 from time import time
 from util import *
@@ -30,8 +31,8 @@ def __get_values(line: str) -> list:
 # Generate the Object Property Database (OPD) in "results/opd/opd.txt".
 def gen_opd(args: str = ""):
     # Parameters
-    dirpath = "data/ontologies"
-    filepathResults = "results/opd/opd.txt"
+    dirpath = Config.PATH.DIR.ONTOLOGIES
+    filepathResults = Config.PATH.FILE.OPD
     filepathMeta = "results/opd/opd_meta.txt"
 
     # Global values for results format
@@ -47,11 +48,10 @@ def gen_opd(args: str = ""):
     filenames = get_filenames(dirpath)
 
     # Create the OPD file with a specific header
-    out = open(filepathResults, "w", encoding='utf-8', errors='ignore')
-    out.write("#! Version: %s\n" % get_time())
+    out = create_result_file(filepathResults)
     out.write("#! Note: Asym = Asymmetric, Func = Functional, InFu = InverseFunctional, Irre = Irreflexive, "
               "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, Inst = Nb Instances\n")
-    out.write("#!\n")
+    out.write("\n")
     out.write("#! Columns: \n")
     out.write(column_format % column_names)
     out.write("\n")
@@ -67,12 +67,12 @@ def gen_opd(args: str = ""):
         if ontology.isLoaded():
             prt("Load of \"%s\" is successfull (RL=%d,OR=%d) (%d/%d)" % (filename, ontology.isLoadedWithRL(),
                                                                          ontology.isLoadedWithOR2(), i, len(filenames)))
-            triples = ontology.getOWLTriples()
+            triples = ontology.getOwlTriplesUri()
             for (domainUri, opUri, rangeUri) in triples:
                 domainName = ontology.getName(domainUri)
                 opName = ontology.getName(opUri)
                 rangeName = ontology.getName(rangeUri)
-                opChars = ontology.getOPCharacteristics(opUri)
+                opChars = ontology.getOpProperties(opUri)
                 invName = ontology.getName(opChars.inverseOf)
                 parentNames = [ontology.getName(propUri) for propUri in opChars.subPropertyOf]
                 subPropOf = ",".join(parentNames) if len(parentNames) > 0 else \
@@ -102,8 +102,8 @@ def gen_opd(args: str = ""):
     out.close()
 
     # Generate "opd_meta.txt" file for debugging
-    fmeta = open(filepathMeta, "w", encoding='utf-8', errors='ignore')
-    fmeta.write("#! Version: %s\n" % get_time())
+    fmeta = create_result_file(filepathMeta)
+    fmeta.write("# Note: If the file is loaded with Rdflib, then it will not try to load with Owlready2.\n\n")
     fmeta.write(line_meta_format % ("File", "Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples",
                                     "OpUnreada.", "MustKeep"))
     fmeta.write("\n")
@@ -129,15 +129,15 @@ def gen_opd(args: str = ""):
 
 
 # Read the data contained in a OPD file.
-# Returns (data, version, columns names)
-def read_opd(filepath_opd: str) -> (list, str, list):
-    fopd = open(filepath_opd, "r", encoding='utf-8')
+# Returns (data: list of dict, version: str, columns names: list of str)
+def read_opd(filepathOPD: str) -> (list, str, list):
+    fopd = open(filepathOPD, "r", encoding='utf-8')
 
     # Read Header
     versionOpd = "Unknown"
     columnsNames = []
     line = fopd.readline()
-    while line and line.startswith("#!"):
+    while line and (line.startswith("#!") or line == "\n"):
         if line.startswith("#! Version: "):
             versionOpd = line.split(" ")[2].replace("\n", "")
         elif line.startswith("#! Columns: "):
@@ -160,7 +160,7 @@ def read_opd(filepath_opd: str) -> (list, str, list):
             if values[-1] == "\n":
                 values.pop()  # Remove '\n' at the end of the list
             if len(columnsNames) != len(values):
-                raise Exception("Incorrect OPD \"%s\"" % filepath_opd)
+                raise Exception("Incorrect OPD \"%s\"" % filepathOPD)
 
             valuesDict = {columnsNames[i]: values[i] for i in range(len(values))}
             data.append(valuesDict)

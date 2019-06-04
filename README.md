@@ -23,6 +23,12 @@ The OWLL terminal will start and allow you to generate results.
 Type ```help``` to show commands.
 
 ### Versions 
+* Indev 0.1.11 (04/06/19)
+  * Add "subClassOf" for class properties.
+  * Add separator to run a sequence of commands in OWLL terminal.
+  * Refactoring ontology classes and add interface "IOntology".
+  * Still working on gensim. Try a clusterisation with "Doc2Vec".
+
 * Indev 0.1.10 (03/06/19)
   * Refactoring code and add some comments in ontology classes.
   * Add "Get started" to README.

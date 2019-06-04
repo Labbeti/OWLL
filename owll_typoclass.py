@@ -1,56 +1,62 @@
-from ft_fcts import *
+from Config import Config
+from fileIO import *
+from ontology.LoadType import LoadType
 from ontology.Ontology import Ontology
-from util import get_time
+from util import get_vec
+from util import get_vecs
 from util import prt
 from util import sq_dist
 
 
 # Try to classify names with FastText by searching the nearest vector of Connect words for each vector of OP name.
 def class_with_typo_words(args: str = ""):
-    filepath_fasttext = "data/fasttext/wiki-news-300d-1M.vec"
-    filepath_dbpedia = "data/ontologies/dbpedia_2016-10.owl"
-    filepath_results = "results/typoclass/classif.txt"
+    filepathFT = Config.PATH.FILE.FASTTEXT
+    filepathDBpedia = "data/ontologies/dbpedia_2016-10.owl"
+    filepathResults = "results/typoclass/classif.txt"
     limit = 10000
 
-    prt("Classify with typo words on %s..." % filepath_dbpedia)
-    data, _, dim = load_vectors(filepath_fasttext, limit)
-    onto = Ontology(filepath_dbpedia)
-    op_names = onto.getObjectProperties()
-    out = open(filepath_results, "w", encoding="utf-8")
-    out.write("#! Version: %s\n" % get_time())
-    out.write("# This file has been generated with %s.\n\n" % filepath_dbpedia)
-    out.write("%-7s %-30s %-30s %-10s\n\n" % ("#Found?", "OP name", "Typo word", "Proximity"))
+    prt("Classify with typo words on %s..." % filepathDBpedia)
+    data, _, dim = load_ft_vectors(filepathFT, limit)
+    # Get FT vectors for typo words
+    typoNames, typoVecs = get_vecs(Config.TYPO_WORDS, data, dim)
 
-    typo_name, typo_vecs = get_vecs(Config.TYPO_WORDS, data, dim)
+    prt("Reading ontology \"%s\"..." % filepathDBpedia)
+    onto = Ontology(filepathDBpedia, LoadType.FORCE_OWLREADY2)
+    opNames = onto.getOpNames()
+
+    fOut = create_result_file(filepathResults, filepathDBpedia)
+    fOut.write("%-7s %-30s %-30s %-10s\n\n" % ("#Found?", "OP name", "Typo word", "Proximity"))
 
     prt("Classifying with typo words...")
-    nb_vecs_found = 0
-    for name in op_names:
+    nbVecsFound = 0
+    for name in opNames:
+        # Get FT vector
         vec = get_vec(name, data, dim)
 
+        # If the name has been found, search the nearest vector in typoVecs
         if vec is not None:
             minDist = 10000000
             maxDist = -1
             minWord = "§OWLL_error§"
-            for i in range(len(typo_name)):
-                typo_word = typo_name[i]
-                typo_vec = typo_vecs[i]
+            for i in range(len(typoNames)):
+                typoWord = typoNames[i]
+                typoVec = typoVecs[i]
 
-                dist = sq_dist(vec, typo_vec)
+                dist = sq_dist(vec, typoVec)
                 if dist > maxDist:
                     maxDist = dist
                 if dist < minDist:
                     minDist = dist
-                    minWord = typo_word
+                    minWord = typoWord
 
-            out.write("%-7s %-30s %-30s %1.2f\n" % ("OK", name, minWord, 1 - minDist / maxDist))
-            nb_vecs_found += 1
+            fOut.write("%-7s %-30s %-30s %1.2f\n" % ("OK", name, minWord, 1 - minDist / maxDist))
+            nbVecsFound += 1
         else:
-            out.write("%-7s %-30s \n" % ("KO", name))
+            fOut.write("%-7s %-30s \n" % ("KO", name))
 
-    out.write(("# Nb vectors found: %d / %d\n" % (nb_vecs_found, len(op_names))))
-    out.close()
-    prt("Results has been saved in \"%s\"." % filepath_results)
+    fOut.write(("# Nb vectors found: %d / %d\n" % (nbVecsFound, len(opNames))))
+    fOut.close()
+    prt("Results has been saved in \"%s\"." % filepathResults)
 
 
 if __name__ == "__main__":

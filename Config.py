@@ -4,7 +4,7 @@ import numpy as np
 class Config:
     VERBOSE_MODE = True
 
-    CONSOLE_PREFIX = "§ "
+    CONSOLE_PREFIX = "% "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
     CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to",
                      "with"]
@@ -39,6 +39,15 @@ class Config:
         NB_INSTANCES = -1
         INVERSE_OF = ""
         SUBPROPERTY_OF = ""
+
+    class PATH:
+        class DIR:
+            ONTOLOGIES = "data/ontologies/"
+            RESULTS = "results/"
+
+        class FILE:
+            FASTTEXT = "data/fasttext/wiki-news-300d-1M.vec"
+            OPD = "results/opd/opd.txt"
 
     TYPO_WORDS = ["characterize", "identifies", "defined", "depicted", "qualifies", "delineated", "specific",
                   "belongs", "includes", "gathered", "collects", "isComposedOf", "contains", "assimilates", "do",

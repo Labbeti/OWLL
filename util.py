@@ -7,6 +7,7 @@ from time import strftime
 import os.path
 
 
+# Print function with a prefix to inform an OWLL output.
 def prt(*arg):
     if Config.VERBOSE_MODE:
         print(Config.CONSOLE_PREFIX, end='')
@@ -76,3 +77,30 @@ def rem_empty(string_list: list) -> list:
 
 def to_percent(num: float, denom: float) -> float:
     return 100. * num / denom
+
+
+def get_vec(name, data, dim):
+    words = split_name(name)
+    vecs = [(word.lower(), data.get(word.lower())) for word in words]
+    vec_res = np.zeros(dim)
+    nb_vecs_added = 0
+    for word, vec in vecs:
+        if vec is not None and (word not in Config.CONNECT_WORDS or len(vecs) == 1):
+            vec_res += vec
+            nb_vecs_added += 1
+
+    if nb_vecs_added > 0:
+        return vec_res / nb_vecs_added
+    else:
+        return None
+
+
+def get_vecs(names, data, dim) -> (list, list):
+    names_with_vec = []
+    vecs = []
+    for name in names:
+        vec = get_vec(name, data, dim)
+        if vec is not None:
+            names_with_vec.append(name)
+            vecs.append(vec)
+    return names_with_vec, vecs

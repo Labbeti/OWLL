@@ -1,24 +1,30 @@
 from ontology.AbstractOntology import AbstractOntology
+from ontology.ClsProperties import ClsProperties
+from ontology.IOntology import IOntology
 from ontology.LoadType import LoadType
-from ontology.OPCharacteristics import OPCharacteristics
+from ontology.OpProperties import OpProperties
 from ontology.OwlreadyOntology import OwlreadyOntology
 from ontology.RdflibOntology import RdflibOntology
 
 
-class Ontology(AbstractOntology):
-    __onto: AbstractOntology = None
+# Strategy Pattern for managing ontologies with multiple librairies.
+class Ontology(IOntology):
+    # ---------------------------------------- PUBLIC ---------------------------------------- #
+    def __init__(self, filepath: str, loadType: LoadType = LoadType.TRY_BOTH, fileFormat: str = None):
+        self.__onto: AbstractOntology
+        self.__load(filepath, loadType, fileFormat)
 
-    # --- PUBLIC ---
-    def __init__(self, filepath: str, load_type: LoadType = LoadType.TRY_BOTH, fileformat: str = None):
-        self.__filepath = filepath
-        self.__onto = None
-        self.__load(filepath, load_type, fileformat)
+    def getClsProperties(self, clsUri: str) -> ClsProperties:
+        self.__checkIfLoaded()
+        return self.__onto.getClsProperties(clsUri)
+
+    def getFilepath(self) -> str:
+        self.__checkIfLoaded()
+        return self.__onto.getFilepath()
 
     def getName(self, uri: str) -> str:
-        if self.isLoaded():
-            return self.__onto.getName(uri)
-        else:
-            raise Exception("Ontology %s not loaded." % self.__filepath)
+        self.__checkIfLoaded()
+        return self.__onto.getName(uri)
 
     def getNbErrors(self) -> int:
         if self.isLoaded():
@@ -26,37 +32,30 @@ class Ontology(AbstractOntology):
         else:
             return 1
 
-    # Return the list of object properties names.
-    def getObjectProperties(self) -> list:
-        if self.isLoaded():
-            return self.__onto.getObjectProperties()
-        else:
-            raise Exception("Ontology %s not loaded." % self.__filepath)
+    def getOpNames(self) -> list:
+        self.__checkIfLoaded()
+        return self.__onto.getOpNames()
 
-    def getOPCharacteristics(self, opUri: str) -> OPCharacteristics:
-        if self.isLoaded():
-            return self.__onto.getOPCharacteristics(opUri)
-        else:
-            raise Exception("Ontology %s not loaded." % self.__filepath)
+    def getOpProperties(self, opUri: str) -> OpProperties:
+        self.__checkIfLoaded()
+        return self.__onto.getOpProperties(opUri)
 
-    # Return the list of RDF triplets.
-    def getOWLTriples(self) -> list:
-        if self.isLoaded():
-            return self.__onto.getOWLTriples()
-        else:
-            raise Exception("Ontology %s not loaded." % self.__filepath)
+    def getOwlTriplesUri(self) -> list:
+        self.__checkIfLoaded()
+        return self.__onto.getOwlTriplesUri()
 
     def isLoaded(self) -> bool:
-        return self.__onto is not None
+        return self.__onto is not None and self.__onto.isLoaded()
 
     def isLoadedWithOR2(self) -> bool:
-        return self.__onto is not None and isinstance(self.__onto, OwlreadyOntology)
+        return self.isLoaded() and isinstance(self.__onto, OwlreadyOntology)
 
     def isLoadedWithRL(self) -> bool:
-        return self.__onto is not None and isinstance(self.__onto, RdflibOntology)
+        return self.isLoaded() and isinstance(self.__onto, RdflibOntology)
 
-    # --- PRIVATE ---
+    # ---------------------------------------- PRIVATE ---------------------------------------- #
     def __load(self, filepath, load_type, fileformat):
+        self.__onto = None
         if load_type == LoadType.TRY_BOTH:
             onto = RdflibOntology(filepath, fileformat)
             if onto.isLoaded():
@@ -75,3 +74,7 @@ class Ontology(AbstractOntology):
                 self.__onto = onto
         else:
             raise Exception("Invalid argument for \"load_type\".")
+
+    def __checkIfLoaded(self):
+        if not self.isLoaded():
+            raise Exception("Ontology %s not loaded." % self.__onto.getFilepath())

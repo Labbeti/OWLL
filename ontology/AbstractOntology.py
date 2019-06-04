@@ -1,14 +1,29 @@
 
-from abc import ABCMeta
 from abc import abstractmethod
-from ontology.OPCharacteristics import OPCharacteristics
+from ontology.ClsProperties import ClsProperties
+from ontology.IOntology import IOntology
+from ontology.OpProperties import OpProperties
 
 
-# Interface for Ontology classes.
-class AbstractOntology(object, metaclass=ABCMeta):
-    __filepath: str = ""
+# Abstract Ontology for implementation with librairies.
+class AbstractOntology(IOntology):
+    # ---------------------------------------- PUBLIC ---------------------------------------- #
+    def __init__(self, filepath: str):
+        self._filepath = filepath
+        self._loaded = False
+        self._clsProperties = {}
+        self._opProperties = {}
+        self._owlTriplesUri = []
 
-    # Return the name of the OP or class target by the parameter uri.
+    def getClsProperties(self, clsUri: str) -> ClsProperties:
+        if clsUri in self._clsProperties.keys():
+            return self._clsProperties[clsUri]
+        else:
+            raise Exception("Unknown URI %s." % clsUri)
+
+    def getFilepath(self) -> str:
+        return self._filepath
+
     @abstractmethod
     def getName(self, uri: str) -> str:
         raise NotImplementedError("user must define getName")
@@ -17,18 +32,18 @@ class AbstractOntology(object, metaclass=ABCMeta):
     def getNbErrors(self) -> int:
         raise NotImplementedError("user must define getNbErrors")
 
-    @abstractmethod
-    def getObjectProperties(self) -> list:
-        raise NotImplementedError("user must define getObjectProperties")
+    def getOpNames(self) -> list:
+        OPnames = [self.getName(key) for key in self._opProperties.keys()]
+        return OPnames
 
-    @abstractmethod
-    def getOPCharacteristics(self, opUri: str) -> OPCharacteristics:
-        raise NotImplementedError("user must define getOPCharacteristics")
+    def getOpProperties(self, opUri: str) -> OpProperties:
+        if opUri in self._opProperties.keys():
+            return self._opProperties[opUri]
+        else:
+            raise Exception("Unknown URI %s." % opUri)
 
-    @abstractmethod
-    def getOWLTriples(self) -> list:
-        raise NotImplementedError("user must define getTriples")
+    def getOwlTriplesUri(self) -> list:
+        return self._owlTriplesUri
 
-    @abstractmethod
     def isLoaded(self) -> bool:
-        raise NotImplementedError("user must define isLoaded")
+        return self._loaded

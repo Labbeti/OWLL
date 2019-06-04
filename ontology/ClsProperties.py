@@ -2,6 +2,6 @@
 
 # Class Characteristics
 # This class is used to unify the informations about OWL classes with Rdflib and Owlready2.
-class ClassCharacteristics:
+class ClsProperties:
     def __init__(self):
-        self.subClassOf: str = ""
+        self.subClassOf: list = []

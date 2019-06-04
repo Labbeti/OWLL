@@ -1,15 +1,16 @@
+from fileIO import create_result_file
 from owll_opd import read_opd
 from util import *
 
 
 # Generate some stats about connect word (Config.CONNECT_WORDS) in "connect_words_stats.txt"
 def connect_words_stats():
-    filepath_opd = "results/opd/opd.txt"
-    filepath_words = "results/stats/connect_words_stats.txt"
+    filepathOPD = Config.PATH.FILE.OPD
+    filepathWords = "results/stats/connect_words_stats.txt"
 
     results = {word_type: {} for word_type in ["Prefix", "Suffix", "Inside"]}
 
-    data, version_opd, _ = read_opd(filepath_opd)
+    data, versionOPD, _ = read_opd(filepathOPD)
     for values in data:
         op_name = values["ObjectProperty"]
         words_name = split_name(op_name)
@@ -27,9 +28,7 @@ def connect_words_stats():
                 results[conn_word_type][conn_word_found] = []
             results[conn_word_type][conn_word_found].append(op_name)
 
-    out = open(filepath_words, "w", encoding='utf-8', errors='ignore')
-    out.write("#! Version: %s\n" % get_time())
-    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepath_opd, version_opd))
+    out = create_result_file(filepathWords, filepathOPD, versionOPD)
     out.write("# Words searched are : %s\n" % str(Config.CONNECT_WORDS))
     out.write("\n")
 
@@ -52,15 +51,15 @@ def connect_words_stats():
 
 # Generate a partition of op names in "roots.txt" and "roots_meta.txt"
 def extract_roots():
-    filepath_opd = "results/opd/opd.txt"
-    filepath_meta = "results/stats/roots_meta.txt"
-    filepath_results = "results/stats/roots.txt"
+    filepathOPD = "results/opd/opd.txt"
+    filepathMeta = "results/stats/roots_meta.txt"
+    filepathResults = "results/stats/roots.txt"
 
     root_names = []
     roots = []
     empty_names = []
     other_names = []
-    data, version_opd, _ = read_opd(filepath_opd)
+    data, versionOPD, _ = read_opd(filepathOPD)
 
     for values in data:
         op_name = values["ObjectProperty"]
@@ -82,9 +81,7 @@ def extract_roots():
         else:
             other_names.append(op_name)
 
-    out = open(filepath_meta, "w", encoding="utf-8")
-    out.write("#! Version: %s\n" % get_time())
-    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepath_opd, version_opd))
+    out = create_result_file(filepathMeta, filepathOPD, versionOPD)
     out.write("# Words searched are : %s\n\n" % str(Config.CONNECT_WORDS))
 
     proportion = 100 * len(root_names) / len(data)
@@ -118,9 +115,9 @@ def extract_roots():
     out.write("\n")
     out.close()
 
-    out = open(filepath_results, "w", encoding="utf-8")
+    out = open(filepathResults, "w", encoding="utf-8")
     out.write("#! Version: %s\n" % get_time())
-    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepath_opd, version_opd))
+    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepathOPD, versionOPD))
     out.write("# This list can contains duplicates.\n")
     out.write("# Root words: \n")
     for word in roots:
@@ -140,9 +137,7 @@ def generate_global_stats():
     roots = []
     opNames = []
 
-    out = open(filepathResults, "w", encoding="utf-8")
-    out.write("#! Version: %s\n" % get_time())
-    out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (filepathOpd, versionOpd))
+    out = create_result_file(filepathResults, filepathOpd, versionOpd)
     out.write("# Words searched are : %s\n" % str(Config.CONNECT_WORDS))
     out.write("\n")
 
@@ -172,7 +167,7 @@ def generate_global_stats():
 
         rootWords = oldSplitted
         isRoot = len(rootWords) == 1
-        root = ("".join(rootWords))
+        root = ("".join(rootWords)) if isRoot else ""
         out.write(lineFormat % (opName, isRoot, root, counter["Domain"][i], counter["Range"][i]))
         for conn in Config.CONNECT_WORDS:
             out.write("%-5d | " % counter[conn][i])
@@ -206,12 +201,12 @@ def generate_global_stats():
     out.close()
 
 
-def update_all_stats(args: str):
+def update_all_stats(args: str = ""):
     prt("Compute statistics with OPD...")
     connect_words_stats()
     extract_roots()
     generate_global_stats()
-    prt("Statistics done (in directory %s)." % "results/stats/")
+    prt("Statistics done in directory \"%s\"." % "results/stats/")
 
 
 if __name__ == "__main__":
