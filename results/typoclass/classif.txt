@@ -1,4 +1,4 @@
-#! Version: 04/06/2019_16:02:01
+#! Version: 06/06/2019_11:25:01
 # This file has been generated with the file "data/ontologies/dbpedia_2016-10.owl".
 #Found? OP name                        Typo word                      Proximity 
 

@@ -5,7 +5,8 @@ from ontology.ClsProperties import ClsProperties
 from ontology.OpProperties import OpProperties
 from rdflib.exceptions import ParserError
 
-import rdflib as rdf
+import rdflib as rl
+import re
 
 
 # Patterns:
@@ -20,6 +21,16 @@ def _is_class(_, p, o) -> bool:
 # - s type ObjectProperty
 def _is_object_property(_, p, o) -> bool:
     return p.toPython() == Config.URI.RDF_TYPE and o.toPython() == Config.URI.OBJECT_PROPERTY
+
+
+# Patterns:
+# - s type Restriction
+def _is_restriction(_, p, o) -> bool:
+    return p.toPython() == Config.URI.RDF_TYPE and o.toPython() == Config.URI.RESTRICTION
+
+
+def _is_restriction_id(string: str) -> bool:
+    return re.match("N[a-f0-9]+", string) is not None
 
 
 # Clean ontology name for each property
@@ -54,14 +65,14 @@ class RdflibOntology(AbstractOntology):
         else:
             formats_to_test = [self.__fileFormat]
 
-        graph = rdf.Graph()
+        graph = rl.Graph()
         i = 0
         self._loaded = False
         while i < len(formats_to_test) and not self._loaded:
             format_name = formats_to_test[i]
             try:
                 graph.load(self.getFilepath(), format=format_name)
-                super()._loaded = True
+                self._loaded = True
             except (ParserError, ValueError, Exception):
                 pass
             i += 1
@@ -71,52 +82,64 @@ class RdflibOntology(AbstractOntology):
 
     def __updateProperties(self, graph):
         # Init class characteristics
-        clsUri = [s.toPython() for s, p, o in graph if _is_class(s, p, o)]
-        clsChars = {s: ClsProperties() for s in clsUri}
+        clsUri = [s.toPython() for s, p, o in graph if _is_class(s, p, o) and not _is_restriction_id(s)]
+        clsProps = {s: ClsProperties() for s in clsUri}
+        clsProps[Config.URI.THING] = ClsProperties()
         # Init OP characteristics
         opsUri = [s.toPython() for s, p, o in graph if _is_object_property(s, p, o)]
-        opChars = {s: OpProperties() for s in opsUri}
+        opProps = {s: OpProperties() for s in opsUri}
+
+        restrictionsClsId = set()
 
         # Update OP characteristics
         for sUri, pUri, oUri in graph:
             s = sUri.toPython()
             p = pUri.toPython()
             o = oUri.toPython()
+
             # if s is an op, check the predicate p
             if s in opsUri:
                 if p == Config.URI.DOMAIN:
-                    opChars[s].domains.append(o)
+                    opProps[s].domains.append(o)
+                    if o not in clsProps.keys():
+                        clsProps[o] = ClsProperties()
+                    clsProps[o].domainOf.append(s)
                 elif p == Config.URI.RANGE:
-                    opChars[s].ranges.append(o)
+                    opProps[s].ranges.append(o)
+                    if o not in clsProps.keys():
+                        clsProps[o] = ClsProperties()
+                    clsProps[o].rangeOf.append(s)
                 elif p == Config.URI.SUB_PROPERTY_OF:
-                    opChars[s].subPropertyOf.append(o)
+                    opProps[s].subPropertyOf.append(o)
                 elif p == Config.URI.INVERSE_OF:
-                    opChars[s].inverseOf = o
+                    opProps[s].inverseOf = o
                 elif p == Config.URI.LABEL:
-                    opChars[s].label = o
+                    opProps[s].label = o
                 elif p == Config.URI.RDF_TYPE:
                     if o == Config.URI.CHARACTERISTIC.ASYMMETRIC:
-                        opChars[s].isAsymmetric = True
+                        opProps[s].isAsymmetric = True
                     if o == Config.URI.CHARACTERISTIC.FUNCTIONAL:
-                        opChars[s].isFunctional = True
+                        opProps[s].isFunctional = True
                     elif o == Config.URI.CHARACTERISTIC.INVERSE_FUNCTIONAL:
-                        opChars[s].isInverseFunctional = True
+                        opProps[s].isInverseFunctional = True
                     elif o == Config.URI.CHARACTERISTIC.IRREFLEXIVE:
-                        opChars[s].isIrreflexive = True
+                        opProps[s].isIrreflexive = True
                     elif o == Config.URI.CHARACTERISTIC.REFLEXIVE:
-                        opChars[s].isReflexive = True
+                        opProps[s].isReflexive = True
                     elif o == Config.URI.CHARACTERISTIC.SYMMETRIC:
-                        opChars[s].isSymmetric = True
+                        opProps[s].isSymmetric = True
                     elif o == Config.URI.CHARACTERISTIC.TRANSITIVE:
-                        opChars[s].isTransitive = True
-            elif p == Config.URI.RDF_TYPE and o in opsUri:
-                opChars[o].nbInstances += 1
+                        opProps[s].isTransitive = True
+            elif p == Config.URI.RDF_TYPE and o in clsUri:
+                clsProps[o].nbInstances += 1
             elif s in clsUri:
                 if p == Config.URI.SUB_CLASS_OF:
-                    clsChars[s].subClassOf.append(o)
+                    clsProps[s].subClassOf.append(o)
+                elif p == Config.URI.RDF_TYPE and o == Config.URI.RESTRICTION:
+                    restrictionsClsId.add(s)
 
-        self.__opChars = opChars
-        self.__clsChars = clsChars
+        self._opProperties = opProps
+        self._clsProperties = clsProps
 
     def __updateOWLTriples(self, graph):
         # Update OWL triples

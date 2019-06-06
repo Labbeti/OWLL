@@ -4,7 +4,7 @@ import numpy as np
 class Config:
     VERBOSE_MODE = True
 
-    CONSOLE_PREFIX = "% "
+    TERMINAL_PREFIX = "% "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
     CONNECT_WORDS = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to",
                      "with"]
@@ -16,10 +16,13 @@ class Config:
     class URI:
         CLASS = "http://www.w3.org/2002/07/owl#Class"
         DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
+        INTERSECTION_OF = "http://www.w3.org/2002/07/owl#intersectionOf"
         INVERSE_OF = "http://www.w3.org/2002/07/owl#inverseOf"
         LABEL = "http://www.w3.org/2000/01/rdf-schema#label"
         OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#ObjectProperty"
         RANGE = "http://www.w3.org/2000/01/rdf-schema#range"
+        RESTRICTION = "http://www.w3.org/2002/07/owl#Restriction"
+        RDF_REST = "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
         RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         SUB_CLASS_OF = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
         SUB_PROPERTY_OF = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf"
@@ -44,6 +47,7 @@ class Config:
         class DIR:
             ONTOLOGIES = "data/ontologies/"
             RESULTS = "results/"
+            OPD = "results/opd/"
 
         class FILE:
             FASTTEXT = "data/fasttext/wiki-news-300d-1M.vec"

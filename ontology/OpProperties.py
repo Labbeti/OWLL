@@ -14,7 +14,6 @@ class OpProperties:
         self.isSymmetric: bool = False
         self.isTransitive: bool = False
         self.label: str = Config.OPD_DEFAULT.LABEL
-        self.nbInstances: int = 0
         self.domains: list = []
         self.ranges: list = []
         self.subPropertyOf: list = []

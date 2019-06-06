@@ -1,7 +1,6 @@
 from Config import Config
-from fileIO import *
-from ontology.LoadType import LoadType
-from ontology.Ontology import Ontology
+from file_io import *
+from ontology.OwlreadyOntology import OwlreadyOntology
 from util import get_vec
 from util import get_vecs
 from util import prt
@@ -9,7 +8,7 @@ from util import sq_dist
 
 
 # Try to classify names with FastText by searching the nearest vector of Connect words for each vector of OP name.
-def class_with_typo_words(args: str = ""):
+def class_with_typo_words(_: str = ""):
     filepathFT = Config.PATH.FILE.FASTTEXT
     filepathDBpedia = "data/ontologies/dbpedia_2016-10.owl"
     filepathResults = "results/typoclass/classif.txt"
@@ -21,7 +20,7 @@ def class_with_typo_words(args: str = ""):
     typoNames, typoVecs = get_vecs(Config.TYPO_WORDS, data, dim)
 
     prt("Reading ontology \"%s\"..." % filepathDBpedia)
-    onto = Ontology(filepathDBpedia, LoadType.FORCE_OWLREADY2)
+    onto = OwlreadyOntology(filepathDBpedia)
     opNames = onto.getOpNames()
 
     fOut = create_result_file(filepathResults, filepathDBpedia)

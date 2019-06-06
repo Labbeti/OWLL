@@ -1,7 +1,6 @@
 from ontology.AbstractOntology import AbstractOntology
 from ontology.ClsProperties import ClsProperties
 from ontology.IOntology import IOntology
-from ontology.LoadType import LoadType
 from ontology.OpProperties import OpProperties
 from ontology.OwlreadyOntology import OwlreadyOntology
 from ontology.RdflibOntology import RdflibOntology
@@ -10,9 +9,13 @@ from ontology.RdflibOntology import RdflibOntology
 # Strategy Pattern for managing ontologies with multiple librairies.
 class Ontology(IOntology):
     # ---------------------------------------- PUBLIC ---------------------------------------- #
-    def __init__(self, filepath: str, loadType: LoadType = LoadType.TRY_BOTH, fileFormat: str = None):
+    def __init__(self, filepath: str, fileFormat: str = None):
         self.__onto: AbstractOntology
-        self.__load(filepath, loadType, fileFormat)
+        self.__load(filepath, fileFormat)
+
+    def getAllClsProperties(self) -> dict:
+        self.__checkIfLoaded()
+        return self.__onto.getAllClsProperties()
 
     def getClsProperties(self, clsUri: str) -> ClsProperties:
         self.__checkIfLoaded()
@@ -54,26 +57,15 @@ class Ontology(IOntology):
         return self.isLoaded() and isinstance(self.__onto, RdflibOntology)
 
     # ---------------------------------------- PRIVATE ---------------------------------------- #
-    def __load(self, filepath, load_type, fileformat):
+    def __load(self, filepath, fileformat):
         self.__onto = None
-        if load_type == LoadType.TRY_BOTH:
-            onto = RdflibOntology(filepath, fileformat)
-            if onto.isLoaded():
-                self.__onto = onto
-            else:
-                onto = OwlreadyOntology(filepath)
-                if onto.isLoaded():
-                    self.__onto = onto
-        elif load_type == LoadType.FORCE_OWLREADY2:
+        onto = RdflibOntology(filepath, fileformat)
+        if onto.isLoaded():
+            self.__onto = onto
+        else:
             onto = OwlreadyOntology(filepath)
             if onto.isLoaded():
                 self.__onto = onto
-        elif load_type == LoadType.FORCE_RDFLIB:
-            onto = RdflibOntology(filepath, fileformat)
-            if onto.isLoaded():
-                self.__onto = onto
-        else:
-            raise Exception("Invalid argument for \"load_type\".")
 
     def __checkIfLoaded(self):
         if not self.isLoaded():

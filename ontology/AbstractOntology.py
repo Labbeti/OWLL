@@ -15,6 +15,9 @@ class AbstractOntology(IOntology):
         self._opProperties = {}
         self._owlTriplesUri = []
 
+    def getAllClsProperties(self) -> dict:
+        return self._clsProperties
+
     def getClsProperties(self, clsUri: str) -> ClsProperties:
         if clsUri in self._clsProperties.keys():
             return self._clsProperties[clsUri]

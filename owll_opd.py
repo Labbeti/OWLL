@@ -1,4 +1,4 @@
-from fileIO import create_result_file
+from file_io import create_result_file
 from ontology.Ontology import Ontology
 from time import time
 from util import *
@@ -7,7 +7,7 @@ import re
 
 
 # The OBO Foundry contains a lot of op names like "BFO_0000050", there are useless for semantic learning.
-# ex unreadable: BFO_0000050, RO_000050, APOLLO_SV_00001, NCIT_R100
+# ex: BFO_0000050, RO_000050, APOLLO_SV_00001, NCIT_R100
 def __is_unreadable(name: str) -> bool:
     return re.match("[A-Z_]+_[A-Z0-9]+", name) is not None
 
@@ -23,45 +23,68 @@ def __count_unreadables(triples: list) -> int:
 def __get_values(line: str) -> list:
     values = line.split("|")
     # Values: ["", "File...", "Op...", ..., "SubPropOf...", "\n"]
-    values = values[1:len(values)-1]
+    values = values[1:len(values) - 1]
     values = [value.strip() for value in values]
     return values
 
 
+# Get the gen_opd arguments in arg.
+def __get_gen_opd_args(args: str) -> (str, str):
+    argsList = split_input(args, " ")
+    if len(argsList) == 0:
+        dirpathOnto = Config.PATH.DIR.ONTOLOGIES
+        dirpathResults = Config.PATH.DIR.OPD
+    else:
+        if not os.path.isdir(argsList[0]):
+            prt("Error: \"%s\" must be a directory." % argsList[0])
+            return
+        dirpathOnto = argsList[0]
+        if len(argsList) >= 2:
+            if not os.path.isdir(argsList[1]):
+                prt("Error: \"%s\" must be a directory." % argsList[1])
+                return
+            dirpathResults = argsList[1]
+        else:
+            dirpathResults = Config.PATH.DIR.OPD
+    return dirpathOnto, dirpathResults
+
+
 # Generate the Object Property Database (OPD) in "results/opd/opd.txt".
 def gen_opd(args: str = ""):
-    # Parameters
-    dirpath = Config.PATH.DIR.ONTOLOGIES
-    filepathResults = Config.PATH.FILE.OPD
-    filepathMeta = "results/opd/opd_meta.txt"
+    # Initializing values...
+    dirpathOnto, dirpathResults = __get_gen_opd_args(args)
+    prt("Search ontologies in \"%s\" and save results in \"%s\"" % (dirpathOnto, dirpathResults))
+    filepathOpd = os.path.join(dirpathResults, "opd.txt")
+    filepathOpdMeta = os.path.join(dirpathResults, "opd_meta.txt")
 
-    # Global values for results format
     metaNames = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
-    meta = {name: {} for name in metaNames}
     line_meta_format = "%-40s" + (" %-10s" * len(metaNames)) + "\n"
+    meta = {name: {} for name in metaNames}
     column_names = ("File", "ObjectProperty", "Domain", "Range", "Asym?", "Func?", "InFu?", "Irre?", "Refl?", "Symm?",
-                    "Tran?", "Inst", "InverseOf", "SubPropertyOf")
-    column_format = ("| %-35s " * 4) + ("| %-5s " * 8) + ("| %-35s " * 2) + "| \n"
-    line_format = ("| %-35s " * 4) + ("| %-5d " * 8) + ("| %-35s " * 2) + "| \n"
+                    "Tran?", "DoIns", "RaIns", "InverseOf", "SubPropertyOf")
+    column_format = ("| %-35s " * 4) + ("| %-5s " * 9) + ("| %-35s " * 2) + "| \n"
+    line_format = ("| %-35s " * 4) + ("| %-5d " * 9) + ("| %-35s " * 2) + "| \n"
 
     # Get the filenames of the ontologies
-    filenames = get_filenames(dirpath)
+    filenames = get_filenames(dirpathOnto)
 
-    # Create the OPD file with a specific header
-    out = create_result_file(filepathResults)
+    # Create the OPD file
+    out = create_result_file(filepathOpd)
     out.write("#! Note: Asym = Asymmetric, Func = Functional, InFu = InverseFunctional, Irre = Irreflexive, "
-              "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, Inst = Nb Instances\n")
+              "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, DoIns = Nb Domain Instances, RaIns = Nb "
+              "Range Instances \n")
     out.write("\n")
     out.write("#! Columns: \n")
     out.write(column_format % column_names)
     out.write("\n")
 
+    # Read the list of ontologies
     i = 1
     for filename in filenames:
         # Read the ontology and save data in opd
         start = time()
         prt("Load of \"%s\"... (%d/%d)" % (filename, i, len(filenames)))
-        filepath = os.path.join(dirpath, filename)
+        filepath = os.path.join(dirpathOnto, filename)
         ontology = Ontology(filepath)
 
         if ontology.isLoaded():
@@ -72,16 +95,20 @@ def gen_opd(args: str = ""):
                 domainName = ontology.getName(domainUri)
                 opName = ontology.getName(opUri)
                 rangeName = ontology.getName(rangeUri)
-                opChars = ontology.getOpProperties(opUri)
-                invName = ontology.getName(opChars.inverseOf)
-                parentNames = [ontology.getName(propUri) for propUri in opChars.subPropertyOf]
+
+                opProps = ontology.getOpProperties(opUri)
+                domaimProps = ontology.getClsProperties(domainUri)
+                rangeProps = ontology.getClsProperties(rangeUri)
+                invName = ontology.getName(opProps.inverseOf)
+                parentNames = [ontology.getName(propUri) for propUri in opProps.subPropertyOf]
                 subPropOf = ",".join(parentNames) if len(parentNames) > 0 else \
                     Config.OPD_DEFAULT.SUBPROPERTY_OF
+
                 out.write(line_format %
-                          (filename, opName, domainName, rangeName, opChars.isAsymmetric,
-                           opChars.isFunctional, opChars.isInverseFunctional, opChars.isIrreflexive,
-                           opChars.isReflexive, opChars.isSymmetric, opChars.isTransitive, opChars.nbInstances,
-                           invName, subPropOf))
+                          (filename, opName, domainName, rangeName, opProps.isAsymmetric,
+                           opProps.isFunctional, opProps.isInverseFunctional, opProps.isIrreflexive,
+                           opProps.isReflexive, opProps.isSymmetric, opProps.isTransitive, domaimProps.nbInstances,
+                           rangeProps.nbInstances, invName, subPropOf))
         else:
             triples = []
             prt("Load of \"%s\" has failed (%d/%d)" % (filename, i, len(filenames)))
@@ -102,7 +129,8 @@ def gen_opd(args: str = ""):
     out.close()
 
     # Generate "opd_meta.txt" file for debugging
-    fmeta = create_result_file(filepathMeta)
+
+    fmeta = create_result_file(filepathOpdMeta)
     fmeta.write("# Note: If the file is loaded with Rdflib, then it will not try to load with Owlready2.\n\n")
     fmeta.write(line_meta_format % ("File", "Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples",
                                     "OpUnreada.", "MustKeep"))
@@ -125,7 +153,7 @@ def gen_opd(args: str = ""):
     fmeta.close()
 
     prt("")
-    prt("Files \"%s\" and \"%s\" saved. " % (filepathResults, filepathMeta))
+    prt("Files \"%s\" and \"%s\" saved. " % (filepathOpd, filepathOpdMeta))
 
 
 # Read the data contained in a OPD file.
@@ -171,5 +199,5 @@ def read_opd(filepathOPD: str) -> (list, str, list):
 
 
 if __name__ == "__main__":
-    # gen_opd()
+    gen_opd()
     pass

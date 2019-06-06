@@ -1,4 +1,4 @@
-from fileIO import *
+from file_io import *
 from matplotlib.font_manager import FontProperties
 from ontology.Ontology import Ontology
 from os.path import basename
@@ -33,7 +33,7 @@ def get_algos(nb_clusters: int) -> list:
     return algorithms
 
 
-def get_partition(nbClusters: int, preds, opNames, opVecs, dim: int):
+def get_partition(nbClusters: int, preds: np.array, opNames: list, opVecs: np.array, dim: int):
     clusters = [[] for _ in range(nbClusters)]
     clustersCenters = np.array([np.zeros(dim) for _ in range(nbClusters)])
     i = 0
@@ -47,7 +47,7 @@ def get_partition(nbClusters: int, preds, opNames, opVecs, dim: int):
     return clusters, clustersCenters
 
 
-def get_centers_names(nbClusters: int, preds, opNames, opVecs):
+def get_centers_names(nbClusters: int, preds: np.array, opNames: list, opVecs: np.array):
     indexNearestPt = [-1 for _ in range(nbClusters)]
     minDist = 10000000
     i = 0
@@ -60,14 +60,13 @@ def get_centers_names(nbClusters: int, preds, opNames, opVecs):
     return [(opNames[index] if index != -1 else "UNKNOWN_CENTER_NAME") for index in indexNearestPt]
 
 
-def draw_results(nbClusters: int, preds, opVecs, clustersCenters):
+def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCenters: np.array):
     pca = sk.decomposition.PCA(n_components=2)
     # Concatenate vectors and clusters centers to reduced all of it.
     allPts = np.concatenate((opVecs, clustersCenters))
     reduced = pca.fit_transform(allPts)
     # Get the vectors and clusters centers reduced.
     vecsReduced = reduced[:len(reduced) - len(clustersCenters)]
-    centersReduced = reduced[-len(clustersCenters):]
 
     # Duplicate colors if too many clusters
     colors_for_pt = Config.COLORS[preds % len(Config.COLORS)]
@@ -76,16 +75,17 @@ def draw_results(nbClusters: int, preds, opVecs, clustersCenters):
     font.set_weight('bold')
     font.set_size(20)
 
-    limit_clusters_index = 0
-
     plt.scatter(vecsReduced[:, 0], vecsReduced[:, 1], s=6, color=colors_for_pt)
-    for i in range(min(nbClusters, limit_clusters_index)):
+    '''
+    centersReduced = reduced[-len(clustersCenters):]
+    for i in range(nbClusters):
         plt.text(centersReduced[i, 0], centersReduced[i, 1], s=str(i), color=Config.COLORS[i % len(Config.COLORS)],
                  fontproperties=font)
+    '''
 
 
 # Clusterisation of object properties names.
-def clust_op_names(args: str = ""):
+def clust_op_names(_: str = ""):
     filepathOnto = "data/ontologies/dbpedia_2016-10.owl"
     filepathFt = Config.PATH.FILE.FASTTEXT
     filepathResults = "results/clust/clusters_stats.txt"
@@ -121,7 +121,8 @@ def clust_op_names(args: str = ""):
 
         # Write in file
         nbTooSmallClusters = 0
-        proportionSmall = 100 / (nbClusters * 2)  # TODO : modif ?
+        # Note: a cluster is small if his proportion is lower than proportionSmall
+        proportionSmall = 100 / (nbClusters * 2)
         for j in range(nbClusters):
             proportion = 100 * len(clusters[j]) / len(opVecs)
             if proportion < proportionSmall:

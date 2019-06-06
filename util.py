@@ -10,10 +10,11 @@ import os.path
 # Print function with a prefix to inform an OWLL output.
 def prt(*arg):
     if Config.VERBOSE_MODE:
-        print(Config.CONSOLE_PREFIX, end='')
+        print(Config.TERMINAL_PREFIX, end='')
         print(*arg)
 
 
+# Return the squared distance between two points.
 def sq_dist(v1: np.ndarray, v2: np.ndarray) -> np.ndarray:
     return np.sum(np.subtract(v1, v2) ** 2)
 
@@ -26,11 +27,13 @@ def reshape(l: list) -> list:
     return res
 
 
+# Return the name list of files contained in dirpath.
 def get_filenames(dirpath: str) -> list:
     filenames = [f for f in listdir(dirpath) if os.path.isfile(os.path.join(dirpath, f))]
     return filenames
 
 
+# Split an OP name in several words.
 def split_name(word: str) -> list:
     res = []
     buf = ""
@@ -50,6 +53,7 @@ def split_name(word: str) -> list:
     return res
 
 
+# Return the current time with a specific format for OWLL.
 def get_time() -> str:
     return strftime("%d/%m/%Y_%H:%M:%S")
 
@@ -63,10 +67,16 @@ def equals(l1: list, l2: list) -> bool:
     return list(diff.elements()) == []
 
 
+# Remove the duplicates in a list.
 def rem_duplicates(l: list) -> list:
-    return list(set(l))
+    res = []
+    for elt in l:
+        if elt not in res:
+            res.append(elt)
+    return res
 
 
+# Remove the empty strings in a string list.
 def rem_empty(string_list: list) -> list:
     res = []
     for v in string_list:
@@ -75,11 +85,13 @@ def rem_empty(string_list: list) -> list:
     return res
 
 
-def to_percent(num: float, denom: float) -> float:
-    return 100. * num / denom
+# Return the percentage of num in denum.
+def to_percent(num: float, denum: float) -> float:
+    return 100. * num / denum
 
 
-def get_vec(name, data, dim):
+# Return a vector of dimension dim related to name in data.
+def get_vec(name: str, data: dict, dim: int) -> np.array:
     words = split_name(name)
     vecs = [(word.lower(), data.get(word.lower())) for word in words]
     vec_res = np.zeros(dim)
@@ -95,7 +107,8 @@ def get_vec(name, data, dim):
         return None
 
 
-def get_vecs(names, data, dim) -> (list, list):
+# Return the list of names where we can find a vector with the list of vectors found in data.
+def get_vecs(names: list, data: dict, dim: int) -> (list, list):
     names_with_vec = []
     vecs = []
     for name in names:
@@ -104,3 +117,15 @@ def get_vecs(names, data, dim) -> (list, list):
             names_with_vec.append(name)
             vecs.append(vec)
     return names_with_vec, vecs
+
+
+# Split the string to find the list of OWLL terminal arguments.
+def split_input(string: str, separator: str) -> list:
+    args = string.split(separator)
+    args = [arg.strip() for arg in args if arg.strip() != ""]
+    return args
+
+
+# Convert all string in list to lower
+def str_list_lower(l: list) -> list:
+    return [s.lower() for s in l]

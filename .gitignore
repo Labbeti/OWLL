@@ -1,5 +1,6 @@
 data/fasttext
 data/ontologies
+indev
 other
 owlready2
 venv
@@ -8,4 +9,4 @@ __pycache__
 
 OLD_*
 
-results/gensim/distance_matrix.csv
+distance_matrix.csv

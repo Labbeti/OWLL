@@ -4,8 +4,31 @@ from abc import abstractmethod
 from ontology.OpProperties import OpProperties
 
 
+'''
+                    IOntology
+                        ^
+                        |
+        +---------------+---------------+
+        |                               |
+        |                               |
+    Ontology                      AbstractOntology
+                                        ^
+                                        |
+                            +-----------+-----------+
+                            |                       |
+                            |                       |
+                    OwlreadyOntology            RdflibOntology
+
+'''
+
+
 # Interface for Ontology classes.
 class IOntology(object, metaclass=ABCMeta):
+    # Return all class properties.
+    @abstractmethod
+    def getAllClsProperties(self) -> dict:
+        raise NotImplementedError("user must define getAllClsProperties")
+
     # Return the properties of a class.
     @abstractmethod
     def getClsProperties(self, clsUri: str) -> str:

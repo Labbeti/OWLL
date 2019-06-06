@@ -1,4 +1,4 @@
-from fileIO import create_result_file
+from file_io import create_result_file
 from owll_opd import read_opd
 from util import *
 
@@ -155,39 +155,51 @@ def generate_global_stats():
 
         # TODO : clean here
         splitted = split_name(opName)
+        # Erase domain
         splittedWithoutD = [word for word in splitted if word.lower() != opDomain.lower()]
-        splittedWithoutDR = [word for word in splittedWithoutD if word.lower() != opRange.lower()]
-        oldSplitted = splittedWithoutDR
         counter["Domain"][i] = len(splitted) - len(splittedWithoutD)
+        # Erase range
+        splittedWithoutDR = [word for word in splittedWithoutD if word.lower() != opRange.lower()]
         counter["Range"][i] = len(splittedWithoutD) - len(splittedWithoutDR)
+
+        # Erase connect words one by one to get the number of words deleted for each erasure
+        oldSplitted = splittedWithoutDR
         for conn in Config.CONNECT_WORDS:
             newSplitted = [word for word in oldSplitted if word.lower() != conn.lower()]
             counter[conn][i] = len(oldSplitted) - len(newSplitted)
             oldSplitted = newSplitted
 
+        # Get root
         rootWords = oldSplitted
         isRoot = len(rootWords) == 1
         root = ("".join(rootWords)) if isRoot else ""
+
+        # Write line in result file
         out.write(lineFormat % (opName, isRoot, root, counter["Domain"][i], counter["Range"][i]))
         for conn in Config.CONNECT_WORDS:
             out.write("%-5d | " % counter[conn][i])
         out.write("\n")
 
+        # Update lists
         if isRoot:
             roots.append(root.lower())
         opNames.append(opName.lower())
         i += 1
 
+    # Write columns names in the end
     nbProps = len(data)
     out.write("\n\n")
     out.write(columnsFormat % columnsNames)
     for conn in Config.CONNECT_WORDS:
         out.write("%-5s | " % conn)
 
+    # Write sums for each columns
     out.write("\nTotal:\n")
     out.write(lineFormat % (len(data), len(roots), "", sum(counter["Domain"]), sum(counter["Range"])))
     for conn in Config.CONNECT_WORDS:
         out.write("%-5d | " % sum(counter[conn]))
+
+    # Write proportions for each columns in %
     out.write("\nProportions (%):\n")
     out.write("| %-35.2f | %-8.2f | %-30s | %-6.2f | %-6.2f | " % (100, to_percent(len(roots), nbProps), "",
                                                                    to_percent(sum(counter["Domain"]), nbProps),
@@ -196,12 +208,14 @@ def generate_global_stats():
         out.write("%-5.2f | " % to_percent(sum(counter[conn]), nbProps))
     out.write("\n\n")
 
+    # Write additional information and close result file
     out.write("Distinct root words = %d\n" % len(set(roots)))
     out.write("Distinct OP = %d\n" % len(set(opNames)))
     out.close()
 
 
-def update_all_stats(args: str = ""):
+# Update all statistics with an OPD.
+def update_all_stats(_: str = ""):
     prt("Compute statistics with OPD...")
     connect_words_stats()
     extract_roots()

@@ -1,54 +1,81 @@
-from Config import Config
-from fileIO import create_result_file
-from gensim.models import FastText
-from gensim.models import TfidfModel
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-from gensim.similarities import SparseMatrixSimilarity
+from file_io import create_result_file
 from owll_opd import read_opd
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.cluster import KMeans
+from sklearn.cluster import AgglomerativeClustering, KMeans
 from time import time
-from util import prt
-from util import split_name
-from util import sq_dist
+from typing import TextIO
+from util import *
 
 import gensim as gs
-import numpy as np
 
 
-def get_names_opd(filepathOPD):
+def get_names_opd(filepathOPD, filterWords: bool, filterDuplicates: bool) -> (list, list):
     data, _, _ = read_opd(filepathOPD)
 
     prt("Reading and filtering OPD...")
-    OPnames = []
-    OPnamesSplitted = []
+    opNames = []
+    opNamesSplitted = []
     for values in data:
-        OPname = values["ObjectProperty"]
-        OPdomain = values["Domain"]
-        OPrange = values["Range"]
-        OPnames.append(OPname)
-        words = [word.lower() for word in split_name(OPname)]
-        words = [word for word in words if word != OPdomain.lower() and word != OPrange.lower() and word
-                 not in Config.CONNECT_WORDS]
+        opName = values["ObjectProperty"]
+        opDomain = values["Domain"]
+        opRange = values["Range"]
+
+        words = split_name(opName)
+        words = str_list_lower(words)
+        if filterWords:
+            words = [word for word in words if word.lower() != opDomain.lower() and word.lower() != opRange.lower()
+                     and word.lower() not in Config.CONNECT_WORDS]
+
         if len(words) > 0:
-            OPnamesSplitted.append(words)
-    return OPnames, OPnamesSplitted
+            opNames.append(opName)
+            opNamesSplitted.append(words)
+
+    if filterDuplicates:
+        opNames = rem_duplicates(opNames)
+        opNamesSplitted = rem_duplicates(opNamesSplitted)
+    return opNames, opNamesSplitted
 
 
-def gen_dist_matrix():
+def get_clusters(nbClusters: int, preds: list, opNamesSplitted: list) -> list:
+    clusters = [[] for _ in range(nbClusters)]
+    i = 0
+    for pred in preds:
+        opNameUsed = "".join(opNamesSplitted[i])
+        clusters[pred].append(opNameUsed)
+        i += 1
+    return clusters
+
+
+def save_clusters(out: TextIO, clusters: list):
+    nbVecTotal = sum([len(cluster) for cluster in clusters])
+    i = 0
+    for cluster in clusters:
+        out.write("Cluster %d (%.2f%%, %d/%d)\n" % (i, to_percent(len(cluster), nbVecTotal), len(cluster), nbVecTotal))
+        j = 1
+        for OPname in cluster:
+            out.write("%s, " % OPname)
+            if j % 100 == 0:
+                out.write("\n")
+            j += 1
+        out.write("\n\n")
+        i += 1
+    out.close()
+
+
+# Clust with Tfidf functions
+def gen_dist_matrix() -> np.array:
     filepathOPD = "results/opd/opd.txt"
     filepathMatrix = "results/gensim/distance_matrix.csv"
 
-    OPnames, OPnamesSplitted = get_names_opd(filepathOPD)
+    OPnames, OPnamesSplitted = get_names_opd(filepathOPD, True, True)
 
     prt("Init dictionnary and Tfidf model...")
     dictionary = gs.corpora.Dictionary(OPnamesSplitted)
-    dictionary.save("results/gensim/opnames.dict")
+    # dictionary.save("results/gensim/opnames.dict")
     # print(dictionary)
     corpus = [dictionary.doc2bow(splitted) for splitted in OPnamesSplitted]
-    model = TfidfModel(corpus)
+    model = gs.models.TfidfModel(corpus)
 
-    prt("Compute distance matrix...")
+    prt("Compute distance matrix... (can take several minutes)")
     start = time()
     distanceMatrix = []
     i = 1
@@ -57,10 +84,10 @@ def gen_dist_matrix():
             prt("%.1f%% done. (elapsed = %.2fs)" % (round(100 * i / len(OPnamesSplitted)), time() - start))
         vec = dictionary.doc2bow(splitted)
 
-        index = SparseMatrixSimilarity(model[corpus], num_features=len(dictionary))
+        index = gs.similarities.SparseMatrixSimilarity(model[corpus], num_features=len(dictionary))
         sims = index[model[vec]]
         similarities_by_op = list(enumerate(sims))
-        dist_vals = [1-sim for (_, sim) in similarities_by_op]
+        dist_vals = [1 - sim for (_, sim) in similarities_by_op]
         # print(dist_vals)
         distanceMatrix.append(dist_vals)
         i += 1
@@ -74,9 +101,10 @@ def gen_dist_matrix():
             out.write("%f, " % value)
         out.write("\n")
     out.close()
+    return distanceMatrix
 
 
-def read_matrix(filepath: str) -> np.array:
+def read_dist_matrix(filepath: str) -> np.array:
     fIn = open(filepath, "r", encoding="utf-8")
     firstLine = fIn.readline().split(" ")
     shape = (int(firstLine[0]), int(firstLine[1]))
@@ -91,98 +119,74 @@ def read_matrix(filepath: str) -> np.array:
     return matrix
 
 
-def get_clusters(nbClusters, preds, OPnames):
-    clusters = [[] for _ in range(nbClusters)]
-    i = 0
-    for pred in preds:
-        clusters[pred].append(OPnames[i])
-        i += 1
-    return clusters
-
-
-def save_clusters(filepathClusters, clusters):
-    nbVecTotal = sum([len(cluster) for cluster in clusters])
-    out = create_result_file(filepathClusters)
-    i = 0
-    for cluster in clusters:
-        out.write("Label %d (%d/%d)\n" % (i, len(cluster), nbVecTotal))
-        for OPname in cluster:
-            out.write("%s, " % OPname)
-        out.write("\n\n")
-        i += 1
-    out.close()
-
-
-def try_clust():
+def test_tfidf(nbClusters: int, genMatrix: bool):
     filepathOPD = Config.PATH.FILE.OPD
     filepathMatrix = "results/gensim/distance_matrix.csv"
-    filepathClusters = "results/gensim/clusters.txt"
-    data, _, _ = read_opd(filepathOPD)
+    filepathClusters = "results/gensim/clustersTfidf.txt"
 
-    OPnames = []
-    for values in data:
-        OPnames.append(values["ObjectProperty"])
+    if genMatrix:
+        prt("Creating distance matrix...")
+        distanceMatrix = gen_dist_matrix()
+        prt("Distance matrix created.")
+    else:
+        prt("Reading distance matrix...")
+        distanceMatrix = read_dist_matrix(filepathMatrix)
+        prt("Distance matrix readed.")
 
-    nbClusters = 10
-    prt("Reading distance matrix...")
-    distanceMatrix = read_matrix(filepathMatrix)
-    prt("Distance matrix readed.")
-
+    prt("Compute %s..." % "AgglomerativeClustering")
     agglo = AgglomerativeClustering(n_clusters=nbClusters, affinity="precomputed", linkage="single")
     labels = agglo.fit_predict(distanceMatrix)
 
+    prt("Compute done. Saving clusters...")
+    data, _, _ = read_opd(filepathOPD)
+    OPnames, _ = get_names_opd(filepathOPD, True, True)
     clusters = get_clusters(nbClusters, labels, OPnames)
-    save_clusters(filepathClusters, clusters)
+    out = create_result_file(filepathClusters)
+    save_clusters(out, clusters)
+    prt("Clusters saved in \"%s\"." % filepathClusters)
 
 
-def try_2():
-    filepathClusters = "results/gensim/clusters_2.txt"
+# Clust with Doc2Vec functions
+def gen_doc2vec_clusters(nbClusters: int, filepathClusters: str, filterWords: bool, filterDuplicates: bool):
     filepathOPD = "results/opd/opd.txt"
-    OPnames, OPnamesSplitted = get_names_opd(filepathOPD)
+    opNames, opNamesSplitted = get_names_opd(filepathOPD, filterWords, filterDuplicates)
+    prt("Trying clust with %d opNames and %d opNames non empty" % (len(opNames), len(opNamesSplitted)))
 
-    prt("Testing with fasttext...")
-    modelFt = FastText(OPnamesSplitted)
-
-    sp1 = OPnamesSplitted[0]
-    print(sp1)
-    vec = modelFt.wv[sp1]
-    print(vec.shape)
-    sim = modelFt.wv.most_similar(["shutter", "speed"])
-    print("sim = ", sim)
-
-
-def try_3():
-    filepathClusters = "results/gensim/clusters_2.txt"
-    filepathOPD = "results/opd/opd.txt"
-    OPnames, OPnamesSplitted = get_names_opd(filepathOPD)
-
-    prt("Testing with Doc2Vec...")
-    documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(OPnamesSplitted)]
-    model = Doc2Vec(documents)
-    #vector = model.infer_vector(["shutter", "speed"])
-    #print("DEBUG = ", vector.shape)
+    prt("Testing with Doc2Vec... (filterWords=%s, filterDuplicates=%s)" % (filterWords, filterDuplicates))
+    documents = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted)]
+    model = gs.models.Doc2Vec(documents)
+    # vector = model.infer_vector(["shutter", "speed"])
+    # print("DEBUG = ", vector.shape)
 
     i = 0
-    vecs = np.zeros((len(OPnamesSplitted), 100))
-    for splitted in OPnamesSplitted:
+    vecs = np.zeros((len(opNamesSplitted), 100))
+    for splitted in opNamesSplitted:
         vec = model.infer_vector(splitted)
         vecs[i] = vec
         i += 1
 
-    nbClusters = 10
+    prt("Compute %s..." % "KMeans")
     kmeans = KMeans(n_clusters=nbClusters)
     preds = kmeans.fit_predict(vecs)
 
-    clusters = get_clusters(nbClusters, preds, OPnames)
-    save_clusters(filepathClusters, clusters)
+    prt("Compute done. Saving clusters in \"%s\"." % filepathClusters)
+    clusters = get_clusters(nbClusters, preds, opNamesSplitted)
+    out = create_result_file(filepathClusters)
+    out.write("# Note: filterConnectWords=%s, filterDuplicates=%s\n\n" % (filterWords, filterDuplicates))
+    save_clusters(out, clusters)
 
 
-def gen_gensim_clust(args: str = ""):
-    # gen_dist_matrix()
-    # try_clust()
-    pass
+def test_doc2vec(nbClusters: int):
+    gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_1.txt", False, False)
+    gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_2.txt", True, False)
+    gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_3.txt", False, True)
+    gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_4.txt", True, True)
+
+
+def gen_gensim_clust(_: str = ""):
+    test_doc2vec(13)
 
 
 if __name__ == "__main__":
-    #gen_gensim_clust()
-    try_3()
+    # test_tfidf(13, False)
+    test_doc2vec(13)

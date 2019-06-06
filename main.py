@@ -4,7 +4,7 @@ from owll_opd import gen_opd
 from owll_stats import update_all_stats
 from owll_typoclass import class_with_typo_words
 from util import prt
-from util import rem_empty
+from util import split_input
 
 
 class Command:
@@ -28,12 +28,11 @@ class Terminal:
             Command("Clust", "Test of some clusterisation algorithms on object properties names with FastText.",
                     ["clust"], "clust", clust_op_names),
             Command("Generate OPD", "Regenerate Object Property Database (OPD) with the ontologies found in "
-                                    "\"data/ontologies/\"",
-                    ["genopd"], "genopd", gen_opd),
+                                    "\"dir_onto\"",
+                    ["genopd"], "genopd [dir_onto [dir_results]]", gen_opd),
             Command("Get Stats", "Update all statistics from OPD.",
                     ["genstats"], "genstats", update_all_stats),
-            Command("Test gensim", "(INDEV) Try Agglomerative clusterisation with distance matrix generated with "
-                                   "gensim.",
+            Command("Test gensim", "Try Agglomerative clusterisation with distance matrix generated with gensim.",
                     ["gengensim"], "gengensim", gen_gensim_clust),
             Command("Help", "Display list of commands or show description and usage of a specific command.",
                     ["help"], "help [command]", self.help),
@@ -41,40 +40,39 @@ class Terminal:
                     ["quit", "exit"], "quit|exit", self.quit),
         ]
 
-    def searchCommand(self, userIn: str) -> (Command, str):
-        commandFound = None
-        userInSplit = rem_empty(userIn.split(" "))
-        if len(userInSplit) == 0:
+    def searchCommand(self, commandWithArgs: str) -> (Command, str):
+        commandWithArgsList = split_input(commandWithArgs, " ")
+
+        if len(commandWithArgsList) == 0:
             return None, ""
         else:
-            commandName = userInSplit[0]
-            args = " ".join(userInSplit[1:])
+            commandFound = None
+            commandLabel = commandWithArgsList[0]
+            args = " ".join(commandWithArgsList[1:])
 
             for command in self.commands:
-                if commandName in command.labels:
+                if commandLabel in command.labels:
                     commandFound = command
                     break
             return commandFound, args
 
     def launch(self):
-        prt("OWLL terminal is launched. Enter your command (type \"help\" for details):")
+        prt("[ ------ OWLL Terminal ------ ]\n")
+        prt("Enter your command (type \"help\" to display list of available commands):")
         while not self.leaving:
             userInput = input("> ")
             userInput = userInput.lower()
-            if ";" in userInput:
-                userInputList = userInput.split(";")
-            else:
-                userInputList = [userInput]
+            userInputList = userInput.split(";")
             userInputList = [string.strip() for string in userInputList if string.strip() != ""]
 
             i = 1
-            for subUserInput in userInputList:
-                command, args = self.searchCommand(subUserInput)
+            for commandWithArgs in userInputList:
+                command, args = self.searchCommand(commandWithArgs)
                 if command is not None:
                     command.call(args)
-                    prt("Command \"%s\" finished (%d/%d)." % (subUserInput, i, len(userInputList)))
+                    prt("Command \"%s\" finished (%d/%d)." % (commandWithArgs, i, len(userInputList)))
                 else:
-                    prt("Unknown command \"%s\" (%d/%d)." % (subUserInput, i, len(userInputList)))
+                    prt("Unknown command \"%s\" (%d/%d)." % (commandWithArgs, i, len(userInputList)))
                 i += 1
 
     def help(self, args: str):
@@ -83,7 +81,8 @@ class Terminal:
             prt("List of available commands: ")
             for command in self.commands:
                 prt("  %-20s : %s" % (command.usage, command.description))
-            prt("You can also use \";\" as a separator to run a sequence of commands.")
+            prt("- You can also use \";\" as a separator to run a sequence of commands.")
+            prt("- Paths in command arguments cannot contains any spaces.")
         else:
             commandName = argsSp[0]
             found = False
@@ -97,7 +96,7 @@ class Terminal:
             if not found:
                 prt("Unknown command \"%s\"." % commandName)
 
-    def quit(self, args: str):
+    def quit(self, _: str):
         self.leaving = True
 
 

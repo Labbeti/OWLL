@@ -1,5 +1,5 @@
 gensim
-html5lib
+pyrdfa3
 matplotlib
 numpy
 owlready2
