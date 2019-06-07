@@ -4,6 +4,7 @@ from time import time
 from util import *
 
 import re
+import sys
 
 
 # The OBO Foundry contains a lot of op names like "BFO_0000050", there are useless for semantic learning.
@@ -28,55 +29,56 @@ def __get_values(line: str) -> list:
     return values
 
 
-# Get the gen_opd arguments in arg.
-def __get_gen_opd_args(args: str) -> (str, str):
-    argsList = split_input(args, " ")
-    if len(argsList) == 0:
-        dirpathOnto = Config.PATH.DIR.ONTOLOGIES
-        dirpathResults = Config.PATH.DIR.OPD
-    else:
-        if not os.path.isdir(argsList[0]):
-            prt("Error: \"%s\" must be a directory." % argsList[0])
-            return
-        dirpathOnto = argsList[0]
-        if len(argsList) >= 2:
-            if not os.path.isdir(argsList[1]):
-                prt("Error: \"%s\" must be a directory." % argsList[1])
-                return
-            dirpathResults = argsList[1]
-        else:
-            dirpathResults = Config.PATH.DIR.OPD
-    return dirpathOnto, dirpathResults
-
-
 # Generate the Object Property Database (OPD) in "results/opd/opd.txt".
-def gen_opd(args: str = ""):
+def gen_opd(args: list = None) -> int:
     # Initializing values...
-    dirpathOnto, dirpathResults = __get_gen_opd_args(args)
-    prt("Search ontologies in \"%s\" and save results in \"%s\"" % (dirpathOnto, dirpathResults))
-    filepathOpd = os.path.join(dirpathResults, "opd.txt")
-    filepathOpdMeta = os.path.join(dirpathResults, "opd_meta.txt")
+    if args is not None and len(args) > 2:
+        prt("Error: Unexpected number of arguments: %d" % len(args))
+        return 1
 
-    metaNames = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
-    line_meta_format = "%-40s" + (" %-10s" * len(metaNames)) + "\n"
-    meta = {name: {} for name in metaNames}
-    column_names = ("File", "ObjectProperty", "Domain", "Range", "Asym?", "Func?", "InFu?", "Irre?", "Refl?", "Symm?",
-                    "Tran?", "DoIns", "RaIns", "InverseOf", "SubPropertyOf")
-    column_format = ("| %-35s " * 4) + ("| %-5s " * 9) + ("| %-35s " * 2) + "| \n"
-    line_format = ("| %-35s " * 4) + ("| %-5d " * 9) + ("| %-35s " * 2) + "| \n"
+    dirpathOnto, filepathOpd = get_args(args, [Consts.Path.Dir.ONTOLOGIES, Consts.Path.File.Result.OPD])
+    if not os.path.isdir(dirpathOnto):
+        prt("Error: %s must be a directory." % dirpathOnto)
+        return 2
+    if not os.path.isfile(filepathOpd):
+        prt("Error: %s must be a file." % filepathOpd)
+        return 3
+
+    prt("Search ontologies in \"%s\" and save results in \"%s\"" % (dirpathOnto, filepathOpd))
+    filepathOpdMeta = os.path.join(os.path.dirname(filepathOpd), "opd_debug.txt")
+
+    columnsNames = ("Filename", "ObjectProperty", "Domain", "Range", "Asym?", "Func?", "InFu?", "Irre?", "Refl?",
+                    "Symm?", "Tran?", "DoIns", "RaIns", "InverseOf", "SubPropertyOf")
+    columnsNamesFormat = ("| %-35s " * 4) + ("| %-5s " * 9) + ("| %-35s " * 2) + "| \n"
+    lineFormat = ("| %-35s " * 4) + ("| %-5d " * 9) + ("| %-35s " * 2) + "| \n"
+
+    debugColumnsNames = ["Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreadable", "MustKeep"]
+    lineDebugFormat = "%-40s" + (" %-10s" * len(debugColumnsNames)) + "\n"
+    debugStats = {name: {} for name in debugColumnsNames}
 
     # Get the filenames of the ontologies
     filenames = get_filenames(dirpathOnto)
 
     # Create the OPD file
-    out = create_result_file(filepathOpd)
-    out.write("#! Note: Asym = Asymmetric, Func = Functional, InFu = InverseFunctional, Irre = Irreflexive, "
-              "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, DoIns = Nb Domain Instances, RaIns = Nb "
-              "Range Instances \n")
-    out.write("\n")
-    out.write("#! Columns: \n")
-    out.write(column_format % column_names)
-    out.write("\n")
+    fOut = create_result_file(filepathOpd)
+    fOut.write("#! Note: Asym = Asymmetric, Func = Functional, InFu = InverseFunctional, Irre = Irreflexive, "
+               "Refl = Reflexive, Symm = Symmetric, Tran = Transitive, DoIns = Nb Domain Instances, RaIns = Nb "
+               "Range Instances \n")
+    fOut.write("\n")
+    fOut.write("#! Columns: \n")
+    fOut.write(columnsNamesFormat % columnsNames)
+    fOut.write("\n")
+
+    # TODO : put paths to Consts
+    prt("Reading english words...")
+    fEnglishWords = open(Consts.Path.File.ENGLISH_WORDS, "r", encoding="utf-8")
+    englishWords = set()
+    for line in fEnglishWords:
+        englishWords.add(line.replace("\n", "").lower())
+    fEnglishWords.close()
+    fUnusedWords = create_result_file(Consts.Path.File.Result.UNUSED_WORDS)
+    fUnusedWords.write("# This file contains non-english words found when creating OPD.\n\n")
+    fUnusedWords.write("%-30s %-40s %-40s\n\n" % ("Word", "ObjectProperty", "Filename"))
 
     # Read the list of ontologies
     i = 1
@@ -88,8 +90,15 @@ def gen_opd(args: str = ""):
         ontology = Ontology(filepath)
 
         if ontology.isLoaded():
-            prt("Load of \"%s\" is successfull (RL=%d,OR=%d) (%d/%d)" % (filename, ontology.isLoadedWithRL(),
-                                                                         ontology.isLoadedWithOR2(), i, len(filenames)))
+            prt("Load of \"%s\" is successfull (RL=%d,OR=%d) (%d/%d)" % (
+                filename, ontology.isLoadedWithRL(), ontology.isLoadedWithOR2(), i, len(filenames)))
+
+            for opName in ontology.getOpNames():
+                opNameSplit = str_list_lower(split_op_name(opName))
+                for word in opNameSplit:
+                    if word not in englishWords:
+                        fUnusedWords.write("%-30s %-40s %-40s\n" % (word, opName, filepath))
+
             triples = ontology.getOwlTriplesUri()
             for (domainUri, opUri, rangeUri) in triples:
                 domainName = ontology.getName(domainUri)
@@ -102,58 +111,59 @@ def gen_opd(args: str = ""):
                 invName = ontology.getName(opProps.inverseOf)
                 parentNames = [ontology.getName(propUri) for propUri in opProps.subPropertyOf]
                 subPropOf = ",".join(parentNames) if len(parentNames) > 0 else \
-                    Config.OPD_DEFAULT.SUBPROPERTY_OF
+                    Consts.DefaultOpdValues.SUBPROPERTY_OF
 
-                out.write(line_format %
-                          (filename, opName, domainName, rangeName, opProps.isAsymmetric,
-                           opProps.isFunctional, opProps.isInverseFunctional, opProps.isIrreflexive,
-                           opProps.isReflexive, opProps.isSymmetric, opProps.isTransitive, domaimProps.nbInstances,
-                           rangeProps.nbInstances, invName, subPropOf))
+                fOut.write(lineFormat % (
+                    filename, opName, domainName, rangeName, opProps.isAsymmetric, opProps.isFunctional,
+                    opProps.isInverseFunctional, opProps.isIrreflexive, opProps.isReflexive, opProps.isSymmetric,
+                    opProps.isTransitive, domaimProps.nbInstances, rangeProps.nbInstances, invName, subPropOf))
         else:
             triples = []
             prt("Load of \"%s\" has failed (%d/%d)" % (filename, i, len(filenames)))
         end = time()
 
-        # Get some information for "opd_meta"
+        # Get some information for "opd_debug"
         nbUnreadable = __count_unreadables(triples)
-        meta["Rdflib?"][filename] = ontology.isLoadedWithRL()
-        meta["Owlready?"][filename] = ontology.isLoadedWithOR2()
-        meta["Loaded?"][filename] = ontology.isLoaded()
-        meta["NbErrors"][filename] = ontology.getNbErrors()
-        meta["Time"][filename] = end - start
-        meta["NbTriples"][filename] = len(triples)
-        meta["OpUnreadable"][filename] = nbUnreadable
-        meta["MustKeep"][filename] = ontology.isLoaded() and nbUnreadable == 0 and len(triples) > 0
+        debugStats["Rdflib?"][filename] = ontology.isLoadedWithRL()
+        debugStats["Owlready?"][filename] = ontology.isLoadedWithOR2()
+        debugStats["Loaded?"][filename] = ontology.isLoaded()
+        debugStats["NbErrors"][filename] = ontology.getNbErrors()
+        debugStats["Time"][filename] = end - start
+        debugStats["NbTriples"][filename] = len(triples)
+        debugStats["OpUnreadable"][filename] = nbUnreadable
+        debugStats["MustKeep"][filename] = ontology.isLoaded() and nbUnreadable == 0 and len(triples) > 0
         i += 1
 
-    out.close()
+    fOut.close()
+    fUnusedWords.close()
 
-    # Generate "opd_meta.txt" file for debugging
-
-    fmeta = create_result_file(filepathOpdMeta)
-    fmeta.write("# Note: If the file is loaded with Rdflib, then it will not try to load with Owlready2.\n\n")
-    fmeta.write(line_meta_format % ("File", "Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples",
-                                    "OpUnreada.", "MustKeep"))
-    fmeta.write("\n")
+    # Generate "opd_debug.txt" file for debugging
+    fDebugOut = create_result_file(filepathOpdMeta)
+    fDebugOut.write("# Note: If the file is loaded with Rdflib, then it will not try to load with Owlready2.\n\n")
+    fDebugOut.write(lineDebugFormat % (
+        "File", "Rdflib?", "Owlready?", "Loaded?", "NbErrors", "Time", "NbTriples", "OpUnreada.", "MustKeep"))
+    fDebugOut.write("\n")
 
     for filename in filenames:
-        time_str = "%-9.2f" % meta["Time"][filename]
-        fmeta.write(line_meta_format % (filename, meta["Rdflib?"][filename], meta["Owlready?"][filename],
-                                        meta["Loaded?"][filename], meta["NbErrors"][filename], time_str,
-                                        meta["NbTriples"][filename], meta["OpUnreadable"][filename],
-                                        meta["MustKeep"][filename]))
-    fmeta.write("\n")
-    time_str = "%-9.2f" % sum(meta["Time"].values())
-    fmeta.write(line_meta_format % ("Total", sum(meta["Rdflib?"].values()), sum(meta["Owlready?"].values()),
-                                    sum(meta["Loaded?"].values()), sum(meta["NbErrors"].values()), time_str,
-                                    sum(meta["NbTriples"].values()), sum(meta["OpUnreadable"].values()),
-                                    sum(meta["MustKeep"].values())))
-    fmeta.write("\n")
-    fmeta.write("Nb of files: %d\n" % len(filenames))
-    fmeta.close()
+        time_str = "%-9.2f" % debugStats["Time"][filename]
+        fDebugOut.write(lineDebugFormat % (
+            filename, debugStats["Rdflib?"][filename], debugStats["Owlready?"][filename],
+            debugStats["Loaded?"][filename], debugStats["NbErrors"][filename], time_str,
+            debugStats["NbTriples"][filename], debugStats["OpUnreadable"][filename], debugStats["MustKeep"][filename]))
+    fDebugOut.write("\n")
+    time_str = "%-9.2f" % sum(debugStats["Time"].values())
+    fDebugOut.write(lineDebugFormat % (
+        "Total", sum(debugStats["Rdflib?"].values()), sum(debugStats["Owlready?"].values()),
+        sum(debugStats["Loaded?"].values()), sum(debugStats["NbErrors"].values()), time_str,
+        sum(debugStats["NbTriples"].values()), sum(debugStats["OpUnreadable"].values()),
+        sum(debugStats["MustKeep"].values())))
+    fDebugOut.write("\n")
+    fDebugOut.write("Nb of files: %d\n" % len(filenames))
+    fDebugOut.close()
 
     prt("")
     prt("Files \"%s\" and \"%s\" saved. " % (filepathOpd, filepathOpdMeta))
+    return 0
 
 
 # Read the data contained in a OPD file.
@@ -199,5 +209,5 @@ def read_opd(filepathOPD: str) -> (list, str, list):
 
 
 if __name__ == "__main__":
-    gen_opd()
-    pass
+    commandArgs = sys.argv[1:]
+    gen_opd(commandArgs)

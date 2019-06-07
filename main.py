@@ -2,7 +2,7 @@ from owll_clust import clust_op_names
 from owll_gensim import gen_gensim_clust
 from owll_opd import gen_opd
 from owll_stats import update_all_stats
-from owll_typoclass import class_with_typo_words
+from owll_typolink import typolink
 from util import prt
 from util import split_input
 
@@ -15,21 +15,23 @@ class Command:
         self.usage = usage
         self.fct = fct
 
-    def call(self, args: str):
-        self.fct(args)
+    def call(self, args: list):
+        code = self.fct(args)
+        if code != 0:
+            prt("Error: Command %s exited with code %d." % (self.name, code))
 
 
 class Terminal:
     def __init__(self):
         self.leaving = False
         self.commands = [
-            Command("TypoClass", "Basic classification with relational words of \"Typologie des mots de liaisons\".",
-                    ["typo"], "typo", class_with_typo_words),
+            Command("TypoLink", "Basic classification with relational words of \"Typologie des mots de liaisons\".",
+                    ["typo", "typolink"], "typo|typolink", typolink),
             Command("Clust", "Test of some clusterisation algorithms on object properties names with FastText.",
                     ["clust"], "clust", clust_op_names),
             Command("Generate OPD", "Regenerate Object Property Database (OPD) with the ontologies found in "
                                     "\"dir_onto\"",
-                    ["genopd"], "genopd [dir_onto [dir_results]]", gen_opd),
+                    ["genopd"], "genopd [onto_dir [opd_filepath]]", gen_opd),
             Command("Get Stats", "Update all statistics from OPD.",
                     ["genstats"], "genstats", update_all_stats),
             Command("Test gensim", "Try Agglomerative clusterisation with distance matrix generated with gensim.",
@@ -40,15 +42,15 @@ class Terminal:
                     ["quit", "exit"], "quit|exit", self.quit),
         ]
 
-    def searchCommand(self, commandWithArgs: str) -> (Command, str):
-        commandWithArgsList = split_input(commandWithArgs, " ")
+    def searchCommand(self, commandWithArgs: str) -> (Command, list):
+        commandWithArgsList = split_input(commandWithArgs)
 
         if len(commandWithArgsList) == 0:
             return None, ""
         else:
             commandFound = None
             commandLabel = commandWithArgsList[0]
-            args = " ".join(commandWithArgsList[1:])
+            args = commandWithArgsList[1:]
 
             for command in self.commands:
                 if commandLabel in command.labels:
@@ -75,16 +77,16 @@ class Terminal:
                     prt("Unknown command \"%s\" (%d/%d)." % (commandWithArgs, i, len(userInputList)))
                 i += 1
 
-    def help(self, args: str):
-        argsSp = args.split()
-        if len(argsSp) == 0:
+    def help(self, args: list) -> int:
+        if len(args) == 0:
             prt("List of available commands: ")
             for command in self.commands:
-                prt("  %-20s : %s" % (command.usage, command.description))
-            prt("- You can also use \";\" as a separator to run a sequence of commands.")
-            prt("- Paths in command arguments cannot contains any spaces.")
+                prt(" - %-35s : %s" % (command.usage, command.description))
+            prt("Additional notes:")
+            prt(" - You can also use \";\" as a separator to run a sequence of commands.")
+            prt(" - Paths with spaces must be surrounded by double quotes (ex: genopd \"dir with space/tmp.txt\")")
         else:
-            commandName = argsSp[0]
+            commandName = args[0]
             found = False
             for command in self.commands:
                 if commandName == command.name or commandName in command.labels:
@@ -95,9 +97,12 @@ class Terminal:
                     break
             if not found:
                 prt("Unknown command \"%s\"." % commandName)
+                return 1
+        return 0
 
-    def quit(self, _: str):
+    def quit(self, _: list) -> int:
         self.leaving = True
+        return 0
 
 
 def main():

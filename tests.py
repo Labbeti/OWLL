@@ -1,4 +1,4 @@
-from Config import Config
+from Consts import Consts
 from file_io import create_result_file
 
 from gensim import corpora
@@ -56,7 +56,7 @@ def test_gen_model():
     nb_names = 0
     for values in data:
         op_name = values["ObjectProperty"]
-        words_name = split_name(op_name)
+        words_name = split_op_name(op_name)
         words_name_lower = [word.lower() for word in words_name]
         names.append(words_name_lower)
         nb_names += len(words_name)

@@ -1,6 +1,6 @@
 import numpy as np
 from collections import Counter
-from Config import Config
+from Consts import Consts
 from os import listdir
 from time import strftime
 
@@ -9,8 +9,8 @@ import os.path
 
 # Print function with a prefix to inform an OWLL output.
 def prt(*arg):
-    if Config.VERBOSE_MODE:
-        print(Config.TERMINAL_PREFIX, end='')
+    if Consts.VERBOSE_MODE:
+        print(Consts.TERMINAL_PREFIX, end='')
         print(*arg)
 
 
@@ -34,7 +34,7 @@ def get_filenames(dirpath: str) -> list:
 
 
 # Split an OP name in several words.
-def split_name(word: str) -> list:
+def split_op_name(word: str) -> list:
     res = []
     buf = ""
     for chr in word:
@@ -92,12 +92,12 @@ def to_percent(num: float, denum: float) -> float:
 
 # Return a vector of dimension dim related to name in data.
 def get_vec(name: str, data: dict, dim: int) -> np.array:
-    words = split_name(name)
+    words = split_op_name(name)
     vecs = [(word.lower(), data.get(word.lower())) for word in words]
     vec_res = np.zeros(dim)
     nb_vecs_added = 0
     for word, vec in vecs:
-        if vec is not None and (word not in Config.CONNECT_WORDS or len(vecs) == 1):
+        if vec is not None and (word not in Consts.Word.getWordsSearched() or len(vecs) == 1):
             vec_res += vec
             nb_vecs_added += 1
 
@@ -120,12 +120,51 @@ def get_vecs(names: list, data: dict, dim: int) -> (list, list):
 
 
 # Split the string to find the list of OWLL terminal arguments.
-def split_input(string: str, separator: str) -> list:
-    args = string.split(separator)
-    args = [arg.strip() for arg in args if arg.strip() != ""]
-    return args
+# Ex: "genopd \"data/dir with spaces/tmp.txt\" -> ["genopd", "data/dir with spaces/tmp.txt"]
+# Ex: "genopd \"path'weird ?'\"" -> ["genopd", "path'weird ?'"]
+def split_input(string: str) -> list:
+    inQuote = False
+    inDblQuote = False
+    buf = ""
+    res = []
+
+    for chr in string:
+        if chr == "\"":
+            if inQuote:
+                buf += chr
+            else:
+                inDblQuote = not inDblQuote
+                if buf != "":
+                    res.append(buf)
+                    buf = ""
+        elif chr == "'":
+            if inDblQuote:
+                buf += chr
+            else:
+                inQuote = not inQuote
+                if buf != "":
+                    res.append(buf)
+                    buf = ""
+        elif chr == " ":
+            if inDblQuote or inQuote:
+                buf += chr
+            elif buf != "":
+                res.append(buf)
+                buf = ""
+        else:
+            buf += chr
+    if buf != "":
+        res.append(buf)
+    return res
 
 
 # Convert all string in list to lower
 def str_list_lower(l: list) -> list:
     return [s.lower() for s in l]
+
+
+def get_args(args: list, defaultArgs: list) -> list:
+    if args is not None:
+        return args + defaultArgs[len(args):]
+    else:
+        return defaultArgs

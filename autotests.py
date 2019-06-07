@@ -1,7 +1,10 @@
 from ontology.Ontology import *
 from util import equals
 from util import prt
-from util import split_name
+from util import split_input
+from util import split_op_name
+
+import os.path
 
 
 def test_split_name():
@@ -20,7 +23,7 @@ def test_split_name():
         "mitigated_By": ["mitigated", "By"],
     }
     for value, results_expected in tests.items():
-        results = split_name(value)
+        results = split_op_name(value)
         if results != results_expected:
             raise Exception("Unit test failed: %s != %s " % (results, results_expected))
     prt("OK: test_split_name")
@@ -28,7 +31,7 @@ def test_split_name():
 
 def test_get_object_properties():
     tests = {
-        "data/ontologies/tabletopgames_V3.owl",
+        "data/ontologies/tabletopgames.owl",
         "data/ontologies/dbpedia_2016-10.owl",
         "data/ontologies/collaborativePizza.owl",
         "data/ontologies/lom.owl",
@@ -56,7 +59,7 @@ def test_get_object_properties():
 
 def test_cls_props():
     tests = {
-        "data/ontologies/tabletopgames_V3.owl"
+        "data/ontologies/tabletopgames.owl"
     }
     for filepath in tests:
         ontoOr = OwlreadyOntology(filepath)
@@ -69,9 +72,29 @@ def test_cls_props():
 
         for key in clsPropsOr.keys():
             if clsPropsOr[key].nbInstances != clsPropsRl[key].nbInstances:
+                prt("Nb instances %s (%d, %d)" % (key, clsPropsOr[key].nbInstances, clsPropsRl[key].nbInstances))
                 raise Exception("test_cls_props nbInstances error")
 
     prt("OK: test_cls_props")
+
+
+def test_split_input():
+    tests = {
+        "gengensim results/tests.txt": ["gengensim", "results/tests.txt"],
+        "ls -l \"dir\"": ["ls", "-l", "dir"],
+        "genopd \"path/with space.txt\" 'bonjour'": ["genopd", "path/with space.txt", "bonjour"],
+        "cpp \"l'op '\"": ["cpp", "l'op '"],
+        "test 'weirdpath\"": ["test", "weirdpath\""]
+    }
+
+    for test, resultsExpected in tests.items():
+        results = split_input(test)
+        if results != resultsExpected:
+            prt("Results = ", results)
+            prt("ResultsExpected = ", resultsExpected)
+            raise Exception("Unexpected results for split_input")
+
+    prt("OK: test_split_input")
 
 
 def test_all():
@@ -79,6 +102,7 @@ def test_all():
     test_split_name()
     test_get_object_properties()
     test_cls_props()
+    test_split_input()
     prt("OK: All")
 
 

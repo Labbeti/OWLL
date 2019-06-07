@@ -1,7 +1,6 @@
 from file_io import *
 from matplotlib.font_manager import FontProperties
 from ontology.Ontology import Ontology
-from os.path import basename
 from sklearn.cluster import *
 from sklearn.mixture import GaussianMixture
 from util import *
@@ -69,7 +68,7 @@ def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCen
     vecsReduced = reduced[:len(reduced) - len(clustersCenters)]
 
     # Duplicate colors if too many clusters
-    colors_for_pt = Config.COLORS[preds % len(Config.COLORS)]
+    colors_for_pt = Consts.COLORS[preds % len(Consts.COLORS)]
 
     font = FontProperties()
     font.set_weight('bold')
@@ -84,16 +83,12 @@ def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCen
     '''
 
 
-# Clusterisation of object properties names.
-def clust_op_names(_: str = ""):
-    filepathOnto = "data/ontologies/dbpedia_2016-10.owl"
-    filepathFt = Config.PATH.FILE.FASTTEXT
-    filepathResults = "results/clust/clusters_stats.txt"
+def clusterize(filepathOnto: str, filepathFt: str, filepathResults: str):
     limit = 30_000
     # nb_clusters_default pour tous les algos sauf MeanShift et AffinityPropagation
     nbClustersDefault = 13
 
-    filenameOnto = basename(filepathOnto)
+    filenameOnto = os.path.basename(filepathOnto)
     data, nbWords, dim = load_ft_vectors(filepathFt, limit)
     onto = Ontology(filepathOnto)
     allOpNames = onto.getOpNames()
@@ -155,6 +150,12 @@ def clust_op_names(_: str = ""):
     out.close()
     plt.show()
     plt.close()
+
+
+# Clusterisation of object properties names.
+def clust_op_names(_: list = None) -> int:
+    clusterize(Consts.Path.File.DBPEDIA, Consts.Path.File.FASTTEXT, Consts.Path.File.Result.CLUST)
+    return 0
 
 
 if __name__ == "__main__":

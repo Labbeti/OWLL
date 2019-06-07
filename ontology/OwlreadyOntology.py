@@ -1,4 +1,4 @@
-from Config import *
+from Consts import *
 from ontology.AbstractOntology import AbstractOntology
 from ontology.ClsProperties import ClsProperties
 from ontology.OpProperties import OpProperties
@@ -54,7 +54,7 @@ class OwlreadyOntology(AbstractOntology):
             clsProperties = ClsProperties()
             clsProperties.subClassOf = clsOwlready.is_a
             self._clsProperties[clsOwlready.iri] = clsProperties
-        self._clsProperties[Config.URI.THING] = ClsProperties()
+        self._clsProperties[Consts.Uris.THING] = ClsProperties()
 
         individuals = ontoOwlready.individuals()
         for individual in individuals:
@@ -68,7 +68,7 @@ class OwlreadyOntology(AbstractOntology):
             opProperties = OpProperties()
             try:
                 opProperties.inverseOf = opOwlready.inverse_property.iri if opOwlready.inverse_property is not None \
-                    else Config.OPD_DEFAULT.INVERSE_OF
+                    else Consts.DefaultOpdValues.INVERSE_OF
             except AttributeError:
                 self.__nb_errors += 1
             opProperties.isAsymmetric = issubclass(opOwlready, or2.AsymmetricProperty)
@@ -78,7 +78,7 @@ class OwlreadyOntology(AbstractOntology):
             opProperties.isReflexive = issubclass(opOwlready, or2.ReflexiveProperty)
             opProperties.isSymmetric = issubclass(opOwlready, or2.SymmetricProperty)
             opProperties.isTransitive = issubclass(opOwlready, or2.TransitiveProperty)
-            opProperties.label = opOwlready.label if opOwlready.label is not None else Config.OPD_DEFAULT.LABEL
+            opProperties.label = opOwlready.label if opOwlready.label is not None else Consts.DefaultOpdValues.LABEL
             opProperties.subPropertyOf = [propOwlready.iri for propOwlready in opOwlready.is_a]
             self._opProperties[opOwlready.iri] = opProperties
 
@@ -103,9 +103,9 @@ class OwlreadyOntology(AbstractOntology):
         for opOwlready in opsOwlready:
             try:
                 domainIRIs = [op_domain.iri for op_domain in opOwlready.domain] if opOwlready.domain != [] else \
-                    [Config.URI.THING]
+                    [Consts.Uris.THING]
                 rangeIRIs = [op_range.iri for op_range in opOwlready.range] if opOwlready.range != [] else \
-                    [Config.URI.THING]
+                    [Consts.Uris.THING]
                 for domainIRI in domainIRIs:
                     for rangeIRI in rangeIRIs:
                         self._owlTriplesUri.append((domainIRI, opOwlready.iri, rangeIRI))

@@ -1,4 +1,4 @@
-from Config import Config
+from Consts import Consts
 from file_io import *
 from ontology.OwlreadyOntology import OwlreadyOntology
 from util import get_vec
@@ -8,16 +8,13 @@ from util import sq_dist
 
 
 # Try to classify names with FastText by searching the nearest vector of Connect words for each vector of OP name.
-def class_with_typo_words(_: str = ""):
-    filepathFT = Config.PATH.FILE.FASTTEXT
-    filepathDBpedia = "data/ontologies/dbpedia_2016-10.owl"
-    filepathResults = "results/typoclass/classif.txt"
+def class_with_typo_words(filepathFT: str, filepathDBpedia: str, filepathResults: str):
     limit = 10000
 
     prt("Classify with typo words on %s..." % filepathDBpedia)
     data, _, dim = load_ft_vectors(filepathFT, limit)
     # Get FT vectors for typo words
-    typoNames, typoVecs = get_vecs(Config.TYPO_WORDS, data, dim)
+    typoNames, typoVecs = get_vecs(Consts.LINK_WORDS, data, dim)
 
     prt("Reading ontology \"%s\"..." % filepathDBpedia)
     onto = OwlreadyOntology(filepathDBpedia)
@@ -26,7 +23,7 @@ def class_with_typo_words(_: str = ""):
     fOut = create_result_file(filepathResults, filepathDBpedia)
     fOut.write("%-7s %-30s %-30s %-10s\n\n" % ("#Found?", "OP name", "Typo word", "Proximity"))
 
-    prt("Classifying with typo words...")
+    prt("Classifying with typo link words...")
     nbVecsFound = 0
     for name in opNames:
         # Get FT vector
@@ -58,5 +55,10 @@ def class_with_typo_words(_: str = ""):
     prt("Results has been saved in \"%s\"." % filepathResults)
 
 
+def typolink(_: list = None) -> int:
+    class_with_typo_words(Consts.Path.File.FASTTEXT, Consts.Path.File.DBPEDIA, Consts.Path.File.Result.TYPO_LINK)
+    return 0
+
+
 if __name__ == "__main__":
-    class_with_typo_words()
+    typolink()

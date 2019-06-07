@@ -19,11 +19,11 @@ def get_names_opd(filepathOPD, filterWords: bool, filterDuplicates: bool) -> (li
         opDomain = values["Domain"]
         opRange = values["Range"]
 
-        words = split_name(opName)
+        words = split_op_name(opName)
         words = str_list_lower(words)
         if filterWords:
             words = [word for word in words if word.lower() != opDomain.lower() and word.lower() != opRange.lower()
-                     and word.lower() not in Config.CONNECT_WORDS]
+                     and word.lower() not in Consts.Word.getWordsSearched()]
 
         if len(words) > 0:
             opNames.append(opName)
@@ -120,7 +120,7 @@ def read_dist_matrix(filepath: str) -> np.array:
 
 
 def test_tfidf(nbClusters: int, genMatrix: bool):
-    filepathOPD = Config.PATH.FILE.OPD
+    filepathOPD = Consts.Path.File.OPD
     filepathMatrix = "results/gensim/distance_matrix.csv"
     filepathClusters = "results/gensim/clustersTfidf.txt"
 
@@ -183,8 +183,9 @@ def test_doc2vec(nbClusters: int):
     gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_4.txt", True, True)
 
 
-def gen_gensim_clust(_: str = ""):
+def gen_gensim_clust(_: list = None) -> int:
     test_doc2vec(13)
+    return 0
 
 
 if __name__ == "__main__":

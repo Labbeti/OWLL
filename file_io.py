@@ -48,8 +48,8 @@ def create_result_file(outputFilepath: str, inputFilepath: str = "", inputFileVe
     out.write("#! Version: %s\n" % get_time())
     if inputFilepath != "":
         if inputFileVersion != "":
-            out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (inputFilepath,
-                                                                                              inputFileVersion))
+            out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (
+                inputFilepath, inputFileVersion))
         else:
             out.write("# This file has been generated with the file \"%s\"." % inputFilepath)
     out.write("\n")

@@ -5,7 +5,7 @@ The project is currently in development and all data files and models **are not 
 
 
 ## Get started
-#### Installation
+### Installation
 
 This project requires **Python 3.7** and the following list of packages : 
 
@@ -15,7 +15,7 @@ gensim | 3.7.3 | Compare OP names | [Link](https://pypi.org/project/gensim/) | [
 pyrdfa3 | 3.5.3 | Make Rdflib work | [Link](https://pypi.org/project/pyRdfa/) | [Doc](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.plugins.parsers.pyRdfa.html)
 matplotlib | 3.0.3 | Plot clusters | [Link](https://pypi.org/project/matplotlib/) | [Doc](https://matplotlib.org/3.1.0/contents.html)
 numpy | 1.16.3 | Manipulate arrays | [Link](https://pypi.org/project/numpy/) | [Doc](https://docs.scipy.org/doc/numpy/)
-owlready2 | 0.17 | Read ontologies | [Link](https://pypi.org/project/Owlready2/) | [Doc](https://pythonhosted.org/Owlready2/)
+owlready2 | 0.18 | Read ontologies | [Link](https://pypi.org/project/Owlready2/) | [Doc](https://pythonhosted.org/Owlready2/)
 rdflib | 4.2.2 | Read ontologies | [Link](https://pypi.org/project/rdflib/) | [Doc](https://rdflib.readthedocs.io/en/stable/)
 scikit-learn | 0.21.1 | Clusterize | [Link](https://pypi.org/project/scikit-learn/) | [Doc](https://scikit-learn.org/stable/documentation.html)
 
@@ -27,7 +27,7 @@ Once everything is installed, run this command on a terminal in the project dire
 The **OWLL terminal** will start and allow you to generate results. 
 Type ```help``` to display the list of available commands.
 
-#### Main commands *(Indev 0.1.12)* :
+### Main commands *(Indev 0.1.12)* :
 
 Command | Description
 --- | ---
@@ -38,6 +38,19 @@ Command | Description
 ```gengensim``` | Try Agglomerative clusterisation with distance matrix generated with gensim.
 
 ## Versions 
+* Indev 0.1.13 (07/06/19)
+  * Remove constant ```CONNECT_WORDS```, add function ```getWordsSearched()```.
+  * Rename Config class and file to Consts.
+  * Add default paths for all results and input files.
+  * Extend ```split_input``` algorithm for allow spaces for paths betweens quotes and double quotes.
+  * Add automatic test for ```split_input```.
+  * Get more statistics and values for roots words in "owll_stats.py".
+  * Remove some ontologies :
+    * Non-english ontologies "IT_study1.owl" and "leo.owl" from OPD.
+    * Ontology with unreadable object properties "protege.owl". 
+  * Regenerate OPD with 147 ontologies.
+  * Up Owlready2 version 0.17 to 0.18.
+
 * Indev 0.1.12 (06/06/19)
   * Add arguments for OWLL command "genopd".
   * Remove redundant enum ```LoadType``` and file "LoadType.py"

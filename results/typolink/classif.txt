@@ -1,4 +1,4 @@
-#! Version: 06/06/2019_11:25:01
+#! Version: 07/06/2019_14:54:17
 # This file has been generated with the file "data/ontologies/dbpedia_2016-10.owl".
 #Found? OP name                        Typo word                      Proximity 
 
@@ -362,7 +362,7 @@ OK      winsAtLET                      takesPartIn                    0.63
 OK      crew                           takesPartIn                    0.48
 KO      rector                         
 KO      localizationThumbnail          
-OK      drainsFrom                     callsUpon                      0.66
+KO      drainsFrom                     
 OK      governmentCountry              callsUpon                      0.59
 OK      developer                      product                        0.52
 OK      winsAtProTournaments           takesPartIn                    0.57
@@ -600,7 +600,7 @@ OK      connectsReferencedTo           related                        0.64
 OK      significantDesign              specific                       0.70
 OK      religiousOrder                 order                          0.84
 OK      cultivatedVariety              specific                       0.56
-OK      branchFrom                     callsUpon                      0.65
+OK      branchFrom                     callsUpon                      0.48
 OK      drama                          about                          0.49
 OK      settlementAttached             takesPartIn                    0.59
 OK      militaryRank                   order                          0.61
@@ -618,7 +618,7 @@ OK      summerAppearances              makeUseOf                      0.57
 OK      sport                          research                       0.48
 OK      genus                          product                        0.41
 OK      stateDelegate                  callsUpon                      0.55
-OK      splitFromParty                 callsUpon                      0.67
+OK      splitFromParty                 takesPartIn                    0.60
 OK      engineer                       product                        0.48
 OK      officerInCharge                takesPartIn                    0.56
 OK      raceResult                     resultsIn                      0.66
@@ -1080,7 +1080,7 @@ OK      simcCode                       callsUpon                      0.47
 OK      designCompany                  product                        0.70
 OK      engine                         resultsIn                      0.50
 OK      afiAward                       support                        0.51
-OK      announcedFrom                  callsUpon                      0.73
+OK      announcedFrom                  created                        0.60
 OK      producer                       product                        0.54
 OK      railwayLineUsingTunnel         callsUpon                      0.63
 OK      created                        created                        1.00
@@ -1107,4 +1107,4 @@ OK      coProducer                     product                        0.54
 OK      tvShow                         makeUseOf                      0.67
 OK      isPartOfWineRegion             takesPartIn                    0.67
 OK      subGenus                       specific                       0.53
-# Nb vectors found: 951 / 1105
+# Nb vectors found: 950 / 1105
