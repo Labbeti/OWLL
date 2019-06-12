@@ -1,5 +1,5 @@
 from file_io import create_result_file
-from owll_opd import read_opd
+from OPD import OPD
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from time import time
 from typing import TextIO
@@ -8,13 +8,14 @@ from util import *
 import gensim as gs
 
 
-def get_names_opd(filepathOPD, filterWords: bool, filterDuplicates: bool) -> (list, list):
-    data, _, _ = read_opd(filepathOPD)
+def get_names_opd(filepathOPD: str, filterWords: bool, filterDuplicates: bool) -> (list, list):
+    opd = OPD()
+    opd.loadFromFile(filepathOPD)
 
     prt("Reading and filtering OPD...")
     opNames = []
     opNamesSplitted = []
-    for values in data:
+    for values in opd.getData():
         opName = values["ObjectProperty"]
         opDomain = values["Domain"]
         opRange = values["Range"]
@@ -22,8 +23,7 @@ def get_names_opd(filepathOPD, filterWords: bool, filterDuplicates: bool) -> (li
         words = split_op_name(opName)
         words = str_list_lower(words)
         if filterWords:
-            words = [word for word in words if word.lower() != opDomain.lower() and word.lower() != opRange.lower()
-                     and word.lower() not in Consts.Word.getWordsSearched()]
+            words = filter_op_name_split(words, opDomain, opRange)
 
         if len(words) > 0:
             opNames.append(opName)
@@ -46,6 +46,7 @@ def get_clusters(nbClusters: int, preds: list, opNamesSplitted: list) -> list:
 
 
 def save_clusters(out: TextIO, clusters: list):
+    out.write("# Note: nbClusters = %d\n\n" % len(clusters))
     nbVecTotal = sum([len(cluster) for cluster in clusters])
     i = 0
     for cluster in clusters:
@@ -66,22 +67,23 @@ def gen_dist_matrix() -> np.array:
     filepathOPD = "results/opd/opd.txt"
     filepathMatrix = "results/gensim/distance_matrix.csv"
 
-    OPnames, OPnamesSplitted = get_names_opd(filepathOPD, True, True)
+    opNames, opNamesSplitted = get_names_opd(filepathOPD, False, True)
 
     prt("Init dictionnary and Tfidf model...")
-    dictionary = gs.corpora.Dictionary(OPnamesSplitted)
+    dictionary = gs.corpora.Dictionary(opNamesSplitted)
     # dictionary.save("results/gensim/opnames.dict")
     # print(dictionary)
-    corpus = [dictionary.doc2bow(splitted) for splitted in OPnamesSplitted]
+    corpus = [dictionary.doc2bow(splitted) for splitted in opNamesSplitted]
     model = gs.models.TfidfModel(corpus)
 
     prt("Compute distance matrix... (can take several minutes)")
     start = time()
     distanceMatrix = []
     i = 1
-    for splitted in OPnamesSplitted:
-        if i % int(len(OPnamesSplitted) / 10) == 0:
-            prt("%.1f%% done. (elapsed = %.2fs)" % (round(100 * i / len(OPnamesSplitted)), time() - start))
+    for splitted in opNamesSplitted:
+        # Print every 1% a output to inform that the program is still running.
+        if i % int(len(opNamesSplitted) / 100) == 0:
+            prt("%.1f%% done. (elapsed = %.2fs)" % (round(100 * i / len(opNamesSplitted)), time() - start))
         vec = dictionary.doc2bow(splitted)
 
         index = gs.similarities.SparseMatrixSimilarity(model[corpus], num_features=len(dictionary))
@@ -120,7 +122,7 @@ def read_dist_matrix(filepath: str) -> np.array:
 
 
 def test_tfidf(nbClusters: int, genMatrix: bool):
-    filepathOPD = Consts.Path.File.OPD
+    filepathOPD = Csts.Paths.OPD
     filepathMatrix = "results/gensim/distance_matrix.csv"
     filepathClusters = "results/gensim/clustersTfidf.txt"
 
@@ -138,17 +140,16 @@ def test_tfidf(nbClusters: int, genMatrix: bool):
     labels = agglo.fit_predict(distanceMatrix)
 
     prt("Compute done. Saving clusters...")
-    data, _, _ = read_opd(filepathOPD)
-    OPnames, _ = get_names_opd(filepathOPD, True, True)
-    clusters = get_clusters(nbClusters, labels, OPnames)
+    _, opNamesSplitted = get_names_opd(filepathOPD, False, True)
+    clusters = get_clusters(nbClusters, labels, opNamesSplitted)
     out = create_result_file(filepathClusters)
     save_clusters(out, clusters)
     prt("Clusters saved in \"%s\"." % filepathClusters)
 
 
 # Clust with Doc2Vec functions
-def gen_doc2vec_clusters(nbClusters: int, filepathClusters: str, filterWords: bool, filterDuplicates: bool):
-    filepathOPD = "results/opd/opd.txt"
+def get_doc2vec_vectors(filterWords: bool, filterDuplicates: bool) -> (np.ndarray, list, list):
+    filepathOPD = Csts.Paths.OPD
     opNames, opNamesSplitted = get_names_opd(filepathOPD, filterWords, filterDuplicates)
     prt("Trying clust with %d opNames and %d opNames non empty" % (len(opNames), len(opNamesSplitted)))
 
@@ -164,7 +165,11 @@ def gen_doc2vec_clusters(nbClusters: int, filepathClusters: str, filterWords: bo
         vec = model.infer_vector(splitted)
         vecs[i] = vec
         i += 1
+    return vecs, opNames, opNamesSplitted
 
+
+def gen_doc2vec_clusters(nbClusters: int, filepathClusters: str, filterWords: bool, filterDuplicates: bool):
+    vecs, _, opNamesSplitted = get_doc2vec_vectors(filterWords, filterDuplicates)
     prt("Compute %s..." % "KMeans")
     kmeans = KMeans(n_clusters=nbClusters)
     preds = kmeans.fit_predict(vecs)
@@ -183,11 +188,73 @@ def test_doc2vec(nbClusters: int):
     gen_doc2vec_clusters(nbClusters, "results/gensim/clustersDoc2Vec_4.txt", True, True)
 
 
+def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
+    filepathOPD = Csts.Paths.OPD
+    opd = OPD()
+    opd.loadFromFile(filepathOPD)
+    opNamesSplitted = []
+    properties = []
+    for values in opd.getData():
+        opName = values["ObjectProperty"]
+        opDomain = values["Domain"]
+        opRange = values["Range"]
+
+        factor = 0.01
+        isAsym = float(values["Asym?"]) * factor
+        isFunc = float(values["Func?"]) * factor
+        isInFu = float(values["InFu?"]) * factor
+        isIrre = float(values["Irre?"]) * factor
+        isRefl = float(values["Refl?"]) * factor
+        isSymm = float(values["Symm?"]) * factor
+        isTran = float(values["Tran?"]) * factor
+
+        opNameSplit = split_op_name(opName)
+        opNameSplit = str_list_lower(opNameSplit)
+        opNameSplitFiltered = filter_op_name_split(opNameSplit, opDomain, opRange)
+
+        ignored = ["Thing"]
+        if len(opNameSplitFiltered) > 0:
+            if opDomain not in ignored and not is_unreadable(opDomain):
+                opNameSplitFiltered.append(opDomain)
+            if opRange not in ignored and not is_unreadable(opRange):
+                opNameSplitFiltered.append(opRange)
+            opNamesSplitted.append(opNameSplitFiltered)
+            properties.append([isAsym, isFunc, isInFu, isIrre, isRefl, isSymm, isTran])
+
+    filterDuplicates = True
+    if filterDuplicates:
+        opNamesSplitted = rem_duplicates(opNamesSplitted)
+    documents = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted)]
+    model = gs.models.Doc2Vec(documents)
+
+    i = 0
+    vecs = np.zeros((len(opNamesSplitted), 100 + 7))
+    for splitted in opNamesSplitted:
+        if (i+1) % 1000 == 0:
+            prt("Inferring vectors... (%d/%d): " % (i+1, len(opNamesSplitted)))
+        # Note: Default epoch is 5.
+        vec = model.infer_vector(splitted, epochs=10)
+        vecs[i] = np.concatenate((vec, properties[i]))
+        i += 1
+
+    prt("Compute %s..." % "KMeans")
+    kmeans = KMeans(n_clusters=nbClusters)
+    preds = kmeans.fit_predict(vecs)
+
+    prt("Compute done. Saving clusters in \"%s\"." % filepathClusters)
+    clusters = get_clusters(nbClusters, preds, opNamesSplitted)
+    out = create_result_file(filepathClusters, opd.getSrcpath(), opd.getVersion())
+    out.write("# Note: filterConnectWords=%s, filterDuplicates=%s\n" % (True, True))
+    save_clusters(out, clusters)
+
+
 def gen_gensim_clust(_: list = None) -> int:
-    test_doc2vec(13)
+    nbClusters = 13
+    # test_tfidf(nbClusters, False)
+    test_doc2vec(nbClusters)
+    test_doc2vec_extended(nbClusters, "results/gensim/clusters_extended.txt")
     return 0
 
 
 if __name__ == "__main__":
-    # test_tfidf(13, False)
-    test_doc2vec(13)
+    gen_gensim_clust()

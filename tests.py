@@ -1,4 +1,4 @@
-from Consts import Consts
+from Csts import Csts
 from file_io import create_result_file
 
 from gensim import corpora

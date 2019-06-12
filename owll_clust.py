@@ -10,6 +10,11 @@ import sklearn as sk
 
 
 def get_algos(nb_clusters: int) -> list:
+    """
+        Return the list of algorithms used for testing clusterisation with their name.
+        :param nb_clusters: Nb of clusters used by algorithms which need it.
+        :return: the list of pair (algorithmName, algorithmObject).
+    """
     agglo = AgglomerativeClustering(n_clusters=nb_clusters)
     birch = Birch(n_clusters=nb_clusters)
     gauss = GaussianMixture(n_components=nb_clusters)
@@ -32,7 +37,17 @@ def get_algos(nb_clusters: int) -> list:
     return algorithms
 
 
-def get_partition(nbClusters: int, preds: np.array, opNames: list, opVecs: np.array, dim: int):
+def get_partition(nbClusters: int, preds: np.array, opNames: list, opVecs: np.array, dim: int) -> (list, np.array):
+    """
+        Return the clusters and the clusters centers given by a list of N predictions.
+        :param nbClusters: number of clusters used by algorithms.
+        :param preds: list of predictions given by an clusterisation algorithm for each vector (N * 1).
+        :param opNames: list of OP names (N * 1).
+        :param opVecs: list of OP vectors (N * dim).
+        :param dim: dimension of the OP vectors.
+        :return: pair (clusters, clustersCenters), clusters is a list of OP name list, clustersCenters is a list of
+            points of average vectors for a cluster ((N list),(nbClusters * dim)).
+    """
     clusters = [[] for _ in range(nbClusters)]
     clustersCenters = np.array([np.zeros(dim) for _ in range(nbClusters)])
     i = 0
@@ -47,19 +62,35 @@ def get_partition(nbClusters: int, preds: np.array, opNames: list, opVecs: np.ar
 
 
 def get_centers_names(nbClusters: int, preds: np.array, opNames: list, opVecs: np.array):
+    """
+        Search for each cluster center point the nearest OP vector and name.
+        :param nbClusters: number of clusters used by algorithms.
+        :param preds: list of predictions given by an clusterisation algorithm for each vector (N * 1).
+        :param opNames: list of OP names (N * 1).
+        :param opVecs: list of OP vectors (N * dim).
+        :return: list of OP names related to clusters centers (nbClusters).
+    """
     indexNearestPt = [-1 for _ in range(nbClusters)]
-    minDist = 10000000
+    minSqDist = 10000000
     i = 0
     for pred in preds:
-        dist = sq_dist(opVecs[i], opVecs[indexNearestPt[pred]])
-        if indexNearestPt[pred] == -1 or dist < minDist:
-            minDist = dist
+        sqDist = sq_dist(opVecs[i], opVecs[indexNearestPt[pred]])
+        if indexNearestPt[pred] == -1 or sqDist < minSqDist:
+            minSqDist = sqDist
             indexNearestPt[pred] = i
         i += 1
     return [(opNames[index] if index != -1 else "UNKNOWN_CENTER_NAME") for index in indexNearestPt]
 
 
 def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCenters: np.array):
+    """
+        Use Principal Components Analysisi (PCA) to convert point dimension dim to dimension 2 and draw these points in
+        a graph.
+        :param nbClusters: <Unused> number of clusters used by algorithms.
+        :param preds: list of predictions given by an clusterisation algorithm for each vector (N * 1).
+        :param opVecs: list of OP vectors (N * dim).
+        :param clustersCenters: list of clusters centers.
+    """
     pca = sk.decomposition.PCA(n_components=2)
     # Concatenate vectors and clusters centers to reduced all of it.
     allPts = np.concatenate((opVecs, clustersCenters))
@@ -68,7 +99,7 @@ def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCen
     vecsReduced = reduced[:len(reduced) - len(clustersCenters)]
 
     # Duplicate colors if too many clusters
-    colors_for_pt = Consts.COLORS[preds % len(Consts.COLORS)]
+    colors_for_pt = Csts.COLORS[preds % len(Csts.COLORS)]
 
     font = FontProperties()
     font.set_weight('bold')
@@ -84,6 +115,13 @@ def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCen
 
 
 def clusterize(filepathOnto: str, filepathFt: str, filepathResults: str):
+    """
+        Try clusterisation algorithms on OP names of an ontology of the file "filepathOnto", draw result in a graph
+            and print clusters proportions in a txt file.
+        :param filepathOnto: the ontology to analyze.
+        :param filepathFt: filepath to FastText vectors CSV file.
+        :param filepathResults:
+    """
     limit = 30_000
     # nb_clusters_default pour tous les algos sauf MeanShift et AffinityPropagation
     nbClustersDefault = 13
@@ -152,9 +190,14 @@ def clusterize(filepathOnto: str, filepathFt: str, filepathResults: str):
     plt.close()
 
 
-# Clusterisation of object properties names.
+#
 def clust_op_names(_: list = None) -> int:
-    clusterize(Consts.Path.File.DBPEDIA, Consts.Path.File.FASTTEXT, Consts.Path.File.Result.CLUST)
+    """
+        Try clusterisation algorithms with clusterize function for OWLL terminal.
+        :param _: <Unused> Arguments from OWLL terminal.
+        :return: Exit code for OWLL terminal.
+    """
+    clusterize(Csts.Paths.DBPEDIA, Csts.Paths.FASTTEXT, Csts.Paths.CLUST)
     return 0
 
 

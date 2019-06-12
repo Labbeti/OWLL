@@ -5,19 +5,19 @@ from ontology.OpProperties import OpProperties
 
 
 '''
-                    IOntology
-                        ^
-                        |
-        +---------------+---------------+
-        |                               |
-        |                               |
-    Ontology                      AbstractOntology
-                                        ^
-                                        |
-                            +-----------+-----------+
-                            |                       |
-                            |                       |
-                    OwlreadyOntology            RdflibOntology
+                        IOntology
+                            ^
+                            |
+            +---------------+---------------+
+            |                               |
+            |                               |
+        Ontology                      AbstractOntology
+                                            ^
+                                            |
+                                +-----------+-----------+
+                                |                       |
+                                |                       |
+                        OwlreadyOntology            RdflibOntology
 
 '''
 

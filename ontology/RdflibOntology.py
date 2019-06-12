@@ -1,36 +1,31 @@
-
-from Consts import *
+from Csts import *
 from ontology.AbstractOntology import AbstractOntology
 from ontology.ClsProperties import ClsProperties
 from ontology.OpProperties import OpProperties
 from rdflib.exceptions import ParserError
+from util import is_restriction_id
 
 import rdflib as rl
-import re
 
 
 # Patterns:
 # - s type class
 # - s subClassOf o
 def _is_class(_, p, o) -> bool:
-    return (p.toPython() == Consts.Uris.RDF_TYPE and o.toPython() == Consts.Uris.CLASS) or \
-           (p.toPython() == Consts.Uris.SUB_CLASS_OF)
+    return (p.toPython() == Csts.Uris.RDF_TYPE and o.toPython() == Csts.Uris.CLASS) or \
+           (p.toPython() == Csts.Uris.SUB_CLASS_OF)
 
 
 # Patterns:
 # - s type ObjectProperty
 def _is_object_property(_, p, o) -> bool:
-    return p.toPython() == Consts.Uris.RDF_TYPE and o.toPython() == Consts.Uris.OBJECT_PROPERTY
+    return p.toPython() == Csts.Uris.RDF_TYPE and o.toPython() == Csts.Uris.OBJECT_PROPERTY
 
 
 # Patterns:
 # - s type Restriction
 def _is_restriction(_, p, o) -> bool:
-    return p.toPython() == Consts.Uris.RDF_TYPE and o.toPython() == Consts.Uris.RESTRICTION
-
-
-def _is_restriction_id(string: str) -> bool:
-    return re.match("N[a-f0-9]+", string) is not None
+    return p.toPython() == Csts.Uris.RDF_TYPE and o.toPython() == Csts.Uris.RESTRICTION
 
 
 # Clean ontology name for each property
@@ -61,7 +56,7 @@ class RdflibOntology(AbstractOntology):
     # ---------------------------------------- PRIVATE ---------------------------------------- #
     def __load(self):
         if self.__fileFormat is None:
-            formats_to_test = Consts.RDFLIB_FORMATS
+            formats_to_test = Csts.RDFLIB_FORMATS
         else:
             formats_to_test = [self.__fileFormat]
 
@@ -82,8 +77,8 @@ class RdflibOntology(AbstractOntology):
 
     def __updateProperties(self, graph):
         # Init class characteristics
-        clsUri = [s.toPython() for s, p, o in graph if _is_class(s, p, o) and not _is_restriction_id(s)]
-        clsUri.append(Consts.Uris.THING)
+        clsUri = [s.toPython() for s, p, o in graph if _is_class(s, p, o) and not is_restriction_id(s)]
+        clsUri.append(Csts.Uris.THING)
         clsProps = {s: ClsProperties() for s in clsUri}
         # Init OP characteristics
         opsUri = [s.toPython() for s, p, o in graph if _is_object_property(s, p, o)]
@@ -97,41 +92,41 @@ class RdflibOntology(AbstractOntology):
 
             # if s is an op, check the predicate p
             if s in opsUri:
-                if p == Consts.Uris.DOMAIN:
+                if p == Csts.Uris.DOMAIN:
                     opProps[s].domains.append(o)
                     if o not in clsProps.keys():
                         clsProps[o] = ClsProperties()
                     clsProps[o].domainOf.append(s)
-                elif p == Consts.Uris.RANGE:
+                elif p == Csts.Uris.RANGE:
                     opProps[s].ranges.append(o)
                     if o not in clsProps.keys():
                         clsProps[o] = ClsProperties()
                     clsProps[o].rangeOf.append(s)
-                elif p == Consts.Uris.SUB_PROPERTY_OF:
+                elif p == Csts.Uris.SUB_PROPERTY_OF:
                     opProps[s].subPropertyOf.append(o)
-                elif p == Consts.Uris.INVERSE_OF:
+                elif p == Csts.Uris.INVERSE_OF:
                     opProps[s].inverseOf = o
-                elif p == Consts.Uris.LABEL:
+                elif p == Csts.Uris.LABEL:
                     opProps[s].label = o
-                elif p == Consts.Uris.RDF_TYPE:
-                    if o == Consts.Uris.Properties.ASYMMETRIC:
+                elif p == Csts.Uris.RDF_TYPE:
+                    if o == Csts.Uris.Properties.ASYMMETRIC:
                         opProps[s].isAsymmetric = True
-                    if o == Consts.Uris.Properties.FUNCTIONAL:
+                    if o == Csts.Uris.Properties.FUNCTIONAL:
                         opProps[s].isFunctional = True
-                    elif o == Consts.Uris.Properties.INVERSE_FUNCTIONAL:
+                    elif o == Csts.Uris.Properties.INVERSE_FUNCTIONAL:
                         opProps[s].isInverseFunctional = True
-                    elif o == Consts.Uris.Properties.IRREFLEXIVE:
+                    elif o == Csts.Uris.Properties.IRREFLEXIVE:
                         opProps[s].isIrreflexive = True
-                    elif o == Consts.Uris.Properties.REFLEXIVE:
+                    elif o == Csts.Uris.Properties.REFLEXIVE:
                         opProps[s].isReflexive = True
-                    elif o == Consts.Uris.Properties.SYMMETRIC:
+                    elif o == Csts.Uris.Properties.SYMMETRIC:
                         opProps[s].isSymmetric = True
-                    elif o == Consts.Uris.Properties.TRANSITIVE:
+                    elif o == Csts.Uris.Properties.TRANSITIVE:
                         opProps[s].isTransitive = True
-            elif p == Consts.Uris.RDF_TYPE and o in clsUri:
+            elif p == Csts.Uris.RDF_TYPE and o in clsUri:
                 clsProps[o].nbInstances += 1
             elif s in clsUri:
-                if p == Consts.Uris.SUB_CLASS_OF:
+                if p == Csts.Uris.SUB_CLASS_OF:
                     clsProps[s].subClassOf.append(o)
 
         self._opProperties = opProps
@@ -145,10 +140,10 @@ class RdflibOntology(AbstractOntology):
         for opUri in opsUri:
             domains = self._opProperties[opUri].domains
             if len(domains) == 0:
-                domains = [Consts.Uris.THING]
+                domains = [Csts.Uris.THING]
             ranges = self._opProperties[opUri].ranges
             if len(ranges) == 0:
-                ranges = [Consts.Uris.THING]
+                ranges = [Csts.Uris.THING]
 
             for opDomain in domains:
                 for opRange in ranges:

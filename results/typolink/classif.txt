@@ -1,4 +1,4 @@
-#! Version: 07/06/2019_14:54:17
+#! Version: 12/06/2019_16:19:00
 # This file has been generated with the file "data/ontologies/dbpedia_2016-10.owl".
 #Found? OP name                        Typo word                      Proximity 
 
@@ -6,6 +6,7 @@ OK      politicalPartyOfLeader         takesPartIn                    0.60
 OK      otherOccupation                specific                       0.62
 KO      shuttle                        
 OK      subClassis                     specific                       0.52
+KO      classis                        
 KO      illustrator                    
 OK      otherMedia                     about                          0.63
 OK      fastestDriver                  takesPartIn                    0.43
@@ -96,6 +97,7 @@ OK      leaderParty                    takesPartIn                    0.58
 OK      woRMS                          takesPartIn                    0.58
 OK      trainerClub                    product                        0.52
 OK      literaryGenre                  research                       0.54
+OK      genre                          specific                       0.49
 KO      lymph                          
 KO      complexion                     
 OK      mouthRegion                    takesPartIn                    0.56
@@ -120,7 +122,6 @@ OK      endingTheme                    takesPartIn                    0.58
 OK      availableSmartCard             makeUseOf                      0.65
 OK      vicePrincipal                  takesPartIn                    0.54
 KO      prefecture                     
-OK      genre                          specific                       0.49
 OK      sourceConfluence               research                       0.57
 OK      namedByLanguage                callsUpon                      0.64
 OK      notableStudent                 specific                       0.63
@@ -150,6 +151,7 @@ OK      parliament                     order                          0.48
 OK      soccerLeagueWinner             resultsIn                      0.61
 OK      lastRace                       about                          0.64
 OK      originalLanguage               research                       0.66
+OK      language                       product                        0.54
 OK      makeupArtist                   product                        0.55
 OK      poleDriverTeam                 takesPartIn                    0.58
 KO      agglomeration                  
@@ -166,6 +168,7 @@ OK      winsAtJLPGA                    takesPartIn                    0.64
 OK      wikiPageEditLink               do                             0.60
 OK      distributingLabel              product                        0.53
 OK      championInSingle               makeUseOf                      0.57
+OK      champion                       cause                          0.49
 OK      aircraftUser                   product                        0.59
 KO      animator                       
 OK      ideology                       research                       0.52
@@ -195,6 +198,7 @@ OK      map                            resultsIn                      0.51
 OK      land                           makeUseOf                      0.53
 OK      majorIsland                    specific                       0.60
 OK      championInDoubleFemale         makeUseOf                      0.59
+OK      championInDouble               makeUseOf                      0.57
 OK      regionServed                   takesPartIn                    0.61
 OK      wikiPageRevisionLink           about                          0.61
 OK      previousEvent                  callsUpon                      0.64
@@ -213,6 +217,7 @@ OK      wikiPageHistoryLink            about                          0.63
 OK      elementAbove                   takesPartIn                    0.64
 OK      similar                        related                        0.74
 OK      owningOrganisation             research                       0.52
+OK      owner                          takesPartIn                    0.49
 OK      capitalRegion                  callsUpon                      0.56
 OK      participatingIn                takesPartIn                    0.53
 KO      disciple                       
@@ -281,6 +286,7 @@ OK      mastersWins                    takesPartIn                    0.61
 OK      citizenship                    research                       0.46
 OK      routeStartLocation             makeUseOf                      0.65
 OK      olympicOathSwornByAthlete      product                        0.43
+KO      olympicOathSwornBy             
 OK      winsAtJapan                    takesPartIn                    0.59
 OK      hand                           callsUpon                      0.55
 KO      jockey                         
@@ -301,6 +307,7 @@ OK      launchVehicle                  makeUseOf                      0.58
 OK      aircraftAttack                 research                       0.59
 OK      institution                    research                       0.56
 OK      club                           about                          0.50
+OK      team                           research                       0.59
 OK      primeMinister                  takesPartIn                    0.47
 OK      previousEntity                 callsUpon                      0.61
 OK      features                       takesPartIn                    0.56
@@ -349,6 +356,7 @@ OK      vicePrincipalLabel             takesPartIn                    0.60
 OK      solventWithBadSolubility       necessary                      0.57
 KO      nobelLaureates                 
 KO      commandant                     
+OK      keyPerson                      specific                       0.62
 OK      mergedIntoParty                takesPartIn                    0.64
 OK      lyrics                         about                          0.47
 OK      countySeat                     takesPartIn                    0.55
@@ -389,7 +397,6 @@ OK      managementPosition             takeCareOf                     0.65
 OK      governingBody                  takesPartIn                    0.56
 OK      polishFilmAward                research                       0.60
 KO      entourage                      
-OK      keyPerson                      specific                       0.62
 OK      lieutenancyArea                research                       0.60
 KO      locomotive                     
 OK      voice                          support                        0.53
@@ -649,7 +656,6 @@ OK      government                     research                       0.59
 OK      largestSettlement              about                          0.54
 OK      associatedAct                  related                        0.66
 OK      alpsMainPart                   takesPartIn                    0.76
-OK      language                       product                        0.54
 OK      board                          takeCareOf                     0.50
 OK      southWestPlace                 takesPartIn                    0.66
 OK      ground                         callsUpon                      0.53
@@ -664,6 +670,7 @@ KO      choreographer
 OK      crewMember                     takesPartIn                    0.57
 OK      jointCommunity                 research                       0.60
 OK      capital                        callsUpon                      0.46
+OK      administrativeHeadCity         takesPartIn                    0.63
 OK      isPartOfAnatomicalStructure    takesPartIn                    0.74
 KO      deanery                        
 OK      sourceDistrict                 research                       0.58
@@ -764,7 +771,6 @@ OK      alumni                         research                       0.42
 OK      religiousHead                  specific                       0.61
 OK      nationality                    specific                       0.43
 OK      waterwayThroughTunnel          takesPartIn                    0.58
-OK      team                           research                       0.59
 OK      aircraftTransport              makeUseOf                      0.57
 OK      systemOfLaw                    order                          0.61
 OK      parentMountainPeak             callsUpon                      0.61
@@ -878,7 +884,6 @@ OK      startReign                     makeUseOf                      0.62
 OK      namedAfter                     callsUpon                      0.73
 KO      heir                           
 OK      highestPoint                   specific                       0.62
-OK      champion                       cause                          0.49
 OK      launchPad                      makeUseOf                      0.56
 OK      gameEngine                     product                        0.59
 OK      bodyStyle                      takesPartIn                    0.58
@@ -886,7 +891,6 @@ OK      firstPublisher                 takesPartIn                    0.62
 OK      orthologousGene                research                       0.48
 OK      organisationMember             takesPartIn                    0.57
 KO      sibling                        
-OK      owner                          takesPartIn                    0.49
 OK      stadium                        product                        0.45
 OK      federalState                   callsUpon                      0.54
 OK      inCemetery                     research                       0.51
@@ -946,7 +950,6 @@ OK      victim                         callsUpon                      0.49
 OK      goldMedalist                   callsUpon                      0.45
 OK      incumbent                      callsUpon                      0.49
 OK      district                       resultsIn                      0.51
-KO      olympicOathSwornBy             
 OK      crosses                        takesPartIn                    0.45
 KO      translator                     
 OK      occupation                     research                       0.48
@@ -955,7 +958,6 @@ OK      municipality                   product                        0.40
 KO      webcast                        
 OK      wikiPageDisambiguates          about                          0.59
 OK      sourceConfluenceMountain       research                       0.61
-OK      administrativeHeadCity         takesPartIn                    0.63
 OK      subFamily                      specific                       0.58
 OK      aircraftHelicopterMultirole    research                       0.53
 OK      organSystem                    callsUpon                      0.53
@@ -1027,7 +1029,6 @@ OK      teamManager                    product                        0.59
 KO      appointer                      
 OK      firstLeader                    takesPartIn                    0.66
 KO      chairperson                    
-OK      championInDouble               makeUseOf                      0.57
 OK      biggestCity                    takesPartIn                    0.57
 KO      sire                           
 OK      leftTributary                  takesPartIn                    0.69
@@ -1100,7 +1101,6 @@ OK      parish                         research                       0.46
 OK      gender                         specific                       0.47
 OK      headChef                       takesPartIn                    0.56
 OK      relatedPlaces                  related                        0.83
-KO      classis                        
 OK      previousInfrastructure         research                       0.61
 OK      schoolPatron                   research                       0.60
 OK      coProducer                     product                        0.54

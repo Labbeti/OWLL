@@ -1,10 +1,10 @@
 from ontology.Ontology import *
 from util import equals
+from util import is_obo_op
+from util import is_restriction_id
 from util import prt
 from util import split_input
 from util import split_op_name
-
-import os.path
 
 
 def test_split_name():
@@ -97,12 +97,55 @@ def test_split_input():
     prt("OK: test_split_input")
 
 
+def test_is_obo_op():
+    tests = {
+        "BFO_0000050": True,
+        "RO_000050": True,
+        "APOLLO_SV_00001": True,
+        "NCIT_R100": True,
+        "CIO_0000000": True,
+        "MAMO_0000003": True,
+        "TR_0004": True,
+        "TEDDY_0000176": True,
+        "PARTY_IDENTITY": False,
+        "IoT_Thing": False,
+        "LOMOWL_Record": False,
+        "E_Commerce": False,
+        "OccurenceA_Premise": False,
+    }
+    for string, resultExpected in tests.items():
+        result = is_obo_op(string)
+        if result != resultExpected:
+            raise Exception("test_is_obo_op error: %s != %s for %s" % (result, resultExpected, string))
+
+    prt("OK: test_is_obo_op")
+
+
+def test_is_restriction_id():
+    tests = {
+        "N0b283aab41a641c1a51c919c8ca0ba44": True,
+        "Nc56bae244919441cb660e380a90085ee": True,
+        "N8dc00dfa2bf84272b3c852d6c0ab3787": True,
+        "NegContainsProperty1_Premise": False,
+        "n6b": False,
+        "NonarbitraryNeeded_Premise": False,
+    }
+    for string, resultExpected in tests.items():
+        result = is_restriction_id(string)
+        if result != resultExpected:
+            raise Exception("test_is_restriction_id error")
+
+    prt("OK: test_is_restriction_id")
+
+
 def test_all():
     prt("Begin autotests.")
     test_split_name()
     test_get_object_properties()
     test_cls_props()
     test_split_input()
+    test_is_obo_op()
+    test_is_restriction_id()
     prt("OK: All")
 
 

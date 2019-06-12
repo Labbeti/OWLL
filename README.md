@@ -22,12 +22,12 @@ scikit-learn | 0.21.1 | Clusterize | [Link](https://pypi.org/project/scikit-lear
 > Some others packages dependances will be installed if you are using pip.
 
 Once everything is installed, run this command on a terminal in the project directory:
-```python main.py``` (Mac, Linux) or ```py.exe main.py``` (Windows).
+```python main.py```.
 
 The **OWLL terminal** will start and allow you to generate results. 
 Type ```help``` to display the list of available commands.
 
-### Main commands *(Indev 0.1.12)* :
+### Main commands *(Indev 0.1.14)* :
 
 Command | Description
 --- | ---
@@ -37,7 +37,18 @@ Command | Description
 ```genstats``` | Update all statistics from OPD.
 ```gengensim``` | Try Agglomerative clusterisation with distance matrix generated with gensim.
 
-## Versions 
+## Indev versions notes
+* Indev 0.1.14 (12/06/19)
+  * Add ```TenseVerb```, a class used to recognize the tense of a verb with the file "verb_conj.txt".
+  * Move a part of "main.py" code in "OwllTerminal.py".
+  * Working on a new clusterisation with domain, range and OP properties (functional, symmetric, etc...), temporary results are in file "clusters_extended.txt".
+  * Add ```OPD```, a class created for manipulating the Object Property Database.
+  * Rename ```Consts``` to ```Csts``` and "roots.txt" to "content_words.txt".
+  * Add docstrings for documentation.
+  * Remove "EDAM.owl" from OPD (contains unreadable domain and range).
+  * Regenerate OPD with 178 ontologies and 5485 triples.
+  * Regenerate stats and gensim results.
+  
 * Indev 0.1.13 (07/06/19)
   * Remove constant ```CONNECT_WORDS```, add function ```getWordsSearched()```.
   * Rename Config class and file to Consts.
@@ -48,7 +59,7 @@ Command | Description
   * Remove some ontologies :
     * Non-english ontologies "IT_study1.owl" and "leo.owl" from OPD.
     * Ontology with unreadable object properties "protege.owl". 
-  * Regenerate OPD with 147 ontologies.
+  * Regenerate OPD with 147 ontologies and 4551 triples.
   * Up Owlready2 version 0.17 to 0.18.
 
 * Indev 0.1.12 (06/06/19)
