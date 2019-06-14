@@ -1,7 +1,7 @@
 from ontology.AbstractOntology import AbstractOntology
-from ontology.ClsProperties import ClsProperties
+from ontology.ClsData import ClsData
 from ontology.IOntology import IOntology
-from ontology.OpProperties import OpProperties
+from ontology.OpData import OpData
 from ontology.OwlreadyOntology import OwlreadyOntology
 from ontology.RdflibOntology import RdflibOntology
 
@@ -17,17 +17,21 @@ class Ontology(IOntology):
         self.__checkIfLoaded()
         return self.__onto.getAllClsProperties()
 
-    def getClsProperties(self, clsUri: str) -> ClsProperties:
+    def getAllOpsData(self) -> dict:
         self.__checkIfLoaded()
-        return self.__onto.getClsProperties(clsUri)
+        return self.__onto.getAllOpsData()
+
+    def getClsData(self, clsIri: str) -> ClsData:
+        self.__checkIfLoaded()
+        return self.__onto.getClsData(clsIri)
 
     def getFilepath(self) -> str:
         self.__checkIfLoaded()
         return self.__onto.getFilepath()
 
-    def getName(self, uri: str) -> str:
+    def getName(self, iri: str) -> str:
         self.__checkIfLoaded()
-        return self.__onto.getName(uri)
+        return self.__onto.getName(iri)
 
     def getNbErrors(self) -> int:
         if self.isLoaded():
@@ -39,13 +43,9 @@ class Ontology(IOntology):
         self.__checkIfLoaded()
         return self.__onto.getOpNames()
 
-    def getOpProperties(self, opUri: str) -> OpProperties:
+    def getOpData(self, opUri: str) -> OpData:
         self.__checkIfLoaded()
-        return self.__onto.getOpProperties(opUri)
-
-    def getOwlTriplesUri(self) -> list:
-        self.__checkIfLoaded()
-        return self.__onto.getOwlTriplesUri()
+        return self.__onto.getOpData(opUri)
 
     def isLoaded(self) -> bool:
         return self.__onto is not None and self.__onto.isLoaded()

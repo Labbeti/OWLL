@@ -1,8 +1,8 @@
 
 from abc import abstractmethod
-from ontology.ClsProperties import ClsProperties
+from ontology.ClsData import ClsData
 from ontology.IOntology import IOntology
-from ontology.OpProperties import OpProperties
+from ontology.OpData import OpData
 
 
 # Abstract Ontology for implementation with librairies.
@@ -11,42 +11,43 @@ class AbstractOntology(IOntology):
     def __init__(self, filepath: str):
         self._filepath = filepath
         self._loaded = False
-        self._clsProperties = {}
-        self._opProperties = {}
-        self._owlTriplesUri = []
+        self._clssData = {}
+        self._opsData = {}
 
     def getAllClsProperties(self) -> dict:
-        return self._clsProperties
+        return self._clssData
 
-    def getClsProperties(self, clsUri: str) -> ClsProperties:
-        if clsUri in self._clsProperties.keys():
-            return self._clsProperties[clsUri]
+    def getAllOpsData(self) -> dict:
+        return self._opsData
+
+    def getClsData(self, clsIri: str) -> ClsData:
+        if clsIri in self._clssData.keys():
+            return self._clssData[clsIri]
         else:
-            raise Exception("Unknown URI %s." % clsUri)
+            raise Exception("Unknown URI %s." % clsIri)
 
     def getFilepath(self) -> str:
         return self._filepath
 
-    @abstractmethod
-    def getName(self, uri: str) -> str:
-        raise NotImplementedError("user must define getName")
+    def getName(self, iri: str) -> str:
+        if self.isLoaded() and iri in self._opsData.keys():
+            return self._opsData[iri].name
+        else:
+            raise Exception("Invalid ontology or IRI for getName()")
 
     @abstractmethod
     def getNbErrors(self) -> int:
         raise NotImplementedError("user must define getNbErrors")
 
     def getOpNames(self) -> list:
-        OPnames = [self.getName(key) for key in self._opProperties.keys()]
-        return OPnames
+        opNames = [opData.getName() for opData in self._opsData.values()]
+        return opNames
 
-    def getOpProperties(self, opUri: str) -> OpProperties:
-        if opUri in self._opProperties.keys():
-            return self._opProperties[opUri]
+    def getOpData(self, opUri: str) -> OpData:
+        if opUri in self._opsData.keys():
+            return self._opsData[opUri]
         else:
             raise Exception("Unknown URI %s." % opUri)
-
-    def getOwlTriplesUri(self) -> list:
-        return self._owlTriplesUri
 
     def isLoaded(self) -> bool:
         return self._loaded

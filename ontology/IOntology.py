@@ -1,7 +1,7 @@
 
 from abc import ABCMeta
 from abc import abstractmethod
-from ontology.OpProperties import OpProperties
+from ontology.OpData import OpData
 
 
 '''
@@ -29,9 +29,13 @@ class IOntology(object, metaclass=ABCMeta):
     def getAllClsProperties(self) -> dict:
         raise NotImplementedError("user must define getAllClsProperties")
 
+    @abstractmethod
+    def getAllOpsData(self) -> dict:
+        raise NotImplementedError("user must define getAllClsProperties")
+
     # Return the properties of a class.
     @abstractmethod
-    def getClsProperties(self, clsUri: str) -> str:
+    def getClsData(self, clsIri: str) -> str:
         raise NotImplementedError("user must define getClsProperties")
 
     # Get the filepath of the ontology file loaded.
@@ -41,7 +45,7 @@ class IOntology(object, metaclass=ABCMeta):
 
     # Return the name of the OP or class target by the parameter uri.
     @abstractmethod
-    def getName(self, uri: str) -> str:
+    def getName(self, iri: str) -> str:
         raise NotImplementedError("user must define getName")
 
     # Return the number of errors encountered during loading of the ontology.
@@ -56,13 +60,8 @@ class IOntology(object, metaclass=ABCMeta):
 
     # Return the properties of an OP.
     @abstractmethod
-    def getOpProperties(self, opUri: str) -> OpProperties:
+    def getOpData(self, opUri: str) -> OpData:
         raise NotImplementedError("user must define getOpProperties")
-
-    # Return the list of RDF triplets.
-    @abstractmethod
-    def getOwlTriplesUri(self) -> list:
-        raise NotImplementedError("user must define getOwlTriplesUri")
 
     # Return True if is loading is succesfull.
     @abstractmethod

@@ -27,7 +27,7 @@ Once everything is installed, run this command on a terminal in the project dire
 The **OWLL terminal** will start and allow you to generate results. 
 Type ```help``` to display the list of available commands.
 
-### Main commands *(Indev 0.1.14)* :
+### Main commands *(Indev 0.1.15)* :
 
 Command | Description
 --- | ---
@@ -35,9 +35,21 @@ Command | Description
 ```clust``` | Test of some clusterisation algorithms on object properties names with FastText.
 ```genopd``` | Regenerate Object Property Database (OPD) with the ontologies
 ```genstats``` | Update all statistics from OPD.
-```gengensim``` | Try Agglomerative clusterisation with distance matrix generated with gensim.
+```gengensim``` | (Indev) Try to create a clusterisation and a classification with gensim.
 
 ## Indev versions notes
+* Indev 0.1.15 (14/06/19)
+  * Add IRI columns for OPD.txt, merge domains and ranges for an OP in 1 line instead of create multiple lines for each domain / range.
+  * Add fct words pairs statistics in "results/stats/pairs_sw.txt".
+  * Regenerate OPD with 178 ontologies and 5585 OPs.
+  * Regerate stats and gensim results.
+  * Rename TenseVerb to TenseDetector.
+  * Add test for TenseDetector.
+  * Add generation of non-english words of OPD.
+  * Add new test with gensim and a new classification with link words.
+  * Add more docstrings in OPD.py.
+  * Unify "OpProperties" class and "values" dict of OPD in "OpData" class.
+  
 * Indev 0.1.14 (12/06/19)
   * Add ```TenseVerb```, a class used to recognize the tense of a verb with the file "verb_conj.txt".
   * Move a part of "main.py" code in "OwllTerminal.py".

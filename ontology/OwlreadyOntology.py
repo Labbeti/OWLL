@@ -1,20 +1,12 @@
 from Csts import *
 from ontology.AbstractOntology import AbstractOntology
-from ontology.ClsProperties import ClsProperties
-from ontology.OpProperties import OpProperties
+from ontology.ClsData import ClsData
+from ontology.OpData import OpData
 from urllib.error import HTTPError
-from util import prt
 from util import rem_duplicates
+from util import iri_to_name
 
 import owlready2 as or2
-
-
-# Clean ontology name for each property
-# (ex: tabletopgames_V3.contains -> contains)
-# (ex: org/ontology/isPartOfWineRegion -> isPartOfWineRegion)
-def _or2_uri_to_name(string: str) -> str:
-    index = max(string.rfind("."), string.rfind("#"), string.rfind("/"))
-    return string[index + 1:]
 
 
 class OwlreadyOntology(AbstractOntology):
@@ -22,11 +14,7 @@ class OwlreadyOntology(AbstractOntology):
     def __init__(self, filepath: str):
         super().__init__(filepath)
         self.__nb_errors = 0
-
         self.__load(filepath)
-
-    def getName(self, uri: str) -> str:
-        return _or2_uri_to_name(uri)
 
     def getNbErrors(self) -> int:
         return self.__nb_errors
@@ -46,69 +34,67 @@ class OwlreadyOntology(AbstractOntology):
             self._loaded = False
 
         if self.isLoaded():
-            self.__updateProperties(ontoOwlready)
-            self.__updateOwlTriples(ontoOwlready)
+            self.__updateData(ontoOwlready)
 
-    def __updateProperties(self, ontoOwlready: or2.Ontology):
+    def __updateData(self, ontoOwlready: or2.Ontology):
         for clsOwlready in ontoOwlready.classes():
-            clsProperties = ClsProperties()
-            clsProperties.subClassOf = clsOwlready.is_a
-            self._clsProperties[clsOwlready.iri] = clsProperties
-        self._clsProperties[Csts.Uris.THING] = ClsProperties()
+            clsData = ClsData()
+            clsData.subClassOfIris = clsOwlready.is_a
+            clsData.iri = clsOwlready.iri
+            clsData.name = iri_to_name(clsOwlready.iri)
+            self._clssData[clsOwlready.iri] = clsData
+        self._clssData[Csts.IRIs.THING] = ClsData()
 
         individuals = ontoOwlready.individuals()
         for individual in individuals:
             for cls in individual.is_a:
                 try:
-                    self._clsProperties[cls.iri].nbInstances += 1
+                    self._clssData[cls.iri].nbInstances += 1
                 except AttributeError:
                     self.__nb_errors += 1
 
         for opOwlready in ontoOwlready.object_properties():
-            opProperties = OpProperties()
+            opData = OpData(self.getFilepath())
             try:
-                opProperties.inverseOf = opOwlready.inverse_property.iri if opOwlready.inverse_property is not None \
-                    else Csts.DefaultOpdValues.INVERSE_OF
+                self.__inverseOf = opOwlready.inverse_property.iri if opOwlready.inverse_property is not None \
+                    else []
             except AttributeError:
                 self.__nb_errors += 1
-            opProperties.isAsymmetric = issubclass(opOwlready, or2.AsymmetricProperty)
-            opProperties.isFunctional = issubclass(opOwlready, or2.FunctionalProperty)
-            opProperties.isInverseFunctional = issubclass(opOwlready, or2.InverseFunctionalProperty)
-            opProperties.isIrreflexive = issubclass(opOwlready, or2.IrreflexiveProperty)
-            opProperties.isReflexive = issubclass(opOwlready, or2.ReflexiveProperty)
-            opProperties.isSymmetric = issubclass(opOwlready, or2.SymmetricProperty)
-            opProperties.isTransitive = issubclass(opOwlready, or2.TransitiveProperty)
-            opProperties.label = opOwlready.label if opOwlready.label is not None else Csts.DefaultOpdValues.LABEL
-            opProperties.subPropertyOf = [propOwlready.iri for propOwlready in opOwlready.is_a]
-            self._opProperties[opOwlready.iri] = opProperties
+            opData.asymmetric = issubclass(opOwlready, or2.AsymmetricProperty)
+            opData.functional = issubclass(opOwlready, or2.FunctionalProperty)
+            opData.inverseFunctional = issubclass(opOwlready, or2.InverseFunctionalProperty)
+            opData.irreflexive = issubclass(opOwlready, or2.IrreflexiveProperty)
+            opData.reflexive = issubclass(opOwlready, or2.ReflexiveProperty)
+            opData.symmetric = issubclass(opOwlready, or2.SymmetricProperty)
+            opData.transitive = issubclass(opOwlready, or2.TransitiveProperty)
+            opData.label = opOwlready.label if opOwlready.label is not None else ""
+            opData.subPropertyOf = [propOwlready.iri for propOwlready in opOwlready.is_a]
+            opData.iri = opOwlready.iri
+            opData.name = iri_to_name(opOwlready.iri)
+            self._opsData[opOwlready.iri] = opData
 
             for domain_ in opOwlready.domain:
                 if domain_ is not None:
                     try:
-                        self._clsProperties[domain_.iri].domainOf.append(opOwlready.iri)
+                        self._clssData[domain_.iri].domainOf.append(opOwlready.iri)
                     except AttributeError:
                         self.__nb_errors += 1
             for range_ in opOwlready.range:
                 if range_ is not None:
                     try:
-                        self._clsProperties[range_.iri].rangeOf.append(opOwlready.iri)
+                        self._clssData[range_.iri].rangeOf.append(opOwlready.iri)
                     except AttributeError:
                         self.__nb_errors += 1
 
-    def __updateOwlTriples(self, ontoOwlready):
-        self.__nb_errors = 0
-        # Remove duplicates because Owlready2 have errors (ex: for Restrictions on collaborativePizza.owl)
-        opsOwlready = rem_duplicates(ontoOwlready.object_properties())
-        self._owlTriplesUri = []
-        for opOwlready in opsOwlready:
-            try:
-                domainIRIs = [op_domain.iri for op_domain in opOwlready.domain] if opOwlready.domain != [] else \
-                    [Csts.Uris.THING]
-                rangeIRIs = [op_range.iri for op_range in opOwlready.range] if opOwlready.range != [] else \
-                    [Csts.Uris.THING]
-                for domainIRI in domainIRIs:
-                    for rangeIRI in rangeIRIs:
-                        self._owlTriplesUri.append((domainIRI, opOwlready.iri, rangeIRI))
-            except (TypeError, AttributeError):
-                self.__nb_errors += 1
-        return self._owlTriplesUri
+        for opData in self._opsData.values():
+            if len(opData.getDomainsIris()) == 0:
+                opData.domainsIris.append(Csts.IRIs.THING)
+            if len(opData.getRangesIris()) == 0:
+                opData.rangesIris.append(Csts.IRIs.THING)
+
+            for domainIRI in opData.getDomainsIris():
+                domain = self.getClsData(domainIRI)
+                opData.nbInstDomains.append(domain.nbInstances)
+            for rangeIRI in opData.getRangesIris():
+                range_ = self.getClsData(rangeIRI)
+                opData.nbInstRanges.append(range_.nbInstances)

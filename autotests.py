@@ -1,10 +1,15 @@
+from Csts import Csts
 from ontology.Ontology import *
-from util import equals
+from OPD import OPD
+from TenseDetector import TenseDetector
+from util import unordered_list_equals
 from util import is_obo_op
 from util import is_restriction_id
 from util import prt
 from util import split_input
 from util import split_op_name
+
+import os
 
 
 def test_split_name():
@@ -45,15 +50,15 @@ def test_get_object_properties():
 
         if ontoOr.isLoaded() and ontoRl.isLoaded():
             names_owlready = ontoOr.getOpNames()
-            triples_owlready = ontoOr.getOwlTriplesUri()
+            dataOr = ontoOr.getAllOpsData()
             names_rdflib = ontoRl.getOpNames()
-            triples_rdflib = ontoRl.getOwlTriplesUri()
+            dataRl = ontoRl.getAllOpsData()
 
-            if not equals(names_owlready, names_rdflib) or not equals(triples_owlready, triples_rdflib):
+            if not unordered_list_equals(names_owlready, names_rdflib) or not dataOr == dataRl:
                 raise Exception("§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\t"
                                 "Rdflib: nb_names=%d nb_triples=%d" % (filepath, len(names_owlready),
-                                                                       len(triples_owlready), len(names_rdflib),
-                                                                       len(triples_rdflib)))
+                                                                       len(dataOr), len(names_rdflib),
+                                                                       len(dataRl)))
     prt("OK: test_get_object_properties")
 
 
@@ -138,14 +143,60 @@ def test_is_restriction_id():
     prt("OK: test_is_restriction_id")
 
 
+def test_save_load_opd():
+    filepath = Csts.Paths.OPD
+    filepathCopy = os.path.join(os.path.dirname(filepath), "opd_copy.txt")
+
+    opd = OPD()
+    opd.loadFromFile(filepath)
+    opd.saveInFile(filepathCopy, False)
+    opdCopy = OPD()
+    opdCopy.loadFromFile(filepathCopy)
+
+    os.remove(filepathCopy)
+    if opd != opdCopy:
+        d1 = opd.getData()
+        d2 = opdCopy.getData()
+        if len(d1) != len(d2):
+            raise Exception("OPD has not the same number of op data.")
+        for i in range(len(d1)):
+            if d1[i] != d2[i]:
+                print(d1[i])
+                print(d2[i])
+                raise Exception("Foudn distincts op: ", d1[i].iri, d2[i].iri)
+        raise Exception("test_save_load_opd opd error")
+    prt("OK: test_save_load_opd")
+
+
+def test_tense_verb():
+    tests = {
+        "added": ("add", ["past", "past participle"]),
+        "taken": ("take", ["past participle"]),
+    }
+
+    filepathVerbsConj = "data/verb_conj.txt"
+    detector = TenseDetector()
+    detector.load(filepathVerbsConj)
+    for verb, (expectedInfVerb, expectedTense) in tests.items():
+        (infVerb, tense) = detector.recognize(verb)
+        if expectedInfVerb != infVerb or expectedTense != tense:
+            print("Error: %s != %s or %s != %s" % (expectedInfVerb, infVerb, expectedTense, tense))
+            raise Exception("test_tense_verb error")
+    prt("OK: test_tense_verb")
+
+
 def test_all():
     prt("Begin autotests.")
+    """
     test_split_name()
     test_get_object_properties()
     test_cls_props()
     test_split_input()
     test_is_obo_op()
     test_is_restriction_id()
+    """
+    test_save_load_opd()
+    test_tense_verb()
     prt("OK: All")
 
 

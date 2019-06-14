@@ -32,10 +32,13 @@ class Csts:
         STATS_SEARCHED_WORDS = "results/stats/searched_words_stats.txt"
         TYPO_LINK = "results/typolink/classif.txt"
         NON_EN_WORDS = "results/stats/non_en_words.txt"
+        STATS_PAIRS_SW = "results/stats/pairs_sw.txt"
 
     class Words:
         # Differents sets of functions words searched in OP.
-        ADPOSITIONS = "as at by for from in of on to under until with".split()  # preposition or postposition words
+
+        # Prepositions or postpositions words. Unused: under
+        ADPOSITIONS = "as at by for from in of on to until with".split()
         ARTICLES = "a an the".split()
         PARTICLES = "and but do if in let not out over so to up".split()
         PRONOUN = "he her him his i it its me my none our she some their them they this us we which you your".split()
@@ -52,7 +55,8 @@ class Csts:
         CONNECT = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to", "with"]
         '''
 
-    class Uris:
+    # Internationalized Resource Identifier (IRIs)
+    class IRIs:
         # Defaults URIs of RDF and OWL.
         CLASS = "http://www.w3.org/2002/07/owl#Class"
         DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
@@ -67,6 +71,7 @@ class Csts:
         SUB_CLASS_OF = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
         SUB_PROPERTY_OF = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf"
         THING = "http://www.w3.org/2002/07/owl#Thing"
+        TOP_OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#topObjectProperty"
 
         class Properties:
             ASYMMETRIC = "http://www.w3.org/2002/07/owl#AsymmetricProperty"
@@ -106,3 +111,52 @@ class Csts:
         "determines", "allows", "related", "necessary", "about", "transforms", "modified",
         "converts", "trafficking", "affects", "takeCareOf", "concerns", "product", "cause",
         "causes", "generate", "resultsIn", "created", "develops", "deal", "provides"]
+
+    LINK_WORDS_CLUSTERS_NAMES = [
+        "Characterization",
+        "Use of the example",
+        "Classification",
+        "Decomposition",
+        "Sequence",
+        "Order of size",
+        "Main topic",
+        "Topic help",
+        "Instrument",
+        "Goal",
+        "Terms and conditions",
+        "Object",
+        "Result",
+    ]
+    LINK_WORDS_CLUSTERS = [
+        # Characterization
+        ["characterize", "isSpecificTo", "identifies", "defined", "depicted", "qualifies", "delineated", "specificTo",
+         "belongsTo"],
+        # Use of the example
+        ["isA", "illustrationOf", "famous", "higlights", "testifiedTo", "isAnAspectOf", "remindsMeOf", "isAnExampleOf"],
+        # Classification
+        ["includes", "gathered", "collects"],
+        # Decomposition
+        ["isComposedOf", "contains", "assimilates"],
+        # Sequence
+        ["preceding", "comesBefore", "pre-existsAt", "isAPrerequisiteFor", "isPriorTo", "lead", "continuesWith",
+         "isContinuedBy", "endsWith", "isAtTheOriginOf", "isReplacedBy"],
+        # Order of size
+        ["isSmallerThan", "isLessThan", "isWorseThan", "isExceededBy"],
+        # Main topic
+        ["do", "realizes", "assume", "accomplishes", "executes", "proceedsTo", "manages", "ensures", "order",
+         "trigger", "causes"],
+        # Topic help
+        ["helpsTo", "contributesTo", "collaboratesIn", "participatesIn", "encourages", "support", "takesPartIn",
+         "stimulates", "promotes", "increases", "amplifies", "facilitates"],
+        # Instrument
+        ["uses", "usesTheFollowing", "makeUseOf", "employs", "callsUpon", "hasAtItsDisposal"],
+        # Goal
+        ["aimsTo", "isLookingFor", "continues", "tendsTo", "research", "wishes"],
+        # Terms and conditions
+        ["dependsOn", "requires", "isSubjectTo", "isInfluencedBy", "isAFunctionOf", "isDeterminedBy", "isRelatedTo",
+         "determines", "allows", "necessary"],
+        # Object
+        ["isAbout", "transforms", "modified", "converts", "trafficking", "affects", "takeCareOf", "concerns"],
+        # Result
+        ["product", "cause", "causes", "generate", "resultsIn", "created", "develops", "deal", "provides"],
+    ]

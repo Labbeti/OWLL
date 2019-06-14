@@ -11,22 +11,21 @@ def searched_words_stats(opd: OPD, filepathResults: str):
     """
     results = {word_type: {} for word_type in ["Prefix", "Suffix", "Infix"]}
 
-    for values in opd.getData():
-        op_name = values["ObjectProperty"]
-        words_name = split_op_name(op_name)
-        words_name = [word.lower() for word in words_name]
+    for opData in opd.getData():
+        opNameSplit = str_list_lower(opData.getNameSplit())
 
-        conn_words_found = [conn_word for conn_word in Csts.Words.getWordsSearched() if conn_word in words_name]
-        conn_words_type = [("Prefix" if word == words_name[0] else
-                            "Suffix" if word == words_name[-1] else
-                            "Infix") for word in conn_words_found]
+        fctWordsFound = [fctWord for fctWord in Csts.Words.getWordsSearched() if fctWord in opNameSplit]
+        fctWordsPosition = [(
+            "Prefix" if word == opNameSplit[0] else
+            "Suffix" if word == opNameSplit[-1] else
+            "Infix") for word in fctWordsFound]
 
-        for i in range(len(conn_words_found)):
-            conn_word_found = conn_words_found[i]
-            conn_word_type = conn_words_type[i]
-            if conn_word_found not in results[conn_word_type].keys():
-                results[conn_word_type][conn_word_found] = []
-            results[conn_word_type][conn_word_found].append(op_name)
+        for i in range(len(fctWordsFound)):
+            wordsFound = fctWordsFound[i]
+            wordsPos = fctWordsPosition[i]
+            if wordsFound not in results[wordsPos].keys():
+                results[wordsPos][wordsFound] = []
+            results[wordsPos][wordsFound].append(opData.getName())
 
     out = create_result_file(filepathResults, opd.getSrcpath(), opd.getVersion())
     out.write("# Words searched are : %s\n" % str(Csts.Words.getWordsSearched()))
@@ -34,14 +33,14 @@ def searched_words_stats(opd: OPD, filepathResults: str):
 
     results_sort = []
     for word_type, _ in results.items():
-        for conn_word_found, words in results[word_type].items():
+        for wordsFound, words in results[word_type].items():
             proportion = 100 * len(words) / opd.getSize()
-            results_sort.append((proportion, word_type, conn_word_found, words))
+            results_sort.append((proportion, word_type, wordsFound, words))
 
     results_sort.sort(key=lambda x: x[0], reverse=True)
-    for (proportion, word_type, conn_word_found, words) in results_sort:
+    for (proportion, word_type, wordsFound, words) in results_sort:
         out.write("%s: Word \"%s\" %d/%d (%.2f%%)\n" % (
-            word_type, conn_word_found, len(words), opd.getSize(), proportion))
+            word_type, wordsFound, len(words), opd.getSize(), proportion))
         for word in words:
             out.write("%s, " % word)
         out.write("\n\n")
@@ -60,14 +59,10 @@ def extract_content_word(opd: OPD, filepathCW: str, filepathLists: str):
     contentWords = []
     allNamesSet = set()
 
-    for values in opd.getData():
-        opName = values["ObjectProperty"]
-        opDomain = values["Domain"]
-        opRange = values["Range"]
-        opNameSplit = split_op_name(opName)
-
+    for opData in opd.getData():
+        opName = opData.getName()
         # Rem Connect Words, Domain and Range
-        wordsFiltered = filter_op_name_split(opNameSplit, opDomain, opRange)
+        wordsFiltered = opData.getNameSplit(True, True, Csts.Words.getWordsSearched())
 
         nbWords = len(wordsFiltered)
         if nbWords not in names.keys():
@@ -117,7 +112,7 @@ def generate_global_stats(opd: OPD, filepathResults: str):
         :param filepathResults: the path where to put results.
     """
 
-    columnsNames = ("ObjectProperty", "Has1CW?", "ContentWord", "Domain", "Range")
+    columnsNames = ("ObjectPropertySplit", "Has1CW?", "ContentWord", "Domain", "Range")
     columnsFormat = "| %-35s | %-8s | %-30s | %-6s | %-6s | "
     lineFormat = "| %-35s | %-8d | %-30s | %-6d | %-6d | "
     allContentWords = []
@@ -125,44 +120,40 @@ def generate_global_stats(opd: OPD, filepathResults: str):
 
     out = create_result_file(filepathResults, opd.getSrcpath(), opd.getVersion())
     out.write("# Words searched are : %s\n" % str(Csts.Words.getWordsSearched()))
-    out.write("# Note: CW = Content Word\n")
+    out.write("# Note: CW = Content Word\n\n")
 
     out.write(columnsFormat % columnsNames)
     for conn in Csts.Words.getWordsSearched():
         out.write("%-5s | " % conn)
     out.write("\n\n")
 
+    # Generate the big matrix of booleans for statistics.
+    counter = {
+        key: [None for _ in range(opd.getSize())]
+        for key in (["Domain", "Range"] + Csts.Words.getWordsSearched())
+    }
     i = 0
-    counter = {key: [None for _ in range(opd.getSize())] for key in (["Domain", "Range"] +
-                                                                     Csts.Words.getWordsSearched())}
-    for values in opd.getData():
-        opName = values["ObjectProperty"]
-        opDomain = values["Domain"]
-        opRange = values["Range"]
+    for opData in opd.getData():
+        opName = opData.getName()
+        opNameSplit = opData.getNameSplit()
+        nbWords = len(opNameSplit)
 
-        splitted = split_op_name(opName)
-        # Erase domain
-        splittedWithoutD = [word for word in splitted if word.lower() != opDomain.lower()]
         # The difference between new and old splitted is the number of values erased
-        counter["Domain"][i] = len(splitted) - len(splittedWithoutD)
+        counter["Domain"][i] = nbWords - len(opData.getNameSplit(filterDomain=True))
         # Erase range
-        splittedWithoutDR = [word for word in splittedWithoutD if word.lower() != opRange.lower()]
-        counter["Range"][i] = len(splittedWithoutD) - len(splittedWithoutDR)
-
-        # Erase connect words one by one to get the number of words deleted for each erasure
-        oldSplitted = splittedWithoutDR
-        for conn in Csts.Words.getWordsSearched():
-            newSplitted = [word for word in oldSplitted if word.lower() != conn.lower()]
-            counter[conn][i] = len(oldSplitted) - len(newSplitted)
-            oldSplitted = newSplitted
+        counter["Range"][i] = nbWords - len(opData.getNameSplit(filterRange=True))
+        # Erase function words one by one to get the number of words deleted for each erasure
+        for word in Csts.Words.getWordsSearched():
+            counter[word][i] = nbWords - len(opData.getNameSplit(filterSubWords=[word]))
 
         # Get CW
-        contentWords = oldSplitted
+        contentWords = opData.getNameSplit(
+            filterDomain=True, filterRange=True, filterSubWords=Csts.Words.getWordsSearched())
         has1CW = len(contentWords) == 1
         contentWordsStr = ("".join(contentWords)) if has1CW else ""
 
         # Write line in result file
-        out.write(lineFormat % (opName, has1CW, contentWordsStr, counter["Domain"][i], counter["Range"][i]))
+        out.write(lineFormat % (" ".join(opNameSplit), has1CW, contentWordsStr, counter["Domain"][i], counter["Range"][i]))
         for conn in Csts.Words.getWordsSearched():
             out.write("%-5d | " % counter[conn][i])
         out.write("\n")
@@ -216,7 +207,7 @@ def _read_word_dict(filepath: str) -> set:
     return wordDict
 
 
-def gen_unused_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
+def gen_unknown_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
     """
         Generate a list of words of OP names not found in the language list found in filepathWords.
         :param filepathWords: list of words of a language.
@@ -227,10 +218,10 @@ def gen_unused_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
     wordDict = _read_word_dict(filepathWords)
 
     unusedWordsData = []
-    for values in opd.getData():
-        opName = values["ObjectProperty"]
-        filepath = values["File"]
-        opNameSplit = str_list_lower(split_op_name(opName))
+    for opData in opd.getData():
+        filepath = opData.src
+        opName = opData.getName()
+        opNameSplit = str_list_lower(opData.getNameSplit())
         for word in opNameSplit:
             if word not in wordDict:
                 unusedWordsData.append((word, opName, filepath))
@@ -244,6 +235,61 @@ def gen_unused_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
     fUnusedWords.close()
 
 
+def gen_particle_pairs_stats(opd: OPD, filepathResults: str):
+    fctWords = Csts.Words.getWordsSearched()
+    aloneColumn = "[alone]"
+    totalColumn = "[nbOcc]"
+    lines = fctWords
+    columns = fctWords + [aloneColumn, totalColumn]
+    stats = {
+        key1: {
+            key2: 0 for key2 in columns
+        }
+        for key1 in lines
+    }
+    for opData in opd.getData():
+        opNameSplit = str_list_lower(opData.getNameSplit())
+
+        for word in fctWords:
+            if word in opNameSplit:
+                opNameSplitWithoutWord = [w for w in opNameSplit if w != word]
+                isAlone = True
+                for word2 in fctWords:
+                    if word2 in opNameSplitWithoutWord:
+                        stats[word][word2] += 1
+                        isAlone = False
+                if isAlone:
+                    stats[word][aloneColumn] += 1
+                stats[word][totalColumn] += 1
+
+    fRes = create_result_file(filepathResults, opd.getSrcpath(), opd.getVersion())
+
+    fRes.write("# Matrix in %: \n")
+    fRes.write("%-7s " % "")
+    for name in columns:
+        fRes.write("%-7s " % name)
+    fRes.write("\n")
+    for word, subDict in stats.items():
+        fRes.write("%-7s " % word)
+        for _, nb in subDict.items():
+            fRes.write("%-7.1f " % to_percent(nb, subDict[totalColumn]))
+        fRes.write("\n")
+    fRes.write("\n")
+
+    fRes.write("# Matrix in values: \n")
+    fRes.write("%-7s " % "")
+    for name in columns:
+        fRes.write("%-7s " % name)
+    fRes.write("\n")
+    for word, subDict in stats.items():
+        fRes.write("%-7s " % word)
+        for _, nb in subDict.items():
+            fRes.write("%-7d " % nb)
+        fRes.write("\n")
+    fRes.write("\n")
+    fRes.close()
+
+
 def update_all_stats(_: list = None) -> int:
     """
         Update all statistics with an OPD.
@@ -253,10 +299,13 @@ def update_all_stats(_: list = None) -> int:
     prt("Compute statistics with OPD...")
     opd = OPD()
     opd.loadFromFile(Csts.Paths.OPD)
+
     searched_words_stats(opd, Csts.Paths.STATS_SEARCHED_WORDS)
     extract_content_word(opd, Csts.Paths.STATS_CW, Csts.Paths.STATS_LISTS)
     generate_global_stats(opd, Csts.Paths.STATS_GLOBAL)
-    gen_unused_words(opd, Csts.Paths.ENGLISH_WORDS, Csts.Paths.NON_EN_WORDS)
+    gen_unknown_words(opd, Csts.Paths.ENGLISH_WORDS, Csts.Paths.NON_EN_WORDS)
+    gen_particle_pairs_stats(opd, Csts.Paths.STATS_PAIRS_SW)
+
     prt("Statistics done in directory \"%s\"." % "results/stats/")
     return 0
 

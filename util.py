@@ -12,6 +12,24 @@ import os.path
 import re
 
 
+def iri_to_name(iri: str) -> str:
+    """
+        # Clean ontology iri to get the name for each property
+        # (ex: tabletopgames_V3.contains -> contains)
+        # (ex: org/ontology/isPartOfWineRegion -> isPartOfWineRegion)
+        # (ex: http://semanticweb.org/tabletopgames_V3#contains -> contains)
+        TODO : comment arg and return
+        :param iri: the iri.
+        :return: the name.
+    """
+    if iri == "":
+        return ""
+    if iri[-1] == "/":
+        iri = iri[:len(iri) - 1]
+    index = max(iri.rfind("."), iri.rfind("#"), iri.rfind("/"))
+    return iri[index + 1:]
+
+
 def is_obo_op(name: str) -> bool:
     """
         Check if a name is a OBO name.
@@ -101,7 +119,7 @@ def get_time() -> str:
     return strftime("%d/%m/%Y_%H:%M:%S")
 
 
-def equals(l1: list, l2: list) -> bool:
+def unordered_list_equals(l1: list, l2: list) -> bool:
     # Return true if list contains the same values but not in the same order.
     # note: can not use set() comparaison because we want to take into account duplicates values.
     c1 = Counter(l1)

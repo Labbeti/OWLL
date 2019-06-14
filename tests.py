@@ -17,7 +17,6 @@ from graphviz import Digraph
 from ontology.OwlreadyOntology import OwlreadyOntology
 from ontology.RdflibOntology import RdflibOntology
 from owll_gensim import get_names_opd
-from owll_opd import read_opd
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans
 from time import time

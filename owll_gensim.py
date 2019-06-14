@@ -15,15 +15,13 @@ def get_names_opd(filepathOPD: str, filterWords: bool, filterDuplicates: bool) -
     prt("Reading and filtering OPD...")
     opNames = []
     opNamesSplitted = []
-    for values in opd.getData():
-        opName = values["ObjectProperty"]
-        opDomain = values["Domain"]
-        opRange = values["Range"]
+    for opData in opd.getData():
+        opName = opData.getName()
 
-        words = split_op_name(opName)
-        words = str_list_lower(words)
         if filterWords:
-            words = filter_op_name_split(words, opDomain, opRange)
+            words = str_list_lower(opData.getNameSplit(True, True, Csts.Words.getWordsSearched()))
+        else:
+            words = str_list_lower(opData.getNameSplit())
 
         if len(words) > 0:
             opNames.append(opName)
@@ -39,7 +37,7 @@ def get_clusters(nbClusters: int, preds: list, opNamesSplitted: list) -> list:
     clusters = [[] for _ in range(nbClusters)]
     i = 0
     for pred in preds:
-        opNameUsed = "".join(opNamesSplitted[i])
+        opNameUsed = "".join([word.title() for word in opNamesSplitted[i]])
         clusters[pred].append(opNameUsed)
         i += 1
     return clusters
@@ -52,8 +50,8 @@ def save_clusters(out: TextIO, clusters: list):
     for cluster in clusters:
         out.write("Cluster %d (%.2f%%, %d/%d)\n" % (i, to_percent(len(cluster), nbVecTotal), len(cluster), nbVecTotal))
         j = 1
-        for OPname in cluster:
-            out.write("%s, " % OPname)
+        for opName in cluster:
+            out.write("%s, " % opName)
             if j % 100 == 0:
                 out.write("\n")
             j += 1
@@ -189,52 +187,65 @@ def test_doc2vec(nbClusters: int):
 
 
 def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
+    WEIGHT_MATHS_PROPERTIES = 0.01
+    WEIGHT_WORDS = 1
+    WEIGHT_DOMAIN_RANGE = 0.5
+    filterWords = False
+    filterDuplicates = True
+
     filepathOPD = Csts.Paths.OPD
     opd = OPD()
     opd.loadFromFile(filepathOPD)
     opNamesSplitted = []
     properties = []
-    for values in opd.getData():
-        opName = values["ObjectProperty"]
-        opDomain = values["Domain"]
-        opRange = values["Range"]
+    entities = []
 
-        factor = 0.01
-        isAsym = float(values["Asym?"]) * factor
-        isFunc = float(values["Func?"]) * factor
-        isInFu = float(values["InFu?"]) * factor
-        isIrre = float(values["Irre?"]) * factor
-        isRefl = float(values["Refl?"]) * factor
-        isSymm = float(values["Symm?"]) * factor
-        isTran = float(values["Tran?"]) * factor
+    for opData in opd.getData():
+        isAsym = float(opData.isAsymmetric()) * WEIGHT_MATHS_PROPERTIES
+        isFunc = float(opData.isFunctional()) * WEIGHT_MATHS_PROPERTIES
+        isInFu = float(opData.isInverseFunctional()) * WEIGHT_MATHS_PROPERTIES
+        isIrre = float(opData.isIrreflexive()) * WEIGHT_MATHS_PROPERTIES
+        isRefl = float(opData.isReflexive()) * WEIGHT_MATHS_PROPERTIES
+        isSymm = float(opData.isSymmetric()) * WEIGHT_MATHS_PROPERTIES
+        isTran = float(opData.isTransitive()) * WEIGHT_MATHS_PROPERTIES
 
-        opNameSplit = split_op_name(opName)
-        opNameSplit = str_list_lower(opNameSplit)
-        opNameSplitFiltered = filter_op_name_split(opNameSplit, opDomain, opRange)
+        opNameSplitFiltered = str_list_lower(
+            opData.getNameSplit(True, True, Csts.Words.getWordsSearched() if filterWords else [])
+        )
 
         ignored = ["Thing"]
         if len(opNameSplitFiltered) > 0:
-            if opDomain not in ignored and not is_unreadable(opDomain):
-                opNameSplitFiltered.append(opDomain)
-            if opRange not in ignored and not is_unreadable(opRange):
-                opNameSplitFiltered.append(opRange)
             opNamesSplitted.append(opNameSplitFiltered)
             properties.append([isAsym, isFunc, isInFu, isIrre, isRefl, isSymm, isTran])
 
-    filterDuplicates = True
+            domAndRan = []
+            for domain in opData.getDomainsNames():
+                if domain not in ignored and not is_unreadable(domain):
+                    domAndRan.append(domain)
+            for range_ in opData.getRangesNames():
+                if range_ not in ignored and not is_unreadable(range_):
+                    domAndRan.append(range_)
+            entities.append(domAndRan)
+
     if filterDuplicates:
         opNamesSplitted = rem_duplicates(opNamesSplitted)
-    documents = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted)]
-    model = gs.models.Doc2Vec(documents)
+    docOp = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted + Csts.LINK_WORDS_CLUSTERS)]
+    docEntities = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(entities)]
+
+    model = gs.models.Doc2Vec(docOp, vector_size=100)
+    modelEnt = gs.models.Doc2Vec(docEntities, vector_size=100)
 
     i = 0
-    vecs = np.zeros((len(opNamesSplitted), 100 + 7))
+    vecs = np.zeros((len(opNamesSplitted), 100 + 100))
     for splitted in opNamesSplitted:
         if (i+1) % 1000 == 0:
             prt("Inferring vectors... (%d/%d): " % (i+1, len(opNamesSplitted)))
         # Note: Default epoch is 5.
-        vec = model.infer_vector(splitted, epochs=10)
-        vecs[i] = np.concatenate((vec, properties[i]))
+        vec = model.infer_vector(splitted, epochs=10) * WEIGHT_WORDS
+        vecEnt = modelEnt.infer_vector(entities[i], epochs=10) * WEIGHT_DOMAIN_RANGE
+        vec2 = np.concatenate((vec, vecEnt))
+        vec3 = np.concatenate((vec2, properties[i]))
+        vecs[i] = vec2
         i += 1
 
     prt("Compute %s..." % "KMeans")
@@ -244,14 +255,44 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
     prt("Compute done. Saving clusters in \"%s\"." % filepathClusters)
     clusters = get_clusters(nbClusters, preds, opNamesSplitted)
     out = create_result_file(filepathClusters, opd.getSrcpath(), opd.getVersion())
-    out.write("# Note: filterConnectWords=%s, filterDuplicates=%s\n" % (True, True))
+    out.write("# Note: filterConnectWords=%s, filterDuplicates=%s\n" % (filterWords, filterDuplicates))
     save_clusters(out, clusters)
+
+    #docLW = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(Csts.LINK_WORDS_CLUSTERS)]
+    #modelLW = gs.models.Doc2Vec(docOp, vector_size=200)
+    vecsClusters = []
+    for cluster in Csts.LINK_WORDS_CLUSTERS:
+        vecsCluster = []
+        for word in cluster:
+            nameSplit = str_list_lower(split_op_name(word))
+            vec = model.infer_vector(nameSplit, epochs=10)
+            vecsCluster.append(vec)
+        vecsClusters.append(vecsCluster)
+
+    fTest = create_result_file("results/gensim/test_classif.txt", opd.getSrcpath(), opd.getVersion())
+    i = 0
+    for splitted in opNamesSplitted:
+        vec = model.infer_vector(str_list_lower(splitted), epochs=10)
+
+        jVec = -1
+        minSqDist = 1000
+        j = 0
+        for vecsCluster in vecsClusters:
+            for vecCluster in vecsCluster:
+                sqDist = sq_dist(vec, vecCluster)
+                if sqDist < minSqDist:
+                    minSqDist = sqDist
+                    jVec = j
+            j += 1
+        fTest.write("Name %-40s => %-40s\n" % (opd.getData()[i].getName(), Csts.LINK_WORDS_CLUSTERS_NAMES[jVec]))
+        i += 1
+    fTest.close()
 
 
 def gen_gensim_clust(_: list = None) -> int:
     nbClusters = 13
     # test_tfidf(nbClusters, False)
-    test_doc2vec(nbClusters)
+    # test_doc2vec(nbClusters)
     test_doc2vec_extended(nbClusters, "results/gensim/clusters_extended.txt")
     return 0
 
