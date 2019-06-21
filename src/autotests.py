@@ -1,13 +1,13 @@
-from Csts import Csts
-from ontology.Ontology import *
-from OPD import OPD
-from TenseDetector import TenseDetector
-from util import unordered_list_equals
-from util import is_obo_op
-from util import is_restriction_id
-from util import prt
-from util import split_input
-from util import split_op_name
+from src.Csts import Csts
+from src.ontology.Ontology import *
+from src.OPD import OPD
+from src.TenseDetector import TenseDetector
+from src.util import unordered_list_equals
+from src.util import is_obo_op
+from src.util import is_restriction_id
+from src.util import prt
+from src.util import split_input
+from src.util import split_op_name
 
 import os
 
@@ -55,10 +55,10 @@ def test_get_object_properties():
             dataRl = ontoRl.getAllOpsData()
 
             if not unordered_list_equals(names_owlready, names_rdflib) or not dataOr == dataRl:
-                raise Exception("§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\t"
-                                "Rdflib: nb_names=%d nb_triples=%d" % (filepath, len(names_owlready),
-                                                                       len(dataOr), len(names_rdflib),
-                                                                       len(dataRl)))
+                raise Exception(
+                    "§ Unit test failed for %s, sizes: \n\tOwlReady2: nb_names=%d nb_triples=%d\n\tRdflib: "
+                    "nb_names=%d nb_triples=%d" % (
+                        filepath, len(names_owlready), len(dataOr), len(names_rdflib), len(dataRl)))
     prt("OK: test_get_object_properties")
 
 

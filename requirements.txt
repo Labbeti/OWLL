@@ -1,3 +1,4 @@
+Cython
 gensim
 pyrdfa3
 matplotlib
@@ -5,3 +6,4 @@ numpy
 owlready2
 rdflib
 scikit-learn
+PyQt5

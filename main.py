@@ -1,10 +1,4 @@
-from OwllTerminal import Terminal
-
-
-def main():
-    terminal = Terminal()
-    terminal.launch()
-
+import src.app
 
 if __name__ == "__main__":
-    main()
+    src.app.main()

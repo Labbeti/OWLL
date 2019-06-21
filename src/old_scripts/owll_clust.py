@@ -1,9 +1,9 @@
-from file_io import *
+from src.file_io import *
 from matplotlib.font_manager import FontProperties
-from ontology.Ontology import Ontology
+from src.ontology.Ontology import Ontology
 from sklearn.cluster import *
 from sklearn.mixture import GaussianMixture
-from util import *
+from src.util import *
 
 import matplotlib.pyplot as plt
 import sklearn as sk

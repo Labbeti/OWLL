@@ -1,5 +1,5 @@
-from OPD import OPD
-from util import *
+from src.OPD import OPD
+from src.util import *
 
 import sys
 

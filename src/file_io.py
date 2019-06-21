@@ -1,7 +1,7 @@
 from time import time
 from typing import TextIO
-from util import prt
-from util import get_time
+from src.util import prt
+from src.util import get_time
 
 
 # Note: quelques mots non trouvé dans FastText :

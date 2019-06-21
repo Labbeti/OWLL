@@ -4,7 +4,7 @@
 
 import numpy as np
 from collections import Counter
-from Csts import Csts
+from src.Csts import Csts
 from os import listdir
 from time import strftime
 
@@ -18,9 +18,8 @@ def iri_to_name(iri: str) -> str:
         # (ex: tabletopgames_V3.contains -> contains)
         # (ex: org/ontology/isPartOfWineRegion -> isPartOfWineRegion)
         # (ex: http://semanticweb.org/tabletopgames_V3#contains -> contains)
-        TODO : comment arg and return
-        :param iri: the iri.
-        :return: the name.
+        :param iri: IRI path of the element.
+        :return: name found at the end of the IRI.
     """
     if iri == "":
         return ""
@@ -61,6 +60,12 @@ def prt(*arg):
     """
     if Csts.VERBOSE_MODE:
         print(Csts.TERMINAL_PREFIX, end='')
+        print(*arg)
+
+
+def dbg(*arg):
+    if Csts.DEBUG_MODE:
+        print(Csts.TERMINAL_PREFIX + "DEBUG: ", end='')
         print(*arg)
 
 

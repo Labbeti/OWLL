@@ -1,10 +1,10 @@
-from owll_clust import clust_op_names
-from owll_gensim import gen_gensim_clust
-from owll_opd import gen_opd
-from owll_stats import update_all_stats
-from owll_typolink import typolink
-from util import prt
-from util import split_input
+from src.old_scripts.owll_clust import clust_op_names
+from src.old_scripts.owll_gensim import gen_gensim_clust
+from src.owll_opd import gen_opd
+from src.owll_stats import update_all_stats
+from src.old_scripts.owll_typolink import typolink
+from src.util import prt
+from src.util import split_input
 
 
 class Command:

@@ -11,6 +11,7 @@ This project requires **Python 3.7** and the following list of packages :
 
 Package | Version | Used to | Download | Documentation
 :--- | :---: | --- | :---: | :---:
+Cython | 0.29.10 | Optimize packages | [Link](https://pypi.org/project/Cython/) | [Doc](https://cython.readthedocs.io/en/latest/)
 gensim | 3.7.3 | Compare OP names | [Link](https://pypi.org/project/gensim/) | [Doc](https://www.pydoc.io/pypi/gensim-3.2.0/autoapi/models/word2vec/index.html)
 pyrdfa3 | 3.5.3 | Make Rdflib work | [Link](https://pypi.org/project/pyRdfa/) | [Doc](https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.plugins.parsers.pyRdfa.html)
 matplotlib | 3.0.3 | Plot clusters | [Link](https://pypi.org/project/matplotlib/) | [Doc](https://matplotlib.org/3.1.0/contents.html)
@@ -18,26 +19,33 @@ numpy | 1.16.3 | Manipulate arrays | [Link](https://pypi.org/project/numpy/) | [
 owlready2 | 0.18 | Read ontologies | [Link](https://pypi.org/project/Owlready2/) | [Doc](https://pythonhosted.org/Owlready2/)
 rdflib | 4.2.2 | Read ontologies | [Link](https://pypi.org/project/rdflib/) | [Doc](https://rdflib.readthedocs.io/en/stable/)
 scikit-learn | 0.21.1 | Clusterize | [Link](https://pypi.org/project/scikit-learn/) | [Doc](https://scikit-learn.org/stable/documentation.html)
+PyQt5 | 5.12.2 | GUI | [Link]() | [Doc]()
 
 > Some others packages dependances will be installed if you are using pip.
 
 Once everything is installed, run this command on a terminal in the project directory:
 ```python main.py```.
 
-The **OWLL terminal** will start and allow you to generate results. 
-Type ```help``` to display the list of available commands.
-
-### Main commands *(Indev 0.1.15)* :
-
-Command | Description
---- | ---
-```typo``` | Basic classification with relational words of "Typologie des mots de liaisons"
-```clust``` | Test of some clusterisation algorithms on object properties names with FastText.
-```genopd``` | Regenerate Object Property Database (OPD) with the ontologies
-```genstats``` | Update all statistics from OPD.
-```gengensim``` | (Indev) Try to create a clusterisation and a classification with gensim.
+*This section will be updated when the new interface will be finished.*
 
 ## Indev versions notes
+* Indev 0.2.1 (21/06/19) --- BIG UPDATE ---
+  * Rework interface with PyQt5.
+  * Create an MVC pattern for interface.
+  * Reworking project scripts and refactoring code.
+
+* Indev 0.2.0 (19/06/19)
+  * Testing histogram and pie chart in order to display gensim clusters results.
+  * Save clusters in JSON format.
+  * Running main now leads to GUI.
+  * Create a new GUI for testing clusterisations.
+  * Add Slider to modify weight for clusterisation vectors.
+  * Add checkbox to test multiple clusterisations algorithms.
+  * Show list of OP in clusters in GUI.
+  * Add checkbox to filter non-english words.
+  * Add text input for submit a word, but this feature is unstable and not finished yet.
+  * Add Cython to dependances for increase speed of packages scikit-learn, gensim and owlready2.
+
 * Indev 0.1.15 (14/06/19)
   * Add IRI columns for OPD.txt, merge domains and ranges for an OP in 1 line instead of create multiple lines for each domain / range.
   * Add fct words pairs statistics in "results/stats/pairs_sw.txt".

@@ -1,10 +1,10 @@
-from Csts import Csts
-from file_io import *
-from ontology.OwlreadyOntology import OwlreadyOntology
-from util import get_vec
-from util import get_vecs
-from util import prt
-from util import sq_dist
+from src.Csts import Csts
+from src.file_io import *
+from src.ontology.OwlreadyOntology import OwlreadyOntology
+from src.util import get_vec
+from src.util import get_vecs
+from src.util import prt
+from src.util import sq_dist
 
 
 def class_with_typo_words(filepathFt: str, filepathOnto: str, filepathResults: str):

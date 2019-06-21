@@ -1,6 +1,7 @@
-from file_io import create_result_file
-from OPD import OPD
-from util import *
+from src.file_io import create_result_file
+from src.OPD import OPD
+from src.util import *
+from src.WordDictionary import WordDictionary
 
 
 def searched_words_stats(opd: OPD, filepathResults: str):
@@ -192,21 +193,6 @@ def generate_global_stats(opd: OPD, filepathResults: str):
     out.close()
 
 
-def _read_word_dict(filepath: str) -> set:
-    """
-        Read the list of words in txt file, each line contains 1 word.
-        :param filepath: path to the txt file.
-        :return: The list of words found.
-    """
-    prt("Reading english words...")
-    fEnglishWords = open(filepath, "r", encoding="utf-8")
-    wordDict = set()
-    for line in fEnglishWords:
-        wordDict.add(line.replace("\n", "").lower())
-    fEnglishWords.close()
-    return wordDict
-
-
 def gen_unknown_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
     """
         Generate a list of words of OP names not found in the language list found in filepathWords.
@@ -215,23 +201,23 @@ def gen_unknown_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
         :param filepathUnusedWords: path to result file.
     """
 
-    wordDict = _read_word_dict(filepathWords)
+    wDict = WordDictionary(filepathWords)
 
     unusedWordsData = []
     for opData in opd.getData():
         filepath = opData.src
         opName = opData.getName()
         opNameSplit = str_list_lower(opData.getNameSplit())
-        for word in opNameSplit:
-            if word not in wordDict:
-                unusedWordsData.append((word, opName, filepath))
+        for subWord in opNameSplit:
+            if wDict.existsInDictionary(subWord):
+                unusedWordsData.append((subWord, opName, filepath))
 
     # Generate a result file with unrecognized words.
     fUnusedWords = create_result_file(filepathUnusedWords)
     fUnusedWords.write("# This file contains non-english words found when creating OPD.\n\n")
     fUnusedWords.write("%-30s %-45s %-40s\n\n" % ("Word", "ObjectProperty", "Filename"))
-    for word, opName, file in unusedWordsData:
-        fUnusedWords.write("%-30s %-45s %-40s\n" % (word, opName, file))
+    for subWord, opName, file in unusedWordsData:
+        fUnusedWords.write("%-30s %-45s %-40s\n" % (subWord, opName, file))
     fUnusedWords.close()
 
 

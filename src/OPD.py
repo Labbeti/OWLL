@@ -1,11 +1,13 @@
-from file_io import create_result_file
-from ontology.Ontology import Ontology
-from ontology.OpData import OpData
+from src.file_io import create_result_file
+from src.ontology.Ontology import Ontology
+from src.ontology.OpData import OpData
 from time import time
-from util import get_filenames
-from util import iri_to_name
-from util import is_unreadable
-from util import prt
+from src.util import get_filenames
+from src.util import iri_to_name
+from src.util import is_unreadable
+from src.util import prt
+from src.util import rem_duplicates
+
 import os
 
 
@@ -272,7 +274,33 @@ class OPD:
         """
         return self.__data
 
+    def getOpNames(self, filterDuplicates: bool = False) -> list:
+        opNames = []
+        for opData in self.getData():
+            opNames.append(opData.getName())
+        if filterDuplicates:
+            return rem_duplicates(opNames)
+        else:
+            return opNames
+
+    def getOpNamesSplit(self, keepEmptyLists: bool, filterDomain: bool = False, filterRange: bool = False,
+                        filterSubWords: list = None, filterDuplicates: bool = False) -> list:
+        opNamesSplit = []
+        for opData in self.getData():
+            splitted = opData.getNameSplit(
+                filterDomain=filterDomain, filterRange=filterRange, filterSubWords=filterSubWords)
+            if len(splitted) > 0 or keepEmptyLists:
+                opNamesSplit.append(splitted)
+        if filterDuplicates:
+            return rem_duplicates(opNamesSplit)
+        else:
+            return opNamesSplit
+
     def getSize(self) -> int:
+        """
+            Equivalent to "len(opd.getData())".
+            :return: the number of OP stored in OPD.
+        """
         return len(self.__data)
 
     def getSrcpath(self) -> str:
@@ -283,4 +311,3 @@ class OPD:
 
     def __eq__(self, other) -> bool:
         return self.__data == other.__data
-

@@ -1,0 +1,16 @@
+#! Version: 18/06/2019_11:57:17
+# This file has been generated with the file "results/opd/opd.txt" (version 14/06/2019_12:22:26)
+
+Name isLocatedIn                              => Main topic                               (word=causes, min=0.000000)
+Name has_legal_guardian                       => Object                                   (word=affects, min=0.000000)
+Name hasSubStructure                          => Main topic                               (word=executes, min=0.000000)
+Name hasObject                                => Characterization                         (word=identifies, min=0.000000)
+Name definesBehaviorOf                        => Goal                                     (word=continues, min=0.000000)
+Name license                                  => Terms and conditions                     (word=requires, min=0.000000)
+Name volumes                                  => Result                                   (word=created, min=0.000000)
+Name mentor                                   => Result                                   (word=generate, min=0.000000)
+Name existence                                => Main topic                               (word=realizes, min=0.000000)
+Name causedBy                                 => Characterization                         (word=qualifies, min=0.000000)
+Name round-has-fixture                        => Terms and conditions                     (word=allows, min=0.000000)
+Name morphologicalRelation                    => Main topic                               (word=accomplishes, min=0.000000)
+Name hasFigview                               => Result                                   (word=cause, min=0.000000)

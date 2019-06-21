@@ -7,13 +7,10 @@ class Csts:
     """
 
     VERBOSE_MODE = True
+    DEBUG_MODE = True
 
     TERMINAL_PREFIX = "% "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
-
-    COLORS = np.array([
-        '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628', '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000',
-        '#222222', '#cccccc', '#cc00cc'])
 
     class Paths:
         # Defaults paths for OWLL.
@@ -34,6 +31,26 @@ class Csts:
         NON_EN_WORDS = "results/stats/non_en_words.txt"
         STATS_PAIRS_SW = "results/stats/pairs_sw.txt"
 
+    COLORS = np.array([
+        '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628', '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000',
+        '#222222', '#cccccc', '#cc00cc'])
+
+    TENSES = [
+        "infinitive",
+        "1st singular present",
+        "2nd singular present",
+        "3rd singular present",
+        "present plural",
+        "present participle",
+        "1st singular past",
+        "2nd singular past",
+        "3rd singular past",
+        "past plural",
+        "past",
+        "past participle",
+    ]
+    # TENSES_INDEXES = {TENSES[i]: i for i in range(len(TENSES))}
+
     class Words:
         # Differents sets of functions words searched in OP.
 
@@ -49,13 +66,14 @@ class Csts:
 
         @staticmethod
         def getWordsSearched() -> list:
-            return ["has", "is"] + __class__.ARTICLES + __class__.ADPOSITIONS
+            return "has is of by in to".split()
+            #return ["has", "is"] + __class__.ARTICLES + __class__.ADPOSITIONS
         '''
-        TODO
+        TODO: erase
         CONNECT = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to", "with"]
         '''
 
-    # Internationalized Resource Identifier (IRIs)
+    # Internationalized Resource Identifier (IRIs) for RDF and OWL entities and properties.
     class IRIs:
         # Defaults URIs of RDF and OWL.
         CLASS = "http://www.w3.org/2002/07/owl#Class"
