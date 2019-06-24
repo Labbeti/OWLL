@@ -1,4 +1,4 @@
-from src.util import prt
+from src.util import dbg
 import matplotlib.pyplot as plt
 
 
@@ -29,7 +29,7 @@ class PieEventHandler:
                 indCluster = i
         if indCluster != -1:
             content = "\n".join(set(self.clusters[indCluster]))
-            prt("Cluster: %s" % (", ".join(set(self.clusters[indCluster]))))
+            dbg("Cluster: %s" % (", ".join(set(self.clusters[indCluster]))))
 
             if self.text is not None:
                 self.text.set_visible(False)

@@ -18,8 +18,8 @@ matplotlib | 3.0.3 | Plot clusters | [Link](https://pypi.org/project/matplotlib/
 numpy | 1.16.3 | Manipulate arrays | [Link](https://pypi.org/project/numpy/) | [Doc](https://docs.scipy.org/doc/numpy/)
 owlready2 | 0.18 | Read ontologies | [Link](https://pypi.org/project/Owlready2/) | [Doc](https://pythonhosted.org/Owlready2/)
 rdflib | 4.2.2 | Read ontologies | [Link](https://pypi.org/project/rdflib/) | [Doc](https://rdflib.readthedocs.io/en/stable/)
-scikit-learn | 0.21.1 | Clusterize | [Link](https://pypi.org/project/scikit-learn/) | [Doc](https://scikit-learn.org/stable/documentation.html)
-PyQt5 | 5.12.2 | GUI | [Link]() | [Doc]()
+scikit-learn | 0.21.1 | Clusterisation algorithms | [Link](https://pypi.org/project/scikit-learn/) | [Doc](https://scikit-learn.org/stable/documentation.html)
+PyQt5 | 5.12.2 | User interface | [Link](https://pypi.org/project/PyQt5/) | [Doc](https://www.riverbankcomputing.com/static/Docs/PyQt5/)
 
 > Some others packages dependances will be installed if you are using pip.
 
@@ -29,8 +29,22 @@ Once everything is installed, run this command on a terminal in the project dire
 *This section will be updated when the new interface will be finished.*
 
 ## Indev versions notes
+* Indev 0.2.2 (24/06/19)
+  * Closing main window now close the ClusterView window.
+  * Add clusters in file model.
+  * Fix crash when loading a file model.
+  * Add file menu bar to open and save model.
+  * Remove second window, add text area on bottom of sliders.
+  * Add scroll area for text.
+  * Add filter english words option.
+  * Refactoring OptionView in ParamsView and ButtonsView.
+  * Add sliders configurations.
+  * Refactoring inferVecs function in ClusteringModel.
+  * Fix crash when loading.
+  * Working on progression bar when updating model (not implemented yet).
+
 * Indev 0.2.1 (21/06/19) --- BIG UPDATE ---
-  * Rework interface with PyQt5.
+  * Rework interface with **PyQt5**.
   * Create an MVC pattern for interface.
   * Reworking project scripts and refactoring code.
 

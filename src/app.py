@@ -2,9 +2,13 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout
 from src.controllers.ClusteringController import ClusteringController
+from src.Csts import Csts
 from src.models.ClusteringModel import ClusteringModel
 from src.views.OwllWindow import OwllWindow
 from src.util import prt
+
+
+OWLL_VERSION = "0.2.2"
 
 
 def main():
@@ -15,8 +19,10 @@ def main():
     window = OwllWindow()
     window.setCentralWidget(centralWidget)
 
-    model = ClusteringModel()
-    _ = ClusteringController(model, window)
+    model = ClusteringModel(Csts.Paths.ENGLISH_WORDS)
+    controller = ClusteringController(model, window)
+
+    window.setController(controller)
 
     prt("Starting application...")
     # Fit to screen

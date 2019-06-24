@@ -1,10 +1,13 @@
-from src.models.ClusteringModel import ClusteringObserver
-from src.util import dbg
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from PyQt5.QtWidgets import QSizePolicy, QWidget
+from PyQt5.QtWidgets import QSizePolicy, QWidget, QVBoxLayout
 from src.controllers.IController import IController
-from src.views.PieEventObserver import PieEventObserver
+from src.controllers.PieEventObserver import PieEventObserver
+from src.models.ClusteringObserver import ClusteringObserver
+
+"""
+Note: Original code come from https://pythonspot.com/pyqt5-matplotlib/
+"""
 
 
 class PieEventHandler:
@@ -30,7 +33,7 @@ class PieEventHandler:
             if hit:
                 label = w.get_label()
                 break
-        self.obs.onClick(label)
+        self.obs.onClusterClick(label)
 
 
 class PieCanvas(FigureCanvas):
@@ -63,17 +66,27 @@ class ViewPie(ClusteringObserver):
     def __init__(self, parent: QWidget, controller: IController):
         self.parent = parent
         self.controller = controller
+
+        self.canvasWidget = QWidget()
+        self.canvasLayout = QVBoxLayout()
         self.canvas = PieCanvas()
         self.handler = PieEventHandler()
         self.initUI()
 
     def initUI(self):
-        self.parent.layout().addWidget(self.canvas)
+        self.parent.layout().addWidget(self.canvasWidget)
+        self.canvasWidget.setLayout(self.canvasLayout)
+        self.canvasLayout.addWidget(self.canvas)
+        self.canvasWidget.setMinimumSize(200, 200)
         self.canvas.updatePie([[1]], ["Initialized"])
         self.handler.connect(self.canvas.getPie(), self.controller)
 
-    def onClusteringEnded(self, clustersNames, centersNames):
-        dbg("On Clustering ended")
-        self.canvas.updatePie(clustersNames, centersNames)
-        # Connect the pie each time
+    def onClusteringEnded(self):
+        self.update()
+
+    def onModelLoaded(self):
+        self.update()
+
+    def update(self):
+        self.canvas.updatePie(self.controller.getModelClusters(), self.controller.getModelCenters())
         self.handler.connect(self.canvas.getPie(), self.controller)

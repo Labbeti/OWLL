@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QSlider, QLabel, QGroupBox, QH
 from PyQt5.QtCore import Qt
 from src.controllers.IController import IController
 from src.util import dbg
-from src.models.ClusteringModel import ClusteringObserver
+from src.models.ClusteringObserver import ClusteringObserver
 
 
-SLIDER_FLOAT_PRECISION = 100
-LABEL_FLOAT_FORMAT = "%.2f"
+SLIDER_PRECISION = 100
+SLIDER_LABEL_FORMAT = "%.2f"
 
 
 class SlidersView(ClusteringObserver):
@@ -14,60 +14,73 @@ class SlidersView(ClusteringObserver):
         self.parent = parent
         self.controller = controller
 
-        self.slidersWidget = QWidget(parent)
-        self.slidersLayout = QGridLayout(self.slidersWidget)
+        self.slidersWidget = QGroupBox()
+        self.slidersLayout = QGridLayout()
 
-        self.slidersConfig = {
-            # "name": (def, min, max, format, denumerator)
-            #          0    1    2    3       4
-            "NbClusters": (10, 1, 100, "%d", 1),
-            "WeightWordsWithDR": (1, 0, 1 * SLIDER_FLOAT_PRECISION, LABEL_FLOAT_FORMAT, SLIDER_FLOAT_PRECISION),
-            "WeightContentWords": (0, 0, 1 * SLIDER_FLOAT_PRECISION, LABEL_FLOAT_FORMAT, SLIDER_FLOAT_PRECISION),
-            "WeightFctWords": (0, 0, 1 * SLIDER_FLOAT_PRECISION, LABEL_FLOAT_FORMAT, SLIDER_FLOAT_PRECISION),
-            "WeightMathProps": (0, 0, 1 * SLIDER_FLOAT_PRECISION, LABEL_FLOAT_FORMAT, SLIDER_FLOAT_PRECISION),
-            "WeightDR": (0, 0, 1 * SLIDER_FLOAT_PRECISION, LABEL_FLOAT_FORMAT, SLIDER_FLOAT_PRECISION),
-        }
         self.slidersAndLabels = {}
-        for name in self.slidersConfig.keys():
-            slider = QSlider(Qt.Horizontal)
-            valueLabel = QLabel()
-            self.slidersAndLabels[name] = (slider, valueLabel)
+        self.slidersConfig = {
+            "NbClusters": {
+                "min": 1, "max": 100, "format": "%d", "factor": 1,
+                "line": 0, "column": 0
+            },
+            "WeightFctWords": {
+                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
+                "line": 1, "column": 0
+            },
+            "WeightMathProps": {
+                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
+                "line": 2, "column": 0
+            },
+            "WeightOPWithDR": {
+                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
+                "line": 0, "column": 1
+            },
+            "WeightCW": {
+                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
+                "line": 0, "column": 2
+            },
+            "WeightDR": {
+                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
+                "line": 0, "column": 3
+            },
+            "DimOPWithDR": {
+                "min": 0, "max": 300, "format": "%d", "factor": 1,
+                "line": 1, "column": 1
+            },
+            "DimCW": {
+                "min": 0, "max": 300, "format": "%d", "factor": 1,
+                "line": 1, "column": 2
+            },
+            "DimDR": {
+                "min": 0, "max": 300, "format": "%d", "factor": 1,
+                "line": 1, "column": 3
+            },
+        }
 
         self.initUI()
 
     def initUI(self):
         self.parent.layout().addWidget(self.slidersWidget)
+        self.slidersWidget.setLayout(self.slidersLayout)
 
-        i = 0
-        j = 0
-        sizeX = 4
-        k = 0
-        for name, (slider, valueLabel) in self.slidersAndLabels.items():
-            dbg("Name = ", name)
-            layout = QHBoxLayout()
+        for name, config in self.slidersConfig.items():
+            slider = QSlider(Qt.Horizontal)
+            valueLabel = QLabel()
+
             group = QGroupBox(name)
-            group.setLayout(layout)
+            layout = QHBoxLayout(group)
             layout.addWidget(valueLabel)
             layout.addWidget(slider)
 
-            self.slidersLayout.addWidget(group, i, j)
-            def_ = self.slidersConfig[name][0]
-            min_ = self.slidersConfig[name][1]
-            max_ = self.slidersConfig[name][2]
-            format_ = self.slidersConfig[name][3]
-            factor = self.slidersConfig[name][4]
+            self.slidersAndLabels[name] = (slider, valueLabel)
+            self.slidersLayout.addWidget(group, config["line"], config["column"])
 
-            slider.setMinimum(min_)
-            slider.setMaximum(max_)
-            slider.setValue(def_ * factor)
-            valueLabel.setText(format_ % (def_ / (max_ - min_)))
+            slider.setMinimum(config["min"])
+            slider.setMaximum(config["max"])
             slider.setSingleStep(1)
             slider.valueChanged.connect(self.onSliderValueChanged)
-            j += 1
-            if j >= sizeX:
-                j = 0
-                i += 1
-            k += 1
+
+        self.updateAllSliders()
         self.updateAllLabels()
 
     def onSliderValueChanged(self, val):
@@ -75,8 +88,11 @@ class SlidersView(ClusteringObserver):
         # TODO : how to known which slider has been moved ?
         self.updateAllLabels()
 
-    def onClusteringEnded(self, _, __):
-        dbg("SlidersView: Clustering ended ")
+    def onClusteringEnded(self):
+        self.updateAllSliders()
+        self.updateAllLabels()
+
+    def onModelLoaded(self):
         self.updateAllSliders()
         self.updateAllLabels()
 
@@ -84,16 +100,15 @@ class SlidersView(ClusteringObserver):
         # Update all sliders with model parameters
         params = self.controller.getModelParams()
         for name, (slider, valueLabel) in self.slidersAndLabels.items():
-            factor = self.slidersConfig[name][4]
-            slider.setValue(params[name] * factor)
+            config = self.slidersConfig[name]
+            slider.setValue(params[name] * config["factor"])
 
     def updateAllLabels(self):
         # Update all labels with sliders values
         for name, (slider, valueLabel) in self.slidersAndLabels.items():
-            format_ = self.slidersConfig[name][3]
-            denum = self.slidersConfig[name][4]
-            valueLabel.setText(format_ % (slider.value() / denum))
+            config = self.slidersConfig[name]
+            valueLabel.setText(config["format"] % (slider.value() / config["factor"]))
 
     def getSlidersValues(self):
-        return {name: (slider.value() / self.slidersConfig[name][4])
+        return {name: (slider.value() / self.slidersConfig[name]["factor"])
                 for name, (slider, _) in self.slidersAndLabels.items()}
