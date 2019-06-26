@@ -21,14 +21,29 @@ rdflib | 4.2.2 | Read ontologies | [Link](https://pypi.org/project/rdflib/) | [D
 scikit-learn | 0.21.1 | Clusterisation algorithms | [Link](https://pypi.org/project/scikit-learn/) | [Doc](https://scikit-learn.org/stable/documentation.html)
 PyQt5 | 5.12.2 | User interface | [Link](https://pypi.org/project/PyQt5/) | [Doc](https://www.riverbankcomputing.com/static/Docs/PyQt5/)
 
-> Some others packages dependances will be installed if you are using pip.
+If you are using pip, just run this command in the project directory:
+```pip install -r requirements.txt```
 
-Once everything is installed, run this command on a terminal in the project directory:
-```python main.py```.
+Once everything is installed, you can run one of the script below with python:
+For each file you can use ```-h``` for more details.
 
-*This section will be updated when the new interface will be finished.*
+File | Description
+--- | ---
+```main.py``` | Run the OWLL-GUI to create a custom clusterisation from an OPD.
+```gen_opd.py``` | Run the OPD generation. 
+```gen_stats.py``` | Run the update of object properties statistics files. 
 
 ## Indev versions notes
+* Indev 0.2.3 (25/06/19)
+  * Fix progress bar update.
+  * Refactoring SaveController in another class.
+  * Fix crash when loading a file with a number of cluster lower than the current number of clusters.
+  * Fix disabled button error with call of ```app.processEvents()```.
+  * Add input view for submitting a name.
+  * Disable interface when computing clusterisation.
+  * Disable InputView when model is not updated.
+  * Fix gen_opd and gen_stats crash scripts and add arguments for them.
+
 * Indev 0.2.2 (24/06/19)
   * Closing main window now close the ClusterView window.
   * Add clusters in file model.

@@ -1,18 +1,19 @@
 import numpy as np
 
 
-class Csts:
+# TODO : clean here
+class CST:
     """
-        Class which contains constant values for OWLL project.
+        Class with constant values for OWLL project.
     """
 
     VERBOSE_MODE = True
-    DEBUG_MODE = True
+    DEBUG_MODE = False
 
     TERMINAL_PREFIX = "% "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
 
-    class Paths:
+    class PATH:
         # Defaults paths for OWLL.
         # Dirs
         ONTOLOGIES = "data/ontologies/"
@@ -30,6 +31,25 @@ class Csts:
         TYPO_LINK = "results/typolink/classif.txt"
         NON_EN_WORDS = "results/stats/non_en_words.txt"
         STATS_PAIRS_SW = "results/stats/pairs_sw.txt"
+
+    class GUI:
+        SLIDER_PRECISION = 100
+        SLIDER_LABEL_FORMAT = "%.2f"
+        BUTTON_MIN_HEIGHT = 20
+
+    MATH_PROPERTIES = \
+        ["Asymmetric", "Functional", "InverseFunctional", "Irreflexive", "Reflexive", "Symmetric", "Transitive"]
+
+    CLUSTERING_ALGORITHMS_NAMES = [
+        "AgglomerativeClustering",
+        "Birch",
+        "GaussianMixture",
+        "KMeans",
+        "MiniBatchKMeans",
+        "SpectralClustering",
+        "AffinityPropagation",
+        "MeanShift",
+    ]
 
     COLORS = np.array([
         '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628', '#984ea3', '#999999', '#e41a1c', '#dede00', '#000000',
@@ -51,8 +71,10 @@ class Csts:
     ]
     # TENSES_INDEXES = {TENSES[i]: i for i in range(len(TENSES))}
 
-    class Words:
-        # Differents sets of functions words searched in OP.
+    class WORDS:
+        """
+            Differents sets of functions words searched in OP.
+        """
 
         # Prepositions or postpositions words. Unused: under
         ADPOSITIONS = "as at by for from in of on to until with".split()
@@ -69,13 +91,14 @@ class Csts:
             return "has is of by in to".split()
             #return ["has", "is"] + __class__.ARTICLES + __class__.ADPOSITIONS
         '''
-        TODO: erase
+        # TODO: erase
         CONNECT = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to", "with"]
         '''
 
-    # Internationalized Resource Identifier (IRIs) for RDF and OWL entities and properties.
-    class IRIs:
-        # Defaults URIs of RDF and OWL.
+    class IRI:
+        """
+            Internationalized Resource Identifier (IRI) for RDF and OWL entities and properties.
+        """
         CLASS = "http://www.w3.org/2002/07/owl#Class"
         DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain"
         INTERSECTION_OF = "http://www.w3.org/2002/07/owl#intersectionOf"
@@ -91,7 +114,7 @@ class Csts:
         THING = "http://www.w3.org/2002/07/owl#Thing"
         TOP_OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#topObjectProperty"
 
-        class Properties:
+        class MATH_PROPERTIES:
             ASYMMETRIC = "http://www.w3.org/2002/07/owl#AsymmetricProperty"
             FUNCTIONAL = "http://www.w3.org/2002/07/owl#FunctionalProperty"
             INVERSE_FUNCTIONAL = "http://www.w3.org/2002/07/owl#InverseFunctionalProperty"
@@ -100,7 +123,7 @@ class Csts:
             SYMMETRIC = "http://www.w3.org/2002/07/owl#SymmetricProperty"
             TRANSITIVE = "http://www.w3.org/2002/07/owl#TransitiveProperty"
 
-    # Defaults words used by "typolink.py".
+    # Defaults words used by "owll_typolink.py".
     LINK_WORDS = [
         "characterize", "identifies", "defined", "depicted", "qualifies", "delineated", "specific",
         "belongs", "includes", "gathered", "collects", "isComposedOf", "contains", "assimilates", "do",

@@ -1,4 +1,4 @@
-from src.Csts import Csts
+from src.CST import CST
 from src.file_io import *
 from src.ontology.OwlreadyOntology import OwlreadyOntology
 from src.util import get_vec
@@ -19,7 +19,7 @@ def class_with_typo_words(filepathFt: str, filepathOnto: str, filepathResults: s
     prt("Classify with typo words on %s..." % filepathOnto)
     data, _, dim = load_ft_vectors(filepathFt, limit)
     # Get FT vectors for typo words
-    typoNames, typoVecs = get_vecs(Csts.LINK_WORDS, data, dim)
+    typoNames, typoVecs = get_vecs(CST.LINK_WORDS, data, dim)
 
     prt("Reading ontology \"%s\"..." % filepathOnto)
     onto = OwlreadyOntology(filepathOnto)
@@ -66,7 +66,7 @@ def typolink(_: list = None) -> int:
         :param _: <Unused> Arguments from OWLL terminal.
         :return: Exit code for OWLL terminal.
     """
-    class_with_typo_words(Csts.Paths.FASTTEXT, Csts.Paths.DBPEDIA, Csts.Paths.TYPO_LINK)
+    class_with_typo_words(CST.PATH.FASTTEXT, CST.PATH.DBPEDIA, CST.PATH.TYPO_LINK)
     return 0
 
 

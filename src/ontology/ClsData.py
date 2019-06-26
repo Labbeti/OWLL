@@ -1,8 +1,11 @@
 
 
-# Class Characteristics
-# This class is used to unify the informations about OWL classes with Rdflib and Owlready2.
 class ClsData:
+    """
+        Class Characteristics
+        This class is used to unify the informations about OWL classes with Rdflib and Owlready2.
+    """
+
     def __init__(self, iri: str = ""):
         self.subClassOfIris = []
         self.domainOfIris = []

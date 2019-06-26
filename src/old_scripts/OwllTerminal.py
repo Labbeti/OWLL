@@ -1,7 +1,6 @@
 from src.old_scripts.owll_clust import clust_op_names
-from src.old_scripts.owll_gensim import gen_gensim_clust
-from src.owll_opd import gen_opd
-from src.owll_stats import update_all_stats
+from gen_opd import gen_opd
+from gen_stats import gen_stats
 from src.old_scripts.owll_typolink import typolink
 from src.util import prt
 from src.util import split_input
@@ -33,9 +32,7 @@ class Terminal:
                                     "\"dir_onto\"",
                     ["genopd"], "genopd [onto_dir [opd_filepath]]", gen_opd),
             Command("Get Stats", "Update all statistics from OPD.",
-                    ["genstats"], "genstats", update_all_stats),
-            Command("Test gensim", "Try Agglomerative clusterisation with distance matrix generated with gensim.",
-                    ["gengensim"], "gengensim", gen_gensim_clust),
+                    ["genstats"], "genstats", gen_stats()),
             Command("Help", "Display list of commands or show description and usage of a specific command.",
                     ["help"], "help [command]", self.help),
             Command("Quit", "Leave the OWLL terminal.",

@@ -1,22 +1,12 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QCheckBox, QRadioButton, QGroupBox
-from src.controllers.IController import IController
+from src.CST import CST
+from src.controllers.IClusteringController import IClusteringController
 from src.models.ClusteringObserver import ClusteringObserver
 from src.util import dbg
 
-CLUSTERING_ALGORITHMS_NAMES = [
-    "AgglomerativeClustering",
-    "Birch",
-    "GaussianMixture",
-    "KMeans",
-    "MiniBatchKMeans",
-    "SpectralClustering",
-    "AffinityPropagation",
-    "MeanShift",
-]
-
 
 class ParamsView(ClusteringObserver):
-    def __init__(self, parent: QWidget, controller: IController):
+    def __init__(self, parent: QWidget, controller: IClusteringController):
         self.parent = parent
         self.controller = controller
 
@@ -33,14 +23,13 @@ class ParamsView(ClusteringObserver):
 
     def initUI(self):
         self.parent.layout().addWidget(self.paramsWidget)
-        self.deterBox.hide()
 
-        for name in CLUSTERING_ALGORITHMS_NAMES:
+        for name in CST.CLUSTERING_ALGORITHMS_NAMES:
             self.radiosButtons.append(QRadioButton(name))
         self.radiosButtons[3].setChecked(True)  # KMeans by default
         for radioButton in self.radiosButtons:
             self.radiosLayout.addWidget(radioButton)
-        self.radiosLayout.setSpacing(5)
+        self.radiosLayout.setSpacing(1)
 
         self.paramsWidget.setLayout(self.paramsLayout)
         self.paramsLayout.addWidget(self.radiosWidget)
@@ -49,9 +38,20 @@ class ParamsView(ClusteringObserver):
 
         self.deterBox.setText("Deterministic")
         self.filterWordBox.setText("Filter Non-English words")
+        self.filterWordBox.setChecked(True)
+
+        # Note: This function is disabled by default, it does not provide a real determinic results,
+        # It allow just a detemrinistic clusterisation but not a deterministic vector inference.
+        self.deterBox.hide()
+
+    def setEnabled(self, enable: bool):
+        self.paramsWidget.setEnabled(enable)
+
+    def onClusteringBegan(self):
+        self.setEnabled(False)
 
     def onClusteringEnded(self):
-        pass
+        self.setEnabled(True)
 
     def onModelLoaded(self):
         # TODO : update interface, update check boxes

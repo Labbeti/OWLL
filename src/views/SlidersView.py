@@ -1,16 +1,12 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout, QSlider, QLabel, QGroupBox, QHBoxLayout
 from PyQt5.QtCore import Qt
-from src.controllers.IController import IController
-from src.util import dbg
+from src.CST import CST
+from src.controllers.IClusteringController import IClusteringController
 from src.models.ClusteringObserver import ClusteringObserver
 
 
-SLIDER_PRECISION = 100
-SLIDER_LABEL_FORMAT = "%.2f"
-
-
 class SlidersView(ClusteringObserver):
-    def __init__(self, parent: QWidget, controller: IController):
+    def __init__(self, parent: QWidget, controller: IClusteringController):
         self.parent = parent
         self.controller = controller
 
@@ -20,40 +16,40 @@ class SlidersView(ClusteringObserver):
         self.slidersAndLabels = {}
         self.slidersConfig = {
             "NbClusters": {
-                "min": 1, "max": 100, "format": "%d", "factor": 1,
-                "line": 0, "column": 0
+                "min": 1, "max": 100, "format": "%d",
+                "factor": 1, "line": 0, "column": 0
             },
             "WeightFctWords": {
-                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
-                "line": 1, "column": 0
+                "min": 0, "max": CST.GUI.SLIDER_PRECISION, "format": CST.GUI.SLIDER_LABEL_FORMAT,
+                "factor": CST.GUI.SLIDER_PRECISION, "line": 1, "column": 0
             },
             "WeightMathProps": {
-                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
-                "line": 2, "column": 0
+                "min": 0, "max": CST.GUI.SLIDER_PRECISION, "format": CST.GUI.SLIDER_LABEL_FORMAT,
+                "factor": CST.GUI.SLIDER_PRECISION, "line": 2, "column": 0
             },
             "WeightOPWithDR": {
-                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
-                "line": 0, "column": 1
+                "min": 0, "max": CST.GUI.SLIDER_PRECISION, "format": CST.GUI.SLIDER_LABEL_FORMAT,
+                "factor": CST.GUI.SLIDER_PRECISION, "line": 0, "column": 1
             },
             "WeightCW": {
-                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
-                "line": 0, "column": 2
+                "min": 0, "max": CST.GUI.SLIDER_PRECISION, "format": CST.GUI.SLIDER_LABEL_FORMAT,
+                "factor": CST.GUI.SLIDER_PRECISION, "line": 0, "column": 2
             },
             "WeightDR": {
-                "min": 0, "max": SLIDER_PRECISION, "format": SLIDER_LABEL_FORMAT, "factor": SLIDER_PRECISION,
-                "line": 0, "column": 3
+                "min": 0, "max": CST.GUI.SLIDER_PRECISION, "format": CST.GUI.SLIDER_LABEL_FORMAT,
+                "factor": CST.GUI.SLIDER_PRECISION, "line": 0, "column": 3
             },
             "DimOPWithDR": {
-                "min": 0, "max": 300, "format": "%d", "factor": 1,
-                "line": 1, "column": 1
+                "min": 0, "max": 300, "format": "%d",
+                "factor": 1, "line": 1, "column": 1
             },
             "DimCW": {
-                "min": 0, "max": 300, "format": "%d", "factor": 1,
-                "line": 1, "column": 2
+                "min": 0, "max": 300, "format": "%d",
+                "factor": 1, "line": 1, "column": 2
             },
             "DimDR": {
-                "min": 0, "max": 300, "format": "%d", "factor": 1,
-                "line": 1, "column": 3
+                "min": 0, "max": 300, "format": "%d",
+                "factor": 1, "line": 1, "column": 3
             },
         }
 
@@ -83,12 +79,18 @@ class SlidersView(ClusteringObserver):
         self.updateAllSliders()
         self.updateAllLabels()
 
-    def onSliderValueChanged(self, val):
-        dbg("Slider released = ", val)
+    def setEnabled(self, enable: bool):
+        self.slidersWidget.setEnabled(enable)
+
+    def onSliderValueChanged(self, _):
         # TODO : how to known which slider has been moved ?
         self.updateAllLabels()
 
+    def onClusteringBegan(self):
+        self.setEnabled(False)
+
     def onClusteringEnded(self):
+        self.setEnabled(True)
         self.updateAllSliders()
         self.updateAllLabels()
 

@@ -1,4 +1,4 @@
-from src.Csts import *
+from src.CST import *
 from src.ontology.AbstractOntology import AbstractOntology
 from src.ontology.ClsData import ClsData
 from src.ontology.OpData import OpData
@@ -13,20 +13,20 @@ import rdflib as rl
 # - s type class
 # - s subClassOf o
 def _is_class(_, p, o) -> bool:
-    return (p.toPython() == Csts.IRIs.RDF_TYPE and o.toPython() == Csts.IRIs.CLASS) or \
-           (p.toPython() == Csts.IRIs.SUB_CLASS_OF)
+    return (p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.CLASS) or \
+           (p.toPython() == CST.IRI.SUB_CLASS_OF)
 
 
 # Patterns:
 # - s type ObjectProperty
 def _is_object_property(_, p, o) -> bool:
-    return p.toPython() == Csts.IRIs.RDF_TYPE and o.toPython() == Csts.IRIs.OBJECT_PROPERTY
+    return p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.OBJECT_PROPERTY
 
 
 # Patterns:
 # - s type Restriction
 def _is_restriction(_, p, o) -> bool:
-    return p.toPython() == Csts.IRIs.RDF_TYPE and o.toPython() == Csts.IRIs.RESTRICTION
+    return p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.RESTRICTION
 
 
 class RdflibOntology(AbstractOntology):
@@ -42,7 +42,7 @@ class RdflibOntology(AbstractOntology):
     # ---------------------------------------- PRIVATE ---------------------------------------- #
     def __load(self):
         if self.__fileFormat is None:
-            formats_to_test = Csts.RDFLIB_FORMATS
+            formats_to_test = CST.RDFLIB_FORMATS
         else:
             formats_to_test = [self.__fileFormat]
 
@@ -63,7 +63,7 @@ class RdflibOntology(AbstractOntology):
     def __updateData(self, graph):
         # Init class characteristics
         clssIris = [s.toPython() for s, p, o in graph if _is_class(s, p, o) and not is_restriction_id(s)]
-        clssIris.append(Csts.IRIs.THING)
+        clssIris.append(CST.IRI.THING)
         clssData = {s: ClsData() for s in clssIris}
         for clsIri, clsData in clssData.items():
             clsData.iri = clsIri
@@ -85,50 +85,50 @@ class RdflibOntology(AbstractOntology):
 
             # if s is an op, check the predicate p
             if s in opsIris:
-                if p == Csts.IRIs.DOMAIN:
+                if p == CST.IRI.DOMAIN:
                     opsData[s].domainsIris.append(o)
                     if o not in clssData.keys():
                         clsData = ClsData(iri=o)
                         clsData.name = iri_to_name(o)
                         clssData[o] = clsData
                     clssData[o].domainOfIris.append(s)
-                elif p == Csts.IRIs.RANGE:
+                elif p == CST.IRI.RANGE:
                     opsData[s].rangesIris.append(o)
                     if o not in clssData.keys():
                         clsData = ClsData(iri=o)
                         clsData.name = iri_to_name(o)
                         clssData[o] = clsData
                     clssData[o].rangeOfIris.append(s)
-                elif p == Csts.IRIs.SUB_PROPERTY_OF:
+                elif p == CST.IRI.SUB_PROPERTY_OF:
                     opsData[s].subPropertyOfIris.append(o)
                     if o not in opsData.keys():
                         opData = OpData(self.getFilepath())
                         opData.iri = o
                         opData.name = iri_to_name(o)
                         opsData[o] = opData
-                elif p == Csts.IRIs.INVERSE_OF:
+                elif p == CST.IRI.INVERSE_OF:
                     opsData[s].inverseOfIri = o
-                elif p == Csts.IRIs.LABEL:
+                elif p == CST.IRI.LABEL:
                     opsData[s].label = o
-                elif p == Csts.IRIs.RDF_TYPE:
-                    if o == Csts.IRIs.Properties.ASYMMETRIC:
+                elif p == CST.IRI.RDF_TYPE:
+                    if o == CST.IRI.MATH_PROPERTIES.ASYMMETRIC:
                         opsData[s].asymmetric = True
-                    if o == Csts.IRIs.Properties.FUNCTIONAL:
+                    if o == CST.IRI.MATH_PROPERTIES.FUNCTIONAL:
                         opsData[s].functional = True
-                    elif o == Csts.IRIs.Properties.INVERSE_FUNCTIONAL:
+                    elif o == CST.IRI.MATH_PROPERTIES.INVERSE_FUNCTIONAL:
                         opsData[s].inverseFunctional = True
-                    elif o == Csts.IRIs.Properties.IRREFLEXIVE:
+                    elif o == CST.IRI.MATH_PROPERTIES.IRREFLEXIVE:
                         opsData[s].irreflexive = True
-                    elif o == Csts.IRIs.Properties.REFLEXIVE:
+                    elif o == CST.IRI.MATH_PROPERTIES.REFLEXIVE:
                         opsData[s].reflexive = True
-                    elif o == Csts.IRIs.Properties.SYMMETRIC:
+                    elif o == CST.IRI.MATH_PROPERTIES.SYMMETRIC:
                         opsData[s].symmetric = True
-                    elif o == Csts.IRIs.Properties.TRANSITIVE:
+                    elif o == CST.IRI.MATH_PROPERTIES.TRANSITIVE:
                         opsData[s].transitive = True
-            elif p == Csts.IRIs.RDF_TYPE and o in clssIris:
+            elif p == CST.IRI.RDF_TYPE and o in clssIris:
                 clssData[o].nbInstances += 1
             elif s in clssIris:
-                if p == Csts.IRIs.SUB_CLASS_OF:
+                if p == CST.IRI.SUB_CLASS_OF:
                     clssData[s].subClassOfIris.append(o)
 
         self._opsData = opsData
@@ -136,9 +136,9 @@ class RdflibOntology(AbstractOntology):
 
         for opData in opsData.values():
             if len(opData.getDomainsIris()) == 0:
-                opData.domainsIris.append(Csts.IRIs.THING)
+                opData.domainsIris.append(CST.IRI.THING)
             if len(opData.getRangesIris()) == 0:
-                opData.rangesIris.append(Csts.IRIs.THING)
+                opData.rangesIris.append(CST.IRI.THING)
 
             for domainIRI in opData.getDomainsIris():
                 domain = self.getClsData(domainIRI)

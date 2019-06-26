@@ -141,18 +141,19 @@ class OPD:
                 ontology.isLoaded() and nbUnreadable == 0 and len(ontology.getAllOpsData()) > 0
             i += 1
 
-    def loadFromFile(self, filepath: str):
+    def loadFromFile(self, filepath: str) -> bool:
         """
             Load the OPD from a TXT file.
             Can raise exception "OpdParseError" if the file format is incorrect.
             :param filepath: Path to the file to read.
         """
-        if not os.path.isfile(filepath):
-            prt("Error: %s must be a file." % filepath)
-            return
+
         self.clear()
         self.__srcpath = filepath
-        file = open(filepath, "r", encoding='utf-8')
+        try:
+            file = open(filepath, "r", encoding='utf-8')
+        except IOError:
+            return False
 
         # Read Header
         columnsNames = []
@@ -189,6 +190,7 @@ class OPD:
                 self.__data.append(opData)
             line = file.readline()
         file.close()
+        return True
 
     def saveInFile(self, filepath: str, generateDebugFile: bool):
         """
@@ -277,7 +279,7 @@ class OPD:
     def getOpNames(self, filterDuplicates: bool = False) -> list:
         opNames = []
         for opData in self.getData():
-            opNames.append(opData.getName())
+            opNames.append(opData.getOpName())
         if filterDuplicates:
             return rem_duplicates(opNames)
         else:

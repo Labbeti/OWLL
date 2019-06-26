@@ -1,18 +1,32 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QFileDialog
-from src.controllers.IController import IController
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QApplication
+from src.controllers.IClusteringController import IClusteringController
+from src.controllers.ISaveController import ISaveController
 from src.models.ClusteringModel import ClusteringModel, ClusteringParameters
-from src.views.PieView import ViewPie
-from src.views.SlidersView import SlidersView
-from src.views.NamesView import NamesView
-from src.views.WindowBarView import WindowBarView
 from src.views.ButtonsView import ButtonsView
+from src.views.InputView import InputView
+from src.views.NamesView import NamesView
 from src.views.ParamsView import ParamsView
+from src.views.PieView import PieView
 from src.views.ProgressView import ProgressView
-from src.util import dbg
+from src.views.SlidersView import SlidersView
+from src.views.WindowBarView import WindowBarView
 
 
-class ClusteringController(IController):
-    def __init__(self, model: ClusteringModel, window: QMainWindow):
+class ClusteringController(IClusteringController):
+    """
+        ClusteringController
+        This class is used in MVC pattern in order to manages views and control user inputs.
+    """
+
+    def __init__(self, app: QApplication, window: QMainWindow, model: ClusteringModel, saveController: ISaveController):
+        """
+            Constructor of ClusteringController.
+            :param app: The QApplication.
+            :param window: The Owll window of this project.
+            :param model: The model with clusters.
+            :param saveController: Another controller for save system.
+        """
+        self.app = app
         self.model = model
         self.window = window
 
@@ -21,21 +35,26 @@ class ClusteringController(IController):
         self.leftLayout = QVBoxLayout(self.leftWidget)
         self.rightLayout = QVBoxLayout(self.rightWidget)
 
-        self.progressView = ProgressView()
-        self.windowBarView = WindowBarView(self.window, self)
+        self.progressView = ProgressView(app)
+        self.windowBarView = WindowBarView(window, saveController)
 
         self.paramsView = ParamsView(self.leftWidget, self)
-        self.buttonsView = ButtonsView(self.leftWidget, self)
+        self.buttonsView = ButtonsView(self.leftWidget, self, saveController, app)
+        self.inputView = InputView(self.leftWidget, self)
 
-        self.pieView = ViewPie(self.rightWidget, self)
+        self.pieView = PieView(self.rightWidget, self)
         self.slidersView = SlidersView(self.rightWidget, self)
         self.opsView = NamesView(self.rightWidget, self)
 
         self.initUI()
 
     def initUI(self):
-        self.window.centralWidget().layout().addWidget(self.leftWidget)
-        self.window.centralWidget().layout().addWidget(self.rightWidget)
+        """
+            Private method for initilize interfaces.
+        """
+        centralLayout = self.window.centralWidget().layout()
+        centralLayout.addWidget(self.leftWidget, 1)
+        centralLayout.addWidget(self.rightWidget, 9)
 
         self.leftLayout.addStretch()
         self.leftLayout.setSpacing(20)
@@ -46,7 +65,8 @@ class ClusteringController(IController):
         self.model.addObs(self.slidersView)
         self.model.addObs(self.buttonsView)
         self.model.addObs(self.paramsView)
-        #self.model.addProgressObs(self.progressView)  # TODO : remettre quand les bugs seront corrigés
+        self.model.addObs(self.progressView)
+        self.model.addObs(self.inputView)
 
     def updateModel(self):
         params = ClusteringParameters()
@@ -65,23 +85,8 @@ class ClusteringController(IController):
 
         self.model.clustering(params)
 
-    def onOpenModel(self):
-        options = QFileDialog.Options()
-        # options |= QFileDialog.DontUseNativeDialog
-        filepath, _ = QFileDialog.getOpenFileName(
-            self.window, "Open model", "", "JSON Files (*.json);;All Files (*)", options=options)
-        if filepath:
-            self.model.loadFromFile(filepath)
-
-    def onSaveModel(self):
-        options = QFileDialog.Options()
-        # options |= QFileDialog.DontUseNativeDialog
-        filepath, _ = QFileDialog.getSaveFileName(
-            self.window, "Save model", "", "JSON Files (*.json);;All Files (*)", options=options)
-        if filepath:
-            if not filepath.endswith(".json"):
-                filepath += ".json"
-            self.model.saveInFile(filepath)
+    def submitOpToModel(self, opName: str, domain: str, range_: str, mathProps: dict):
+        self.model.submitOp(opName, domain, range_, mathProps)
 
     def onClusterClick(self, label: str):
         self.opsView.showCluster(label)

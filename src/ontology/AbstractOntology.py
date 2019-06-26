@@ -1,12 +1,30 @@
-
 from abc import abstractmethod
 from src.ontology.ClsData import ClsData
 from src.ontology.IOntology import IOntology
 from src.ontology.OpData import OpData
 
+"""
+                        IOntology
+                            ^
+                            |
+            +---------------+---------------+
+            |                               |
+            |                               |
+        Ontology                     AbstractOntology
+                                            ^
+                                            |
+                                +-----------+-----------+
+                                |                       |
+                                |                       |
+                        OwlreadyOntology          RdflibOntology
+"""
 
-# Abstract Ontology for implementation with librairies.
+
 class AbstractOntology(IOntology):
+    """
+        Abstract Ontology for implementation with librairies.
+    """
+
     # ---------------------------------------- PUBLIC ---------------------------------------- #
     def __init__(self, filepath: str):
         self._filepath = filepath
@@ -29,7 +47,7 @@ class AbstractOntology(IOntology):
     def getFilepath(self) -> str:
         return self._filepath
 
-    def getName(self, iri: str) -> str:
+    def getOpName(self, iri: str) -> str:
         if self.isLoaded() and iri in self._opsData.keys():
             return self._opsData[iri].name
         else:
@@ -40,7 +58,7 @@ class AbstractOntology(IOntology):
         raise NotImplementedError("user must define getNbErrors")
 
     def getOpNames(self) -> list:
-        opNames = [opData.getName() for opData in self._opsData.values()]
+        opNames = [opData.getOpName() for opData in self._opsData.values()]
         return opNames
 
     def getOpData(self, opUri: str) -> OpData:

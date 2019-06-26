@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QAction, QMainWindow
-from src.controllers.IController import IController
+from src.controllers.ISaveController import ISaveController
 
 
 class WindowBarView:
-    def __init__(self, window: QMainWindow, controller: IController):
+    def __init__(self, window: QMainWindow, saveController: ISaveController):
         self.window = window
-        self.controller = controller
+        self.saveController = saveController
 
         self.initUI()
 
@@ -23,8 +23,8 @@ class WindowBarView:
 
     def onMenuBarClick(self, act):
         if act.text() == "Open model":
-            self.controller.onOpenModel()
+            self.saveController.onOpenModel()
         elif act.text() == "Save model":
-            self.controller.onSaveModel()
+            self.saveController.onSaveModel()
         else:
             raise Exception("Unknown action %s." % act.text())

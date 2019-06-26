@@ -1,69 +1,100 @@
-
 from abc import ABCMeta
 from abc import abstractmethod
 from src.ontology.OpData import OpData
 
-
-'''
+"""
                         IOntology
                             ^
                             |
             +---------------+---------------+
             |                               |
             |                               |
-        Ontology                      AbstractOntology
+        Ontology                     AbstractOntology
                                             ^
                                             |
                                 +-----------+-----------+
                                 |                       |
                                 |                       |
-                        OwlreadyOntology            RdflibOntology
+                        OwlreadyOntology          RdflibOntology
+"""
 
-'''
 
-
-# Interface for Ontology classes.
 class IOntology(object, metaclass=ABCMeta):
-    # Return all class properties.
+    """
+        Interface for Ontology classes.
+    """
+
     @abstractmethod
     def getAllClsProperties(self) -> dict:
-        raise NotImplementedError("user must define getAllClsProperties")
+        """
+            Return the list of ClsData.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
     @abstractmethod
     def getAllOpsData(self) -> dict:
-        raise NotImplementedError("user must define getAllClsProperties")
+        """
+            Return the list of OpData.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Return the properties of a class.
     @abstractmethod
     def getClsData(self, clsIri: str) -> str:
-        raise NotImplementedError("user must define getClsProperties")
+        """
+            Return the properties of a class.
+            :param clsIri:
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Get the filepath of the ontology file loaded.
     @abstractmethod
     def getFilepath(self) -> str:
-        raise NotImplementedError("user must define getFilepath")
+        """
+            Get the filepath of the ontology file loaded.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Return the name of the OP or class target by the parameter uri.
     @abstractmethod
-    def getName(self, iri: str) -> str:
-        raise NotImplementedError("user must define getName")
+    def getOpName(self, iri: str) -> str:
+        """
+            Return the name of the OP or class target by the parameter uri.
+            :param iri:
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Return the number of errors encountered during loading of the ontology.
     @abstractmethod
     def getNbErrors(self) -> int:
-        raise NotImplementedError("user must define getNbErrors")
+        """
+            Return the number of errors encountered during loading of the ontology.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
     @abstractmethod
-    # Return the list of object properties names.
     def getOpNames(self) -> list:
-        raise NotImplementedError("user must define getOpNames")
+        """
+            Return the list of object properties names.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Return the properties of an OP.
     @abstractmethod
     def getOpData(self, opUri: str) -> OpData:
-        raise NotImplementedError("user must define getOpProperties")
+        """
+            Return the properties of an OP.
+            :param opUri:
+            :return:
+        """
+        raise NotImplementedError("Abstract method")
 
-    # Return True if is loading is succesfull.
     @abstractmethod
     def isLoaded(self) -> bool:
-        raise NotImplementedError("user must define isLoaded")
+        """
+            Return True if is loading is succesfull.
+            :return:
+        """
+        raise NotImplementedError("Abstract method")

@@ -1,4 +1,4 @@
-from src.Csts import *
+from src.CST import *
 from src.ontology.AbstractOntology import AbstractOntology
 from src.ontology.ClsData import ClsData
 from src.ontology.OpData import OpData
@@ -42,7 +42,7 @@ class OwlreadyOntology(AbstractOntology):
             clsData.iri = clsOwlready.iri
             clsData.name = iri_to_name(clsOwlready.iri)
             self._clssData[clsOwlready.iri] = clsData
-        self._clssData[Csts.IRIs.THING] = ClsData()
+        self._clssData[CST.IRI.THING] = ClsData()
 
         individuals = ontoOwlready.individuals()
         for individual in individuals:
@@ -87,9 +87,9 @@ class OwlreadyOntology(AbstractOntology):
 
         for opData in self._opsData.values():
             if len(opData.getDomainsIris()) == 0:
-                opData.domainsIris.append(Csts.IRIs.THING)
+                opData.domainsIris.append(CST.IRI.THING)
             if len(opData.getRangesIris()) == 0:
-                opData.rangesIris.append(Csts.IRIs.THING)
+                opData.rangesIris.append(CST.IRI.THING)
 
             for domainIRI in opData.getDomainsIris():
                 domain = self.getClsData(domainIRI)

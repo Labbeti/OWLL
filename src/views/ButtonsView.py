@@ -1,12 +1,17 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QGroupBox, QVBoxLayout
-from src.controllers.IController import IController
+from PyQt5.QtWidgets import QWidget, QPushButton, QGroupBox, QVBoxLayout, QApplication
+from src.CST import CST
+from src.controllers.IClusteringController import IClusteringController
+from src.controllers.ISaveController import ISaveController
 from src.models.ClusteringObserver import ClusteringObserver
 
 
 class ButtonsView(ClusteringObserver):
-    def __init__(self, parent: QWidget, controller: IController):
+    def __init__(
+            self, parent: QWidget, controller: IClusteringController, saveController: ISaveController, app: QApplication):
         self.parent = parent
         self.controller = controller
+        self.saveController = saveController
+        self.app = app
 
         self.buttonsWidget = QGroupBox()
         self.buttonsLayout = QVBoxLayout()
@@ -28,25 +33,30 @@ class ButtonsView(ClusteringObserver):
             button = QPushButton(name)
             self.buttons[name] = button
             self.buttonsLayout.addWidget(button)
+            button.setMinimumHeight(CST.GUI.BUTTON_MIN_HEIGHT)
             button.clicked.connect(fct)
 
     def onButtonUpdateModel(self):
-        for button in self.buttons.values():
-            button.setEnabled(False)
         self.controller.updateModel()
 
     def onButtonLoad(self):
-        self.controller.onOpenModel()
+        self.saveController.onOpenModel()
 
     def onButtonSave(self):
-        self.controller.onSaveModel()
+        self.saveController.onSaveModel()
 
     def onButtonQuit(self):
         self.controller.onClose()
 
+    def onClusteringBegan(self):
+        self.setEnabled(False)
+        self.app.processEvents()
+
     def onClusteringEnded(self):
-        for button in self.buttons.values():
-            button.setEnabled(True)
+        self.setEnabled(True)
 
     def onModelLoaded(self):
         pass
+
+    def setEnabled(self, enable: bool):
+        self.buttonsWidget.setEnabled(enable)

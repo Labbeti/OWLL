@@ -6,8 +6,11 @@ from src.ontology.OwlreadyOntology import OwlreadyOntology
 from src.ontology.RdflibOntology import RdflibOntology
 
 
-# Strategy Pattern for managing ontologies with multiple librairies.
 class Ontology(IOntology):
+    """
+        Strategy Pattern for managing ontologies with multiple librairies.
+    """
+
     # ---------------------------------------- PUBLIC ---------------------------------------- #
     def __init__(self, filepath: str, fileFormat: str = None):
         self.__onto: AbstractOntology
@@ -29,9 +32,9 @@ class Ontology(IOntology):
         self.__checkIfLoaded()
         return self.__onto.getFilepath()
 
-    def getName(self, iri: str) -> str:
+    def getOpName(self, iri: str) -> str:
         self.__checkIfLoaded()
-        return self.__onto.getName(iri)
+        return self.__onto.getOpName(iri)
 
     def getNbErrors(self) -> int:
         if self.isLoaded():

@@ -1,6 +1,12 @@
-from src.Csts import Csts
+"""
+    Test module for several functions of OWLL.
+"""
+
+import os
+
+from src.CST import CST
 from src.ontology.Ontology import *
-from src.OPD import OPD
+from src.ontology.OPD import OPD
 from src.TenseDetector import TenseDetector
 from src.util import unordered_list_equals
 from src.util import is_obo_op
@@ -8,8 +14,6 @@ from src.util import is_restriction_id
 from src.util import prt
 from src.util import split_input
 from src.util import split_op_name
-
-import os
 
 
 def test_split_name():
@@ -144,7 +148,7 @@ def test_is_restriction_id():
 
 
 def test_save_load_opd():
-    filepath = Csts.Paths.OPD
+    filepath = CST.PATH.OPD
     filepathCopy = os.path.join(os.path.dirname(filepath), "opd_copy.txt")
 
     opd = OPD()
@@ -187,14 +191,12 @@ def test_tense_verb():
 
 def test_all():
     prt("Begin autotests.")
-    """
     test_split_name()
     test_get_object_properties()
     test_cls_props()
     test_split_input()
     test_is_obo_op()
     test_is_restriction_id()
-    """
     test_save_load_opd()
     test_tense_verb()
     prt("OK: All")

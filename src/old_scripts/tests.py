@@ -164,13 +164,13 @@ def get_names_opd(filepathOPD: str, filterWords: bool, filterDuplicates: bool) -
     prt("Reading and filtering OPD...")
     opNamesSplitted = opd.getOpNamesSplit(
         keepEmptyLists=False, filterDomain=filterWords, filterRange=filterWords,
-        filterSubWords=Csts.Words.getWordsSearched() if filterWords else [], filterDuplicates=filterDuplicates)
+        filterSubWords=CST.WORDS.getWordsSearched() if filterWords else [], filterDuplicates=filterDuplicates)
     return opNamesSplitted
 
 
 # Clust with Doc2Vec functions
 def get_doc2vec_vectors(filterWords: bool, filterDuplicates: bool) -> (np.ndarray, list, list):
-    filepathOPD = Csts.Paths.OPD
+    filepathOPD = CST.PATH.OPD
     opNames, opNamesSplitted = get_names_opd(filepathOPD, filterWords, filterDuplicates)
     prt("Trying clust with %d opNames and %d opNames non empty" % (len(opNames), len(opNamesSplitted)))
 
@@ -217,7 +217,7 @@ def draw_results(nbClusters: int, preds: np.array, vecs: np.array, clustersCente
     vecsReduced = reduced[:len(vecs)]
 
     # Duplicate colors if too many clusters
-    colorsByPoints = Csts.COLORS[preds % len(Csts.COLORS)]
+    colorsByPoints = CST.COLORS[preds % len(CST.COLORS)]
 
     font = FontProperties()
     font.set_weight('bold')
@@ -241,7 +241,7 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
 
     filterWords = False
     filterDuplicates = True
-    filepathOPD = Csts.Paths.OPD
+    filepathOPD = CST.PATH.OPD
     opd = OPD()
     opd.loadFromFile(filepathOPD)
     opNamesSplitted = []
@@ -258,7 +258,7 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
         isTran = float(opData.isTransitive()) * WEIGHT_MATHS_PROPERTIES
 
         opNameSplitFiltered = str_list_lower(
-            opData.getNameSplit(True, True, Csts.Words.getWordsSearched() if filterWords else [])
+            opData.getNameSplit(True, True, CST.WORDS.getWordsSearched() if filterWords else [])
         )
 
         ignored = ["Thing"]
@@ -277,7 +277,7 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
 
     if filterDuplicates:
         opNamesSplitted = rem_duplicates(opNamesSplitted)
-    docOp = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted + Csts.LINK_WORDS_CLUSTERS)]
+    docOp = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(opNamesSplitted + CST.LINK_WORDS_CLUSTERS)]
     docEntities = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(entities)]
 
     model = gs.models.Doc2Vec(docOp, vector_size=DIM_WORDS)
@@ -303,7 +303,7 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
     #docLW = [gs.models.doc2vec.TaggedDocument(doc, [i]) for i, doc in enumerate(Csts.LINK_WORDS_CLUSTERS)]
     #modelLW = gs.models.Doc2Vec(docOp, vector_size=200)
     allVecsClusters = []
-    for cluster in Csts.LINK_WORDS_CLUSTERS:
+    for cluster in CST.LINK_WORDS_CLUSTERS:
         vecsCluster = []
         for word in cluster:
             nameSplit = str_list_lower(split_op_name(word))
@@ -338,8 +338,8 @@ def test_doc2vec_extended(nbClusters: int, filepathClusters: str):
         distProportion = to_percent(minSqDist, maxSqDist)
         if distProportion < 0.1:
             fTest.write("Name %-40s => %-40s (word=%s, min=%f)\n" % (
-                opd.getData()[i].getName(), Csts.LINK_WORDS_CLUSTERS_NAMES[clusterIndex],
-                Csts.LINK_WORDS_CLUSTERS[clusterIndex][wordIndex], distProportion))
+                opd.getData()[i].getOpName(), CST.LINK_WORDS_CLUSTERS_NAMES[clusterIndex],
+                CST.LINK_WORDS_CLUSTERS[clusterIndex][wordIndex], distProportion))
         i += 1
     prt("Compute of classification done. Results in \"%s\"" % filepathClassif)
     fTest.close()

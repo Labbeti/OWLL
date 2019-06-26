@@ -2,29 +2,28 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout
 from src.controllers.ClusteringController import ClusteringController
-from src.Csts import Csts
+from src.controllers.SaveController import SaveController
+from src.CST import CST
 from src.models.ClusteringModel import ClusteringModel
 from src.views.OwllWindow import OwllWindow
 from src.util import prt
 
 
-OWLL_VERSION = "0.2.2"
-
-
 def main():
-    prt("Initialize...")
+    prt("Starting application...")
     app = QApplication(sys.argv)
     centralWidget = QWidget()
     centralWidget.setLayout(QHBoxLayout())
     window = OwllWindow()
     window.setCentralWidget(centralWidget)
 
-    model = ClusteringModel(Csts.Paths.ENGLISH_WORDS)
-    controller = ClusteringController(model, window)
+    model = ClusteringModel(CST.PATH.OPD, CST.PATH.ENGLISH_WORDS)
+    saveController = SaveController(window, model)
+    controller = ClusteringController(app, window, model, saveController)
 
     window.setController(controller)
+    model.setSaveController(saveController)
 
-    prt("Starting application...")
     # Fit to screen
     window.showMaximized()
     app.exec_()

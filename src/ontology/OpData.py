@@ -23,6 +23,12 @@ class OpData:
         self.symmetric = False
         self.transitive = False
 
+    def fromDict(self, d: dict):
+        self.__dict__ = d
+
+    def asDict(self) -> dict:
+        return vars(self)
+
     # Getters
     def getIri(self) -> str:
         return self.iri

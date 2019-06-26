@@ -1,21 +1,22 @@
-from PyQt5.QtWidgets import QMainWindow, QAction
-from src.controllers.IController import IController
-from src.util import dbg
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt
+from src.controllers.IClusteringController import IClusteringController
 
 
 class OwllWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
+        QMainWindow.__init__(self)
         # Init attributes
-        self.title = 'OWLL'
+        self.title = 'OWLL-GUI'
         self.controller = None
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle(self.title)
+        self.setWindowFlag(Qt.WindowStaysOnTopHint)
 
     def closeEvent(self, event):
         self.controller.onClose()
 
-    def setController(self, controller: IController):
+    def setController(self, controller: IClusteringController):
         self.controller = controller

@@ -1,16 +1,15 @@
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PyQt5.QtWidgets import QSizePolicy, QWidget, QVBoxLayout
-from src.controllers.IController import IController
+from src.controllers.IClusteringController import IClusteringController
 from src.controllers.PieEventObserver import PieEventObserver
 from src.models.ClusteringObserver import ClusteringObserver
 
-"""
-Note: Original code come from https://pythonspot.com/pyqt5-matplotlib/
-"""
-
 
 class PieEventHandler:
+    """
+        Note: Original code come from https://pythonspot.com/pyqt5-matplotlib/
+    """
     def __init__(self):
         self.obs = None
         self.pie = None
@@ -62,8 +61,8 @@ class PieCanvas(FigureCanvas):
         return self.elements[0]
 
 
-class ViewPie(ClusteringObserver):
-    def __init__(self, parent: QWidget, controller: IController):
+class PieView(ClusteringObserver):
+    def __init__(self, parent: QWidget, controller: IClusteringController):
         self.parent = parent
         self.controller = controller
 
@@ -78,8 +77,11 @@ class ViewPie(ClusteringObserver):
         self.canvasWidget.setLayout(self.canvasLayout)
         self.canvasLayout.addWidget(self.canvas)
         self.canvasWidget.setMinimumSize(200, 200)
-        self.canvas.updatePie([[1]], ["Initialized"])
+        self.canvas.updatePie([[1]], ["uninitialized"])
         self.handler.connect(self.canvas.getPie(), self.controller)
+
+    def onClusteringBegan(self):
+        pass
 
     def onClusteringEnded(self):
         self.update()

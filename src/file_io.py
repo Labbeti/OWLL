@@ -4,9 +4,14 @@ from src.util import prt
 from src.util import get_time
 
 
-# Note: quelques mots non trouvé dans FastText :
-# ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
 def load_ft_vectors(filepath: str, limit: int = 1_000_000) -> (map, int, int):
+    """
+        Note: quelques mots non trouvé dans FastText :
+        ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
+        :param filepath:
+        :param limit:
+        :return:
+    """
     prt("Loading \"%s\"..." % filepath)
     start = time()
     file = open(filepath, 'r', encoding='utf-8', newline='\n', errors='ignore')
@@ -28,6 +33,12 @@ def load_ft_vectors(filepath: str, limit: int = 1_000_000) -> (map, int, int):
 
 
 def save_ft_vectors(data, filename):
+    """
+        Save vectors to a CSV file.
+        :param data:
+        :param filename:
+        :return:
+    """
     file = open(filename, "w")
     n = len(data)
     d = len(list(data.values())[0])  # dim
@@ -41,9 +52,15 @@ def save_ft_vectors(data, filename):
     file.close()
 
 
-# Write the default header for results .txt files.
-# Parameter: out is a file considered opened as "w"
 def create_result_file(outputFilepath: str, inputFilepath: str = "", inputFileVersion: str = "") -> TextIO:
+    """
+        Write the default header for results .txt files.
+        :param outputFilepath:
+        :param inputFilepath:
+        :param inputFileVersion:
+        :return:
+    """
+
     out = open(outputFilepath, "w", encoding="utf-8")
     out.write("#! Version: %s\n" % get_time())
     if inputFilepath != "":

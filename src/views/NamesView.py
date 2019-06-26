@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import QGroupBox, QWidget, QVBoxLayout, QLabel, QScrollArea
 from src.models.ClusteringObserver import ClusteringObserver
-from src.controllers.IController import IController
-from src.util import dbg
+from src.controllers.IClusteringController import IClusteringController
 
 
 class NamesView(ClusteringObserver):
-    def __init__(self, parent: QWidget, controller: IController):
+    def __init__(self, parent: QWidget, controller: IClusteringController):
         self.parent = parent
         self.controller = controller
 
@@ -54,8 +53,12 @@ class NamesView(ClusteringObserver):
         else:
             self.contentWidget.setText("")
 
+    def onClusteringBegan(self):
+        pass
+
     def onClusteringEnded(self):
         self.updateContent()
 
     def onModelLoaded(self):
+        self.indCluster = -1
         self.updateContent()

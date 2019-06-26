@@ -1,4 +1,4 @@
-from src.Csts import Csts
+from src.CST import CST
 from time import time
 from src.util import prt
 
@@ -64,7 +64,7 @@ def read_dist_matrix(filepath: str) -> np.array:
 
 
 def test_tfidf(nbClusters: int, genMatrix: bool):
-    filepathOPD = Csts.Paths.OPD
+    filepathOPD = CST.PATH.OPD
     filepathMatrix = "results/gensim/distance_matrix.csv"
     filepathClusters = "results/gensim/clustersTfidf.txt"
 

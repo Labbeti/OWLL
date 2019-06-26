@@ -99,7 +99,7 @@ def draw_results(nbClusters: int, preds: np.array, opVecs: np.array, clustersCen
     vecsReduced = reduced[:len(reduced) - len(clustersCenters)]
 
     # Duplicate colors if too many clusters
-    colors_for_pt = Csts.COLORS[preds % len(Csts.COLORS)]
+    colors_for_pt = CST.COLORS[preds % len(CST.COLORS)]
 
     font = FontProperties()
     font.set_weight('bold')
@@ -197,7 +197,7 @@ def clust_op_names(_: list = None) -> int:
         :param _: <Unused> Arguments from OWLL terminal.
         :return: Exit code for OWLL terminal.
     """
-    clusterize(Csts.Paths.DBPEDIA, Csts.Paths.FASTTEXT, Csts.Paths.CLUST)
+    clusterize(CST.PATH.DBPEDIA, CST.PATH.FASTTEXT, CST.PATH.CLUST)
     return 0
 
 
