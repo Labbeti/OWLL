@@ -19,22 +19,22 @@ def print_help():
     )
 
 
-def gen_opd(args: list = None) -> int:
+def gen_opd(args_: list = None) -> int:
     """
         Generate the OPD file.
-        :param args: Arguments from terminal:
+        :param args_: Arguments from terminal:
             args[0] is the dirpath for searching ontologies.
             args[1] is the filepath for the OPD result file.
         :return: Exit code for terminal.
     """
 
-    if args is None or len(args) > 2 or "-h" in args or "-help" in args or "--help" in args:
+    if args_ is None or len(args_) > 2 or "-h" in args_ or "-help" in args_ or "--help" in args_:
         print_help()
         return 0
 
-    dirpathOnto, filepathOpd = get_args(args, [CST.PATH.ONTOLOGIES, CST.PATH.OPD])
+    dirpathOnto, filepathOpd = get_args(args_, [CST.PATH.ONTOLOGIES, CST.PATH.OPD])
     opd = OPD()
-    opd.generate(dirpathOnto)
+    opd.generateFromDir(dirpathOnto)
     opd.saveInFile(filepathOpd, True)
     return 0
 

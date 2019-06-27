@@ -34,6 +34,10 @@ File | Description
 ```gen_stats.py``` | Run the update of object properties statistics files. 
 
 ## Versions notes
+* Release 1.1 (27/06/19)
+  * Fix crash when generating OPD with "gen_opd" script.
+  * Rework interface for being more user-friendly : split window menus, change clusterisation parameters positions.
+
 * Release 1.0 (27/06/19)
   * Fix bug about KMeans initial centroids : if we try clusterisation with a lot of duplicates words the number of clusters was very low.
   * Modify function word vector by consider the position (infix, prefix, suffix) of the word in OP.
@@ -53,6 +57,7 @@ File | Description
   * Disable interface when computing clusterisation.
   * Disable InputView when model is not updated.
   * Fix gen_opd and gen_stats crash scripts and add arguments for them.
+  * Now use KNN for classify the submitted object property.
 
 * Indev 0.2.2 (24/06/19)
   * Closing main window now close the ClusterView window.

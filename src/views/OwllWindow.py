@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import Qt
 from src.controllers.IClusteringController import IClusteringController
+from src import PROJECT_VERSION
 
 
 class OwllWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         # Init attributes
-        self.title = 'OWLL-GUI'
+        self.title = "OWLL GUI " + PROJECT_VERSION
         self.controller = None
         self.initUI()
 

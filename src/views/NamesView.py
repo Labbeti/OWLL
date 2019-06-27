@@ -8,7 +8,7 @@ class NamesView(ClusteringObserver):
         self.parent = parent
         self.controller = controller
 
-        self.namesWidget = QGroupBox("Cluster Content")
+        self.namesWidget = QGroupBox("Cluster content")
         self.namesLayout = QVBoxLayout()
         self.contentWidget = QLabel()
         self.scrollArea = QScrollArea()
@@ -51,6 +51,7 @@ class NamesView(ClusteringObserver):
                 content += name + ", "
             self.contentWidget.setText(content)
         else:
+            self.namesWidget.setTitle("Cluster content")
             self.contentWidget.setText("")
 
     def onClusteringBegan(self):

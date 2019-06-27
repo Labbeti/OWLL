@@ -29,7 +29,7 @@ class ParamsView(ClusteringObserver):
         self.radiosButtons[3].setChecked(True)  # KMeans by default
         for radioButton in self.radiosButtons:
             self.radiosLayout.addWidget(radioButton)
-        self.radiosLayout.setSpacing(1)
+        self.radiosLayout.setSpacing(0)
 
         self.paramsWidget.setLayout(self.paramsLayout)
         self.paramsLayout.addWidget(self.radiosWidget)

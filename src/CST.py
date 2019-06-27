@@ -1,7 +1,6 @@
 import numpy as np
 
 
-# TODO : clean here
 class CST:
     """
         Class with constant values for OWLL project.
@@ -28,7 +27,7 @@ class CST:
         # Results files
         CLUST = "results/clust/clusters.txt"
         OPD = "results/opd/opd.txt"
-        CLUSTER_MODEL = "results/clusters/clusters_test.json"
+        CLUSTER_MODEL = "results/models/clusters_test.json"
         STATS_GLOBAL = "results/stats/global.txt"
         STATS_LISTS = "results/stats/op_lists.txt"
         STATS_CW = "results/stats/content_words.txt"
@@ -101,11 +100,6 @@ class CST:
         @staticmethod
         def getWordsSearched() -> list:
             return "has is of by in to".split()
-            #return ["has", "is"] + __class__.ARTICLES + __class__.ADPOSITIONS
-        '''
-        # TODO: erase
-        CONNECT = ["a", "about", "as", "at", "by", "for", "has", "in", "is", "of", "on", "same", "the", "to", "with"]
-        '''
 
     class IRI:
         """

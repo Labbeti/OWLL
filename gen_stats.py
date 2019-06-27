@@ -292,18 +292,18 @@ def print_help():
     )
 
 
-def gen_stats(args: list = None) -> int:
+def gen_stats(args_: list = None) -> int:
     """
         Update all statistics with an OPD.
-        :param args: Arguments from terminal.
+        :param args_: Arguments from terminal.
         :return: Exit code for terminal.
     """
 
-    if args is None or len(args) > 2 or "-h" in args or "-help" in args or "--help" in args:
+    if args_ is None or len(args_) > 2 or "-h" in args_ or "-help" in args_ or "--help" in args_:
         print_help()
         return 0
 
-    opdFilepath = get_args(args, [CST.PATH.OPD])[0]
+    opdFilepath = get_args(args_, [CST.PATH.OPD])[0]
 
     prt("Compute statistics with OPD \"%s\"..." % opdFilepath)
     opd = OPD()

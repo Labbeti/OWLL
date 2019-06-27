@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QGridLayout, QSlider, QLabel, QGroupBox, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSlider, QLabel, QGroupBox, QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import Qt
 from src.CST import CST
 from src.controllers.IClusteringController import IClusteringController
@@ -11,7 +11,7 @@ class SlidersView(ClusteringObserver):
         self.controller = controller
 
         self.slidersWidget = QGroupBox()
-        self.slidersLayout = QGridLayout()
+        self.slidersLayout = QVBoxLayout()
 
         self.slidersAndLabels = {}
         self.slidersConfig = {
@@ -69,7 +69,7 @@ class SlidersView(ClusteringObserver):
             layout.addWidget(slider)
 
             self.slidersAndLabels[name] = (slider, valueLabel)
-            self.slidersLayout.addWidget(group, config["line"], config["column"])
+            self.slidersLayout.addWidget(group) #, config["line"], config["column"])
 
             slider.setMinimum(config["min"])
             slider.setMaximum(config["max"])

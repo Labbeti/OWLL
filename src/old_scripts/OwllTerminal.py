@@ -1,7 +1,7 @@
-from src.old_scripts.owll_clust import clust_op_names
+from src.old_scripts.gen_clust import clust_op_names
 from gen_opd import gen_opd
 from gen_stats import gen_stats
-from src.old_scripts.owll_typolink import typolink
+from src.old_scripts.gen_typolink import typolink
 from src.util import prt
 from src.util import split_input
 

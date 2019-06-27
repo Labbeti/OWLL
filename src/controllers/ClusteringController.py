@@ -35,21 +35,25 @@ class ClusteringController(IClusteringController):
         self.saveController = saveController
         self.opdController = opdController
 
-        self.leftWidget = QWidget()
-        self.rightWidget = QWidget()
-        self.leftLayout = QVBoxLayout(self.leftWidget)
-        self.rightLayout = QVBoxLayout(self.rightWidget)
+        self.clustWidget = QWidget()
+        self.submitWidget = QWidget()
+        self.resultShowWidget = QWidget()
+
+        self.clustLayout = QVBoxLayout(self.clustWidget)
+        self.submitLayout = QVBoxLayout(self.submitWidget)
+        self.resultShowLayout = QVBoxLayout(self.resultShowWidget)
 
         self.progressView = ProgressView(app)
-        self.windowBarView = WindowBarView(window, saveController, opdController)
+        self.windowBarView = WindowBarView(window, self, saveController, opdController)
 
-        self.paramsView = ParamsView(self.leftWidget, self)
-        self.updateView = UpdateView(self.leftWidget, self, saveController, opdController, app)
-        self.inputView = InputView(self.leftWidget, self)
+        self.paramsView = ParamsView(self.clustWidget, self)
+        self.slidersView = SlidersView(self.clustWidget, self)
+        self.updateView = UpdateView(self.clustWidget, self, saveController, opdController, app)
 
-        self.pieView = PieView(self.rightWidget, self)
-        self.slidersView = SlidersView(self.rightWidget, self)
-        self.opsView = NamesView(self.rightWidget, self)
+        self.inputView = InputView(self.submitWidget, self)
+
+        self.pieView = PieView(self.resultShowWidget, self)
+        self.opsView = NamesView(self.resultShowWidget, self)
 
         self.initUI()
 
@@ -58,14 +62,14 @@ class ClusteringController(IClusteringController):
             Private method for initilize interfaces.
         """
         centralLayout = self.window.centralWidget().layout()
-        centralLayout.addWidget(self.leftWidget, 1)
-        centralLayout.addWidget(self.rightWidget, 9)
-        self.rightLayout.setStretch(0, 4)
-        self.rightLayout.setStretch(1, 1)
-        self.rightLayout.setStretch(2, 4)
+        centralLayout.addWidget(self.clustWidget, 1)
+        centralLayout.addWidget(self.submitWidget, 1)
+        centralLayout.addWidget(self.resultShowWidget, 4)
+        self.resultShowLayout.setStretch(0, 2)
+        self.resultShowLayout.setStretch(1, 1)
 
-        self.leftLayout.addStretch()
-        self.leftLayout.setSpacing(20)
+        self.clustLayout.addStretch()
+        self.submitLayout.addStretch()
 
         # Set observers
         self.model.addObs(self.pieView)

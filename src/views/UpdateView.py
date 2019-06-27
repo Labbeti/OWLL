@@ -47,19 +47,19 @@ class UpdateView(ClusteringObserver, OpdObserver):
         self.opdStatusLabel.setStyleSheet("color: red")
         self.modelStatusLabel.setText("Model not updated.")
         self.modelStatusLabel.setStyleSheet("color: red")
-        self.updateWidget.setEnabled(False)
+        self.setEnabled(False)
 
     def onButtonUpdateModel(self):
         self.controller.updateModel()
 
     def onClusteringBegan(self):
-        self.updateWidget.setEnabled(False)
+        self.setEnabled(False)
         self.modelStatusLabel.setText("Model not updated.")
         self.modelStatusLabel.setStyleSheet("color: red")
         self.app.processEvents()
 
     def onClusteringEnded(self):
-        self.updateWidget.setEnabled(True)
+        self.setEnabled(True)
         self.modelStatusLabel.setText("Model updated.")
         self.modelStatusLabel.setStyleSheet("color: green")
 
@@ -69,12 +69,12 @@ class UpdateView(ClusteringObserver, OpdObserver):
 
     def onOpdLoadBegan(self):
         dbg("onOpdLoadBegan")
-        self.updateWidget.setEnabled(False)
+        self.setEnabled(False)
         self.updateOpdStatus()
 
     def onOpdLoadEnded(self):
         dbg("onOpdLoadEnded")
-        self.updateWidget.setEnabled(True)
+        self.setEnabled(True)
         self.updateOpdStatus()
 
     def updateOpdStatus(self):
@@ -84,3 +84,10 @@ class UpdateView(ClusteringObserver, OpdObserver):
         else:
             self.opdStatusLabel.setText("OPD not loaded.")
             self.opdStatusLabel.setStyleSheet("color: red")
+
+    def setEnabled(self, enable: bool):
+        self.updateWidget.setEnabled(enable)
+        if enable:
+            self.updateWidget.setToolTip("Update model")
+        else:
+            self.updateWidget.setToolTip("OPD must be loaded for update model.")
