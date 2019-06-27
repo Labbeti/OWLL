@@ -1,9 +1,9 @@
-from src.ontology.AbstractOntology import AbstractOntology
-from src.ontology.ClsData import ClsData
-from src.ontology.IOntology import IOntology
-from src.ontology.OpData import OpData
-from src.ontology.OwlreadyOntology import OwlreadyOntology
-from src.ontology.RdflibOntology import RdflibOntology
+from src.models.ontology.AbstractOntology import AbstractOntology
+from src.models.ontology.ClsData import ClsData
+from src.models.ontology.IOntology import IOntology
+from src.models.ontology.OpData import OpData
+from src.models.ontology.OwlreadyOntology import OwlreadyOntology
+from src.models.ontology.RdflibOntology import RdflibOntology
 
 
 class Ontology(IOntology):
@@ -72,4 +72,6 @@ class Ontology(IOntology):
 
     def __checkIfLoaded(self):
         if not self.isLoaded():
-            raise Exception("Ontology %s not loaded." % self.__onto.getFilepath())
+            raise Exception(
+                "Ontology %s not loaded." % (self.__onto.getFilepath() if self.__onto is not None else "None")
+            )

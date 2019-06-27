@@ -106,6 +106,16 @@ def get_filenames(dirpath: str) -> list:
     return filenames
 
 
+def get_filepaths(dirpath: str) -> list:
+    """
+        Return the name list of files contained in dirpath.
+        :param dirpath:
+        :return:
+    """
+    filenames = [os.path.join(dirpath, f) for f in listdir(dirpath) if os.path.isfile(os.path.join(dirpath, f))]
+    return filenames
+
+
 def split_op_name(word: str) -> list:
     """
         Split an OP name in several words.
@@ -302,16 +312,14 @@ def get_args(args, defaultArgs: list) -> list:
 
 
 def print_command_help(usage: str, desc: str, defaultArgs: list = None):
-    prt("%-15s: %s" % ("Usage", usage))
-    prt("%-15s: %s" % ("Description", desc))
+    print("%-15s: %s" % ("Usage", usage))
+    print("%-15s: %s" % ("Description", desc))
 
     if defaultArgs is not None:
         for (name, value) in defaultArgs:
-            prt("Default argument %s is %s." % (name, value))
+            print("Default value of \"%s\" is \"%s\"." % (name, value))
 
 
-def set_cst(args: list):
-    if "-verbose" in args:
-        CST.VERBOSE_MODE = True
-    if "-debug" in args:
-        CST.DEBUG_MODE = True
+def init_cst_from_args(args: list):
+    CST.VERBOSE_MODE = "-verbose" in args
+    CST.DEBUG_MODE = "-debug" in args

@@ -1,6 +1,6 @@
 from src.CST import CST
 from src.file_io import *
-from src.ontology.OwlreadyOntology import OwlreadyOntology
+from src.models.ontology import OwlreadyOntology
 from src.util import get_vec
 from src.util import get_vecs
 from src.util import prt

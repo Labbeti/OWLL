@@ -75,6 +75,7 @@ class SlidersView(ClusteringObserver):
             slider.setMaximum(config["max"])
             slider.setSingleStep(1)
             slider.valueChanged.connect(self.onSliderValueChanged)
+            slider.setToolTip(name)
 
         self.updateAllSliders()
         self.updateAllLabels()

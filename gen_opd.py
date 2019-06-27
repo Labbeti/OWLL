@@ -1,7 +1,7 @@
 import sys
 from src.CST import CST
-from src.ontology.OPD import OPD
-from src.util import get_args, prt, print_command_help
+from src.models.ontology.OPD import OPD
+from src.util import get_args, print_command_help, init_cst_from_args
 
 
 def print_help():
@@ -10,8 +10,9 @@ def print_help():
     """
     arg1 = "dirpath_to_owl_ontologies"
     arg2 = "filepath_result"
+    arg3 = "-verbose"
     print_command_help(
-        "gen_opd [%s [%s]]" % (arg1, arg2),
+        "gen_opd [%s [%s]] [%s]" % (arg1, arg2, arg3),
         "Generate the OPD file with a directory that contains ontology files. This operation can take a long time if "
         "you have a large list of files.",
         [(arg1, CST.PATH.ONTOLOGIES), (arg2, CST.PATH.OPD)]
@@ -39,5 +40,6 @@ def gen_opd(args: list = None) -> int:
 
 
 if __name__ == "__main__":
-    commandArgs = sys.argv[1:]
-    gen_opd(commandArgs)
+    args = sys.argv[1:]
+    init_cst_from_args(args)
+    gen_opd(args)

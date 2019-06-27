@@ -54,12 +54,12 @@ class ParamsView(ClusteringObserver):
         self.setEnabled(True)
 
     def onModelLoaded(self):
-        # TODO : update interface, update check boxes
         params = self.controller.getModelParams()
-        dbg("ParamsView: onModelLoaded")
         algoName = params["Algorithm"]
         for radioButton in self.radiosButtons:
             radioButton.setChecked(radioButton.text() == algoName)
+        self.deterBox.setChecked(params["Deterministic"])
+        self.filterWordBox.setChecked(params["FilterENWords"])
 
     def getParamAlgo(self) -> str:
         clustAlgo = "NoAlgoSelected"

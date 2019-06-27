@@ -6,8 +6,8 @@ from gensim import similarities
 
 from graphviz import Digraph
 
-from src.ontology.OwlreadyOntology import OwlreadyOntology
-from src.ontology.RdflibOntology import RdflibOntology
+from src.models.ontology import OwlreadyOntology
+from src.models.ontology import RdflibOntology
 from src.old_scripts.owll_gensim import get_names_opd
 from sklearn.cluster import KMeans
 from src.util import *

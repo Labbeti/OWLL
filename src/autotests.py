@@ -5,8 +5,7 @@
 import os
 
 from src.CST import CST
-from src.ontology.Ontology import *
-from src.ontology.OPD import OPD
+from src.models.ontology import OPD
 from src.TenseDetector import TenseDetector
 from src.util import unordered_list_equals
 from src.util import is_obo_op

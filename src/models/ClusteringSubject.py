@@ -20,10 +20,6 @@ class ClusteringSubject:
         for obs in self.observers:
             obs.onModelLoaded()
 
-    def notifyProgress(self, stepName: str, value: float):
-        for obs in self.observers:
-            obs.onProgress(stepName, value)
-
     def notifySubmitResult(self, centerName: str, nearest: str):
         for obs in self.observers:
             obs.onSubmitResult(centerName, nearest)

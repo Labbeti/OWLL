@@ -13,7 +13,6 @@ class OwllWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle(self.title)
-        self.setWindowFlag(Qt.WindowStaysOnTopHint)
 
     def closeEvent(self, event):
         self.controller.onClose()

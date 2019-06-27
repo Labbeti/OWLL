@@ -9,12 +9,16 @@ class CST:
 
     VERBOSE_MODE = True
     DEBUG_MODE = False
+    LOAD_DEFAULTS_FILES = True
 
     TERMINAL_PREFIX = "% "
     RDFLIB_FORMATS = ['xml', 'n3', 'nt', 'trix', 'rdfa']
 
     class PATH:
-        # Defaults paths for OWLL.
+        """
+            Defaults paths for OWLL.
+        """
+
         # Dirs
         ONTOLOGIES = "data/ontologies/"
         # Data files
@@ -24,6 +28,7 @@ class CST:
         # Results files
         CLUST = "results/clust/clusters.txt"
         OPD = "results/opd/opd.txt"
+        CLUSTER_MODEL = "results/clusters/clusters_test.json"
         STATS_GLOBAL = "results/stats/global.txt"
         STATS_LISTS = "results/stats/op_lists.txt"
         STATS_CW = "results/stats/content_words.txt"
@@ -35,7 +40,14 @@ class CST:
     class GUI:
         SLIDER_PRECISION = 100
         SLIDER_LABEL_FORMAT = "%.2f"
-        BUTTON_MIN_HEIGHT = 20
+        BUTTON_MIN_HEIGHT = 30
+
+    KNN_NB_NEIGHBORS = 10
+    HAS_RANDOM_STATE = ["GaussianMixture", "KMeans", "MiniBatchKMeans", "SpectralClustering"]
+    DEFAULT_RANDOM_STATE = 2019
+    OP_CLUST_LIMIT = 100000  # Used for debug
+    EPOCHS = 5
+    MAX_RANDOM_CENTER_TRY = 10000
 
     MATH_PROPERTIES = \
         ["Asymmetric", "Functional", "InverseFunctional", "Irreflexive", "Reflexive", "Symmetric", "Transitive"]

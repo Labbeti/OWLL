@@ -1,8 +1,8 @@
 import sys
 from src.CST import CST
 from src.file_io import create_result_file
-from src.ontology.OPD import OPD
-from src.util import print_command_help, str_list_lower, to_percent, get_args, prt
+from src.models.ontology.OPD import OPD
+from src.util import print_command_help, str_list_lower, to_percent, get_args, prt, init_cst_from_args
 from src.WordDictionary import WordDictionary
 
 
@@ -329,5 +329,6 @@ def gen_stats(args: list = None) -> int:
 
 
 if __name__ == "__main__":
-    commandArgs = sys.argv[1:]
-    gen_stats(commandArgs)
+    args = sys.argv[1:]
+    init_cst_from_args(args)
+    gen_stats(args)

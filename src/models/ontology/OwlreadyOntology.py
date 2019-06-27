@@ -1,7 +1,7 @@
 from src.CST import *
-from src.ontology.AbstractOntology import AbstractOntology
-from src.ontology.ClsData import ClsData
-from src.ontology.OpData import OpData
+from src.models.ontology.AbstractOntology import AbstractOntology
+from src.models.ontology.ClsData import ClsData
+from src.models.ontology.OpData import OpData
 from urllib.error import HTTPError
 from src.util import iri_to_name
 

@@ -1,7 +1,7 @@
 from abc import abstractmethod
-from src.ontology.ClsData import ClsData
-from src.ontology.IOntology import IOntology
-from src.ontology.OpData import OpData
+from src.models.ontology.ClsData import ClsData
+from src.models.ontology.IOntology import IOntology
+from src.models.ontology.OpData import OpData
 
 """
                         IOntology
@@ -22,7 +22,7 @@ from src.ontology.OpData import OpData
 
 class AbstractOntology(IOntology):
     """
-        Abstract Ontology for implementation with librairies.
+        Abstract Ontology class for implementation with differents librairies.
     """
 
     # ---------------------------------------- PUBLIC ---------------------------------------- #

@@ -1,6 +1,8 @@
 import numpy as np
+from random import randint
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
+from gensim.corpora.dictionary import Dictionary
 from sklearn.cluster import AgglomerativeClustering, Birch, KMeans, MiniBatchKMeans, SpectralClustering, \
     AffinityPropagation, MeanShift
 from sklearn.mixture import GaussianMixture
@@ -9,37 +11,30 @@ from src.CST import CST
 from src.controllers.ISaveController import ISaveController
 from src.models.ClusteringParameters import ClusteringParameters
 from src.models.ClusteringSubject import ClusteringSubject
-from src.ontology.OPD import OPD
+from src.models.ontology import OPD
+from src.ProgressSubject import ProgressSubject
 from src.util import dbg, str_list_lower, is_unreadable, sq_dist, split_op_name
 from src.WordDictionary import WordDictionary
 
-HAS_RANDOM_STATE = ["GaussianMixture", "KMeans", "MiniBatchKMeans", "SpectralClustering"]
-DEFAULT_RANDOM_STATE = 2019
-LIMIT = 10000
-EPOCHS = 5
-
-
-class ProgressManager:
-    def __init__(self, subject: ClusteringSubject):
-        self.subject = subject
-        self.currentProgress = 0
-        self.maxProgress = 1
-
-    def getProgressProportion(self) -> float:
-        return self.currentProgress / self.maxProgress
-
-    def incrProgress(self, step: str):
-        self.currentProgress += 1
-        self.subject.notifyProgress(step, self.getProgressProportion())
-
-    def reset(self, maxProgress: int):
-        self.currentProgress = 0
-        self.maxProgress = maxProgress
-
 
 class VecsCreator:
-    def __init__(self, progressManager: ProgressManager):
-        self.progressManager = progressManager
+    def __init__(self, progressSubject: ProgressSubject):
+        self.progressSubject = progressSubject
+
+    def createFctWordVec(self, nameSplit: list) -> list:
+        if len(nameSplit) == 0:
+            return [0. for _ in range(len(CST.WORDS.getWordsSearched()) * 3 + 3)]
+
+        prefixVec = [1. if nameSplit[0] == fctWord else 0. for fctWord in CST.WORDS.getWordsSearched()]
+        suffixVec = [1. if nameSplit[-1] == fctWord else 0. for fctWord in CST.WORDS.getWordsSearched()]
+        infixVec = [1. if fctWord in nameSplit[1:len(nameSplit) - 1] else 0. for fctWord in
+                    CST.WORDS.getWordsSearched()]
+
+        hasPrefix = 1. if sum(prefixVec) > 0 else 0.
+        hasSuffix = 1. if sum(suffixVec) > 0 else 0.
+        hasInfix = 1. if sum(infixVec) > 0 else 0.
+
+        return prefixVec + suffixVec + infixVec + [hasPrefix, hasSuffix, hasInfix]
 
     def extractVecsAndNames(self, opd: OPD, filterENWords: bool, enWordsDict: WordDictionary) \
             -> (list, list, list, list, list):
@@ -51,7 +46,7 @@ class VecsCreator:
         domainsAndRanges = []
 
         for i, opData in enumerate(opd.getData()):
-            if i > LIMIT:
+            if i > CST.OP_CLUST_LIMIT:
                 dbg("Limit reached for extractVecsAndNames.")
                 break
             # Maths properties values
@@ -83,8 +78,7 @@ class VecsCreator:
                 ranges = enWordsDict.filterUnknownWords(ranges, False)
 
             # Update fct words list
-            vecFctWords = [float(len([word for word in nameSplit if word == fctWord]))
-                           for fctWord in CST.WORDS.getWordsSearched()]
+            vecFctWords = self.createFctWordVec(nameSplit)
 
             # Update main lists
             if len(nameSplit) > 0:
@@ -93,12 +87,12 @@ class VecsCreator:
                         vecsFctWords.append(vecFctWords)
                         vecsMathProps.append(vecMathProps)
                         contentWords.append(nameCw)
-                        opNames.append(opData.getOpName())
+                        opNames.append(opData.getName())
                         opWithDr.append([domain] + nameSplit + [range_])
                         domainsAndRanges.append([domain, range_])
 
-            if self.progressManager is not None:
-                self.progressManager.incrProgress("Step %d/%d: Compute OPD data..." % (2, 4))
+            if self.progressSubject is not None:
+                self.progressSubject.incrProgress("Step %d/%d: Compute OPD data..." % (2, 4))
 
         return vecsFctWords, vecsMathProps, contentWords, opNames, opWithDr, domainsAndRanges
 
@@ -108,8 +102,9 @@ class VecsCreator:
         matrix = np.zeros((len(text), dim))
 
         for i, words in enumerate(text):
-            matrix[i] = doc2Vec.infer_vector(words, epochs=EPOCHS)
-            self.progressManager.incrProgress("Step %d/%d: Infer vectors..." % (3, 4))
+            matrix[i] = doc2Vec.infer_vector(words, epochs=CST.EPOCHS)
+            if self.progressSubject is not None:
+                self.progressSubject.incrProgress("Step %d/%d: Infer vectors..." % (3, 4))
         return matrix, doc2Vec
 
 
@@ -123,6 +118,13 @@ class ClustersManager:
         return clustersNames, clustersVecs
 
     def getClustersCenters(self, clustersNames: list, clustersVecs: list, dim: int) -> (list, list):
+        """
+            Return a list of string names of clusters centers.
+            :param clustersNames:
+            :param clustersVecs:
+            :param dim:
+            :return:
+        """
         # Compute center of each cluster
         centersVecs = [np.zeros(dim, dtype=float) for _ in range(len(clustersVecs))]
         for i, cluster in enumerate(clustersVecs):
@@ -145,22 +147,21 @@ class ClustersManager:
                         jMin = j
                 centersNames[i] = clustersNames[i][jMin]
             else:
-                centersNames[i] = "[EMPTY_CLUSTER_INDEX_%d]" % i
+                centersNames[i] = "[EMPTY_CLUSTER_%d]" % i
         return centersNames, centersVecs
 
 
-class ClusteringModel(ClusteringSubject):
-    def __init__(self, opdPath: str, wordDictPath: str):
+class ClusteringModel(ClusteringSubject, ProgressSubject):
+    def __init__(self, opd: OPD, wordDictPath: str):
         ClusteringSubject.__init__(self)
-        self.opdPath = opdPath
+        ProgressSubject.__init__(self)
         self.wordDictPath = wordDictPath
 
         self.params = ClusteringParameters()
-        self.opd = OPD()
+        self.opd = opd
         self.enWordsDict = WordDictionary(wordDictPath)
         self.clustersNames = []
         self.centersNames = []
-        self.progressManager = ProgressManager(self)
         self.saveController = None
         self.d2vCw = None
         self.d2vDr = None
@@ -170,29 +171,38 @@ class ClusteringModel(ClusteringSubject):
         self.opNames = None
 
     def clustering(self, params: ClusteringParameters):
+        """
+            Main function for apply clusterisation on OPs found in OPD.
+            :param params: Parameters of the clusterisation.
+        """
         self.params = params
         self.notifyClusteringBegan()
 
-        # Step 1 : Load OPD
-        self.notifyProgress("Step %d/%d: Reading OPD..." % (1, 4), 0)
-        self.opd.loadFromFile(self.opdPath)
-        self.notifyProgress("Step %d/%d: Reading OPD done." % (1, 4), 1)
-
-        vecsCreator = VecsCreator(self.progressManager)
+        vecsCreator = VecsCreator(self)
 
         # Step 2 : Read the OPD data to extract vectors and list of names
-        self.progressManager.reset(self.opd.getSize())
+        self.resetProgress(self.opd.getSize())
         vecsFctWords, vecsMathProps, splittedCW, self.opNames, splittedOpsWithDR, domainsAndRanges = \
             vecsCreator.extractVecsAndNames(self.opd, self.params["FilterENWords"], self.enWordsDict)
 
+        # Check if vocabulary is enough for inferring vector
+        vocabulary = Dictionary(splittedCW)
+        if len(vocabulary) < self.params["NbClusters"]:
+            self.notifyError(
+                "Cannot infer vectors: Vocabulary of content words is smaller than number of clusters (%d < %d). "
+                "Maybe add more ontologies to provide more object properties." % (len(vocabulary),
+                                                                                  self.params["NbClusters"]))
+            return
+
         # Step 3 : Infer vectors with Gensim
-        self.progressManager.reset(len(splittedCW) * 3)
+        self.resetProgress(len(splittedCW) * 3)
         vecsCw, self.d2vCw = vecsCreator.inferVecs(splittedCW, self.params["DimCW"])
         vecsDr, self.d2vDr = vecsCreator.inferVecs(domainsAndRanges, self.params["DimDR"])
         vecsWordsWithDr, self.d2vWordsWithDr = vecsCreator.inferVecs(splittedOpsWithDR, self.params["DimOPWithDR"])
 
-        self.mainMatrix, mainDim = \
-            self.concatenateAll(vecsFctWords, vecsMathProps, vecsCw, vecsWordsWithDr, vecsDr)
+        vecsList = [vecsFctWords, vecsMathProps, vecsCw, vecsWordsWithDr, vecsDr]
+        vecsList = self.applyWeights(vecsList)
+        self.mainMatrix, mainDim = self.concatenateAll(vecsList)
 
         # Step 4 : Clusterisation
         self.notifyProgress("Step %d/%d: Compute clusterisation..." % (4, 4), 0)
@@ -206,25 +216,21 @@ class ClusteringModel(ClusteringSubject):
         self.centersNames, centersVecs = manager.getClustersCenters(self.clustersNames, clustersVecs, mainDim)
         self.notifyClusteringEnded()
 
-    def concatenateAll(self, fctWordsVecs, mathPropsVecs, splittedCWVecs, splittedWithDRVecs, drVecs, axis=1) \
-            -> (np.array, int):
-        fctWordsVecs = np.array(fctWordsVecs) * self.params["WeightFctWords"]
-        mathPropsVecs = np.array(mathPropsVecs) * self.params["WeightMathProps"]
-        splittedWithDRVecs = np.array(splittedWithDRVecs) * self.params["WeightCW"]
-        splittedCWVecs = np.array(splittedCWVecs) * self.params["WeightOPWithDR"]
-        drVecs = np.array(drVecs) * self.params["WeightDR"]
+    def applyWeights(self, vecsList: list) -> list:
+        weightsNamesList = ["WeightFctWords", "WeightMathProps", "WeightCW", "WeightOPWithDR", "WeightDR"]
+        if len(vecsList) != len(weightsNamesList):
+            raise Exception("Fatal error: possible missing of 1 weight for vectors")
+        for i, vecs in enumerate(vecsList):
+            if len(vecsList[i - 1]) != len(vecs):
+                raise Exception("Fatal error: Vecs does have the same number of elements.")
+        weightsValsList = [self.params[name] for name in weightsNamesList]
+        return [np.array(vecs) * weight for vecs, weight in zip(vecsList, weightsValsList)]
 
-        dbg("fctWordsVecs = ", fctWordsVecs.shape)
-        dbg("mathPropsVecs = ", mathPropsVecs.shape)
-        dbg("splittedWithDRVecs = ", splittedWithDRVecs.shape)
-        dbg("splittedCWVecs = ", splittedCWVecs.shape)
-        dbg("drVecs = ", drVecs.shape)
-
-        tmp = np.concatenate((fctWordsVecs, mathPropsVecs), axis=axis)
-        tmp2 = np.concatenate((tmp, splittedWithDRVecs), axis=axis)
-        tmp3 = np.concatenate((tmp2, splittedCWVecs), axis=axis)
-        mainVecs = np.concatenate((tmp3, drVecs), axis=axis)
-        dbg("mainVecs = ", mainVecs.shape)
+    def concatenateAll(self, vecsList: list, axis: int = 1) -> (np.array, int):
+        mainVecs = vecsList[0]
+        for i in range(1, len(vecsList)):
+            vecs = vecsList[i]
+            mainVecs = np.concatenate((mainVecs, vecs), axis=axis)
         mainDim = mainVecs.shape[axis]
         return mainVecs, mainDim
 
@@ -251,9 +257,24 @@ class ClusteringModel(ClusteringSubject):
         else:
             raise Exception("Unknown algorithm %s" % name)
 
-        deterministic = self.params["Deterministic"]
-        if deterministic and name in HAS_RANDOM_STATE:
-            clustAlgo.random_state = DEFAULT_RANDOM_STATE
+        if name in CST.HAS_RANDOM_STATE:
+            deterministic = self.params["Deterministic"]
+            if deterministic:
+                clustAlgo.random_state = CST.DEFAULT_RANDOM_STATE
+            else:
+                centers = []
+                nbTry = 0
+                while len(centers) < nbClusters:
+                    if nbTry >= CST.MAX_RANDOM_CENTER_TRY:
+                        raise Exception("Cannot select distinct centers for algorithm %s. Maybe not enough data for %d "
+                                        "clusters." % (name, nbClusters))
+                    rd = randint(0, len(self.mainMatrix) - 1)
+                    vec = list(self.mainMatrix[rd])
+                    if vec not in centers:
+                        centers.append(vec)
+                    nbTry += 1
+                clustAlgo.init = np.array(centers)
+                clustAlgo.n_init = 1
         return clustAlgo
 
     def submitOp(self, opName: str, domain: str, range_: str, mathProps: dict):
@@ -275,14 +296,16 @@ class ClusteringModel(ClusteringSubject):
                        for fctWord in CST.WORDS.getWordsSearched()]
         vecMathProps = np.array(list(mathProps.values()), dtype=float)
 
-        vecCw = self.d2vCw.infer_vector(nameCw, epochs=EPOCHS)
-        vecWordsWithDr = self.d2vWordsWithDr.infer_vector(splittedWithDR, epochs=EPOCHS)
-        vecDr = self.d2vDr.infer_vector(domainAndRange, epochs=EPOCHS)
+        vecCw = self.d2vCw.infer_vector(nameCw, epochs=CST.EPOCHS)
+        vecWordsWithDr = self.d2vWordsWithDr.infer_vector(splittedWithDR, epochs=CST.EPOCHS)
+        vecDr = self.d2vDr.infer_vector(domainAndRange, epochs=CST.EPOCHS)
 
-        mainVec, _ = self.concatenateAll(vecFctWords, vecMathProps, vecCw, vecWordsWithDr, vecDr, axis=0)
+        vecsList = [vecFctWords, vecMathProps, vecCw, vecWordsWithDr, vecDr]
+        vecsList = self.applyWeights(vecsList)
+        mainVec, _ = self.concatenateAll(vecsList, axis=0)
 
         # Search the associated cluster
-        knn = NearestNeighbors(n_neighbors=10)
+        knn = NearestNeighbors(n_neighbors=CST.KNN_NB_NEIGHBORS)
         knn.fit(self.mainMatrix)
         dist, ind = knn.kneighbors([mainVec])
 

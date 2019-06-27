@@ -1,8 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QApplication
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QApplication, QMessageBox
 from src.controllers.IClusteringController import IClusteringController
+from src.controllers.IOpdController import IOpdController
 from src.controllers.ISaveController import ISaveController
 from src.models.ClusteringModel import ClusteringModel, ClusteringParameters
-from src.views.ButtonsView import ButtonsView
+from src.views.UpdateView import UpdateView
 from src.views.InputView import InputView
 from src.views.NamesView import NamesView
 from src.views.ParamsView import ParamsView
@@ -18,17 +19,21 @@ class ClusteringController(IClusteringController):
         This class is used in MVC pattern in order to manages views and control user inputs.
     """
 
-    def __init__(self, app: QApplication, window: QMainWindow, model: ClusteringModel, saveController: ISaveController):
+    def __init__(self, app: QApplication, window: QMainWindow, model: ClusteringModel, saveController: ISaveController,
+                 opdController: IOpdController):
         """
             Constructor of ClusteringController.
             :param app: The QApplication.
             :param window: The Owll window of this project.
             :param model: The model with clusters.
             :param saveController: Another controller for save system.
+            :param opdController: Another controller for OPD.
         """
         self.app = app
-        self.model = model
         self.window = window
+        self.model = model
+        self.saveController = saveController
+        self.opdController = opdController
 
         self.leftWidget = QWidget()
         self.rightWidget = QWidget()
@@ -36,10 +41,10 @@ class ClusteringController(IClusteringController):
         self.rightLayout = QVBoxLayout(self.rightWidget)
 
         self.progressView = ProgressView(app)
-        self.windowBarView = WindowBarView(window, saveController)
+        self.windowBarView = WindowBarView(window, saveController, opdController)
 
         self.paramsView = ParamsView(self.leftWidget, self)
-        self.buttonsView = ButtonsView(self.leftWidget, self, saveController, app)
+        self.updateView = UpdateView(self.leftWidget, self, saveController, opdController, app)
         self.inputView = InputView(self.leftWidget, self)
 
         self.pieView = PieView(self.rightWidget, self)
@@ -55,6 +60,9 @@ class ClusteringController(IClusteringController):
         centralLayout = self.window.centralWidget().layout()
         centralLayout.addWidget(self.leftWidget, 1)
         centralLayout.addWidget(self.rightWidget, 9)
+        self.rightLayout.setStretch(0, 4)
+        self.rightLayout.setStretch(1, 1)
+        self.rightLayout.setStretch(2, 4)
 
         self.leftLayout.addStretch()
         self.leftLayout.setSpacing(20)
@@ -63,12 +71,24 @@ class ClusteringController(IClusteringController):
         self.model.addObs(self.pieView)
         self.model.addObs(self.opsView)
         self.model.addObs(self.slidersView)
-        self.model.addObs(self.buttonsView)
+        self.model.addObs(self.updateView)
         self.model.addObs(self.paramsView)
-        self.model.addObs(self.progressView)
         self.model.addObs(self.inputView)
+        self.model.addObs(self.progressView)
+        self.model.addProgressObs(self.progressView)
+        self.opdController.addOpdObs(self.progressView)
+        self.opdController.addOpdObs(self.updateView)
+        self.opdController.addProgressObs(self.progressView)
 
     def updateModel(self):
+        if not self.opdController.getOPD().isLoaded():
+            box = QMessageBox()
+            box.setIcon(QMessageBox.Warning)
+            box.setText("Cannot update model: OPD is not loaded.")
+            box.setStandardButtons(QMessageBox.Ok)
+            box.exec_()
+            return
+
         params = ClusteringParameters()
 
         params["Algorithm"] = self.paramsView.getParamAlgo()

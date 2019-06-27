@@ -1,14 +1,10 @@
-from src.file_io import create_result_file
-from src.ontology.Ontology import Ontology
-from src.ontology.OpData import OpData
-from time import time
-from src.util import get_filenames
-from src.util import iri_to_name
-from src.util import is_unreadable
-from src.util import prt
-from src.util import rem_duplicates
-
 import os
+from time import time
+from src.file_io import create_result_file
+from src.models.ontology.Ontology import Ontology
+from src.models.ontology.OpData import OpData
+from src.util import iri_to_name, is_unreadable, prt, rem_duplicates, dbg, get_filepaths
+from src.ProgressSubject import ProgressSubject
 
 
 def _read_opd_line(line: str) -> list:
@@ -94,39 +90,44 @@ class OPD:
         self.__version = "Unknown"
         self.__srcpath = ""
         self.__filenames = []
+        self.__isLoaded = False
 
-    def generate(self, dirpath: str):
+    def generateFromDir(self, dirpath: str, progressSubject: ProgressSubject = None) -> bool:
         """
             Generate the OPD with a list of OWL files. Can take a long time with the 178 ontologies (~30min).
             :param dirpath: Path where to search ontologies.
+            :param progressSubject: Manager for notify progress to interface.
         """
         if not os.path.isdir(dirpath):
-            prt("Error: %s must be a directory." % dirpath)
-            return
-        self.clear()
+            dbg("Error: %s must be a directory." % dirpath)
+            return False
         self.__srcpath = dirpath
 
         # Get the filenames of the ontologies
-        prt("Search ontologies in \"%s\"" % dirpath)
-        self.__filenames = get_filenames(dirpath)
+        dbg("Search ontologies in \"%s\"" % dirpath)
+        filepaths = get_filepaths(dirpath)
+        return self.generateFromFiles(filepaths, progressSubject)
+
+    def generateFromFiles(self, filepaths: list, progressSubject: ProgressSubject = None) -> bool:
+        self.clear()
 
         # Read the list of ontologies
-        i = 1
-        for filename in self.__filenames:
+        for i, filepath in enumerate(filepaths):
             # Read the ontology and save data in opd
             start = time()
-            prt("Load of \"%s\"... (%d/%d)" % (filename, i, len(self.__filenames)))
-            filepath = os.path.join(dirpath, filename)
+            filename = os.path.basename(filepath)
+            self.__filenames.append(filename)
+            prt("Load of \"%s\"... (%d/%d)" % (filename, i+1, len(filepaths)))
             ontology = Ontology(filepath)
 
             if ontology.isLoaded():
                 prt("Load of \"%s\" is successfull (RL=%d,OR=%d) (%d/%d)" % (
-                    filename, ontology.isLoadedWithRL(), ontology.isLoadedWithOR2(), i, len(self.__filenames)))
+                    filename, ontology.isLoadedWithRL(), ontology.isLoadedWithOR2(), i+1, len(filepaths)))
                 for opData in ontology.getAllOpsData().values():
                     self.__data.append(opData)
 
             else:
-                prt("Load of \"%s\" has failed (%d/%d)" % (filename, i, len(self.__filenames)))
+                prt("Load of \"%s\" has failed (%d/%d)" % (filename, i+1, len(filepaths)))
             end = time()
 
             nbUnreadable = _count_unreadables([opData.name for opData in ontology.getAllOpsData().values()])
@@ -139,7 +140,12 @@ class OPD:
             self.__debugData["OpUnreadable"][filename] = nbUnreadable
             self.__debugData["MustKeep"][filename] = \
                 ontology.isLoaded() and nbUnreadable == 0 and len(ontology.getAllOpsData()) > 0
-            i += 1
+
+            if progressSubject is not None:
+                progressSubject.notifyProgress(
+                    "Generating OPD... (%d/%d)" % (i+1, len(filepaths)), (i+1) / len(filepaths))
+        self.__isLoaded = True
+        return True
 
     def loadFromFile(self, filepath: str) -> bool:
         """
@@ -167,12 +173,15 @@ class OPD:
             line = file.readline()
 
         if len(columnsNames) == 0:
-            raise OpdParseError("Incorrect OPD Header. Missing columns names line.")
+            dbg("Incorrect OPD Header. Missing columns names line.")
+            return False
         elif len(columnsNames) != len(OPD.COLUMNS_NAMES):
-            raise OpdParseError("Incorrect OPD Header. Found %d columns but expected %d." % (
+            dbg("Incorrect OPD Header. Found %d columns but expected %d." % (
                 len(columnsNames), len(OPD.COLUMNS_NAMES)))
+            return False
         elif self.__version == "Unknown":
-            raise OpdParseError("Incorrect OPD Header. Missing version line.")
+            dbg("Incorrect OPD Header. Missing version line.")
+            return False
 
         # Read data
         self.__data = []
@@ -190,6 +199,8 @@ class OPD:
                 self.__data.append(opData)
             line = file.readline()
         file.close()
+
+        self.__isLoaded = True
         return True
 
     def saveInFile(self, filepath: str, generateDebugFile: bool):
@@ -268,6 +279,7 @@ class OPD:
         self.__version = "Unknown"
         self.__srcpath = ""
         self.__filenames = []
+        self.__isLoaded = False
 
     def getData(self) -> list:
         """
@@ -310,6 +322,9 @@ class OPD:
 
     def getVersion(self) -> str:
         return self.__version
+
+    def isLoaded(self):
+        return self.__isLoaded
 
     def __eq__(self, other) -> bool:
         return self.__data == other.__data

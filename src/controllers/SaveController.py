@@ -33,6 +33,7 @@ class SaveController(ISaveController):
             fIn = open(filepath, "r", encoding="utf-8")
         except IOError:
             box = QMessageBox()
+            box.setWindowTitle("Error")
             box.setIcon(QMessageBox.Warning)
             box.setText("Cannot open file \"%s\"." % filepath)
             box.setStandardButtons(QMessageBox.Ok)
@@ -43,6 +44,7 @@ class SaveController(ISaveController):
             data = json.load(fIn)
         except json.decoder.JSONDecodeError:
             box = QMessageBox()
+            box.setWindowTitle("Error")
             box.setIcon(QMessageBox.Warning)
             box.setText("File \"%s\" is not a valid JSON model file." % filepath)
             box.setStandardButtons(QMessageBox.Ok)

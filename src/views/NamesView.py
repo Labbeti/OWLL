@@ -21,7 +21,7 @@ class NamesView(ClusteringObserver):
         self.parent.layout().addWidget(self.namesWidget)
 
         self.namesWidget.setLayout(self.namesLayout)
-        self.namesWidget.setMinimumSize(200, 200)
+        self.namesWidget.setMinimumSize(150, 150)
         self.contentWidget.setContentsMargins(10, 10, 10, 10)
         self.scrollArea.setWidget(self.contentWidget)
         self.scrollArea.setWidgetResizable(True)

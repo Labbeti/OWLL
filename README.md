@@ -33,7 +33,17 @@ File | Description
 ```gen_opd.py``` | Run the OPD generation. 
 ```gen_stats.py``` | Run the update of object properties statistics files. 
 
-## Indev versions notes
+## Versions notes
+* Release 1.0 (27/06/19)
+  * Fix bug about KMeans initial centroids : if we try clusterisation with a lot of duplicates words the number of clusters was very low.
+  * Modify function word vector by consider the position (infix, prefix, suffix) of the word in OP.
+  * Add menu for loading, saving and generating OPD from ontologies or OPD text file.
+  * Add progress bar for OPD generation.
+  * Add Message box if the number of content words is not enough for inferring vectors.
+  * Add label for notify current status.
+  * Add option for loading default files.
+  * Fix crash when loading with an invalid OPD file.
+
 * Indev 0.2.3 (25/06/19)
   * Fix progress bar update.
   * Refactoring SaveController in another class.

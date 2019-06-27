@@ -1,6 +1,6 @@
 from abc import ABCMeta
 from abc import abstractmethod
-from src.ontology.OpData import OpData
+from src.models.ontology import OpData
 
 """
                         IOntology
