@@ -20,6 +20,8 @@ class CST:
 
         # Dirs
         ONTOLOGIES = "data/ontologies/"
+        OPD_DIRPATH = "results/opd/"
+        MODEL_DIRPATH = "results/models/"
         # Data files
         FASTTEXT = "data/fasttext/wiki-news-300d-1M.vec"
         DBPEDIA = "data/ontologies/dbpedia_2016-10.owl"
@@ -37,8 +39,8 @@ class CST:
         STATS_PAIRS_SW = "results/stats/pairs_sw.txt"
 
     class GUI:
-        SLIDER_PRECISION = 100
-        SLIDER_LABEL_FORMAT = "%.2f"
+        SLIDER_PRECISION = 1000
+        SLIDER_LABEL_FORMAT = "%.3f"
         BUTTON_MIN_HEIGHT = 30
 
     KNN_NB_NEIGHBORS = 10
@@ -47,6 +49,7 @@ class CST:
     OP_CLUST_LIMIT = 100000  # Used for debug
     EPOCHS = 5
     MAX_RANDOM_CENTER_TRY = 10000
+    WEIGHTS_NAMES_LIST = ["WeightFctWords", "WeightMathProps", "WeightCW", "WeightOPWithDR", "WeightDR"]
 
     MATH_PROPERTIES = \
         ["Asymmetric", "Functional", "InverseFunctional", "Irreflexive", "Reflexive", "Symmetric", "Transitive"]

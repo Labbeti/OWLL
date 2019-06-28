@@ -10,7 +10,7 @@ class TenseDetector:
     def __init__(self, filepath: str = None):
         """
             Constructor of TenseDetector. Create a
-            :param filepath:
+            :param filepath: path to the TXT file of the vocabulary.
         """
         if filepath is not None:
             self.load(filepath)
@@ -33,7 +33,7 @@ class TenseDetector:
     def recognize(self, verb: str) -> (str, list):
         """
             Return the infinitive and tense of the verb
-            :param verb:
+            :param verb: the verb to search.
             :return:
         """
         tensesFound = []

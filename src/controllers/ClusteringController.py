@@ -85,6 +85,9 @@ class ClusteringController(IClusteringController):
         self.opdController.addProgressObs(self.progressView)
 
     def updateModel(self):
+        """
+            Override
+        """
         if not self.opdController.getOPD().isLoaded():
             box = QMessageBox()
             box.setIcon(QMessageBox.Warning)
@@ -110,19 +113,37 @@ class ClusteringController(IClusteringController):
         self.model.clustering(params)
 
     def submitOpToModel(self, opName: str, domain: str, range_: str, mathProps: dict):
+        """
+            Override
+        """
         self.model.submitOp(opName, domain, range_, mathProps)
 
     def onClusterClick(self, label: str):
+        """
+            Override
+        """
         self.opsView.showCluster(label)
 
     def onClose(self):
+        """
+            Override
+        """
         self.window.close()
 
     def getModelParams(self) -> ClusteringParameters:
+        """
+            Override
+        """
         return self.model.getParams()
 
     def getModelClusters(self) -> list:
+        """
+            Override
+        """
         return self.model.getClusters()
 
     def getModelCenters(self) -> list:
+        """
+            Override
+        """
         return self.model.getCenters()

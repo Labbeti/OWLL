@@ -48,6 +48,18 @@ class WordDictionary:
         """
         return [word for word in words if self.existsInDictionary(word, caseSensitive)]
 
+    def hasUnknownWord(self, words: list, caseSensitive: bool = True) -> bool:
+        """
+            Check if words contains at least 1 unknown word in dictionary.
+            :param words: The words to check.
+            :param caseSensitive: True if you want to use case sensitive mode.
+            :return: True if words contains at least 1 unknown word.
+        """
+        for word in words:
+            if not self.existsInDictionary(word, caseSensitive):
+                return True
+        return False
+
     def getUnknownWords(self, document) -> list:
         """
             Return the list of unknown words in document.

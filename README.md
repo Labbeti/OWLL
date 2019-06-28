@@ -34,6 +34,15 @@ File | Description
 ```gen_stats.py``` | Run the update of object properties statistics files. 
 
 ## Versions notes
+* Release 1.2 (28/06/19)
+  * Filter of unknown words fix.
+  * Fix statistics script "non_en_words".
+  * Add placeholders for input line edits.
+  * Add tooltips for widgets with description and examples for sliders parameters.
+  * Fix a crash when submitting a object property : function words vector was not created like in clusterisation.
+  * Remove old scripts from Git.
+  * Add docstrings everywhere for documentation.
+
 * Release 1.1 (27/06/19)
   * Fix crash when generating OPD with "gen_opd" script.
   * Rework interface for being more user-friendly : split window menus, change clusterisation parameters positions.

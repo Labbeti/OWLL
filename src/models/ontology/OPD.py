@@ -85,6 +85,9 @@ class OPD:
     LINE_FORMAT_DEBUG = "%-40s" + (" %-10s" * len(COLUMNS_NAMES_DEBUG)) + "\n"
 
     def __init__(self):
+        """
+            Constructor of OPD.
+        """
         self.__data = []
         self.__debugData = {}
         self.__version = "Unknown"
@@ -97,6 +100,7 @@ class OPD:
             Generate the OPD with a list of OWL files. Can take a long time with the 178 ontologies (~30min).
             :param dirpath: Path where to search ontologies.
             :param progressSubject: Manager for notify progress to interface.
+            :return: True if loading is successfull.
         """
         if not os.path.isdir(dirpath):
             dbg("Error: %s must be a directory." % dirpath)
@@ -109,6 +113,12 @@ class OPD:
         return self.generateFromFiles(filepaths, progressSubject)
 
     def generateFromFiles(self, filepaths: list, progressSubject: ProgressSubject = None) -> bool:
+        """
+            Generate the OPD with a list of OWL files. Can take a long time with the 178 ontologies (~30min).
+            :param filepaths: List of string path to the files to load.
+            :param progressSubject: Manager for notify progress to interface.
+            :return: True if loading is successfull.
+        """
         self.clear()
 
         # Read the list of ontologies
@@ -289,6 +299,11 @@ class OPD:
         return self.__data
 
     def getOpNames(self, filterDuplicates: bool = False) -> list:
+        """
+            Return the list of OP names.
+            :param filterDuplicates: True for remove duplicates in list.
+            :return: the list of strings.
+        """
         opNames = []
         for opData in self.getData():
             opNames.append(opData.getOpName())
@@ -299,6 +314,15 @@ class OPD:
 
     def getOpNamesSplit(self, keepEmptyLists: bool, filterDomain: bool = False, filterRange: bool = False,
                         filterSubWords: list = None, filterDuplicates: bool = False) -> list:
+        """
+            Return the list of OP splitted and filtered.
+            :param keepEmptyLists: True if empty lists must be kept.
+            :param filterDomain: True for filter domain.
+            :param filterRange: True for filter range.
+            :param filterSubWords: List of words to filter.
+            :param filterDuplicates: True for filter duplicates.
+            :return: The list of OP filtered.
+        """
         opNamesSplit = []
         for opData in self.getData():
             splitted = opData.getNameSplit(
@@ -318,13 +342,30 @@ class OPD:
         return len(self.__data)
 
     def getSrcpath(self) -> str:
+        """
+            Getter of source path of the OPD.
+            :return: the path to directory or OPD TXT file.
+        """
         return self.__srcpath
 
     def getVersion(self) -> str:
+        """
+            Getter of version of the OPD.
+            :return: the string corresponding to the version of the OPD.
+        """
         return self.__version
 
     def isLoaded(self):
+        """
+            Return True if OPD is loaded.
+            :return: True if loaded.
+        """
         return self.__isLoaded
 
     def __eq__(self, other) -> bool:
+        """
+            Equals function for OPDs (used in autotests.py)
+            :param other: another OPD to compare.
+            :return: True if they have the same data.
+        """
         return self.__data == other.__data

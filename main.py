@@ -6,6 +6,9 @@ from src.util import print_command_help, init_cst_from_args
 
 
 def print_help():
+    """
+        Print in terminal the help for "main.py".
+    """
     arg1 = "-verbose"
     arg2 = "-debug"
     arg3 = "-load_default_files"

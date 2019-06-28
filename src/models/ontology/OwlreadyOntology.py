@@ -11,15 +11,26 @@ import owlready2 as or2
 class OwlreadyOntology(AbstractOntology):
     # ---------------------------------------- PUBLIC ---------------------------------------- #
     def __init__(self, filepath: str):
+        """
+            Constructor of OwlreadyOntology.
+            :param filepath: path to the ontology file.
+        """
         super().__init__(filepath)
         self.__nb_errors = 0
         self.__load(filepath)
 
     def getNbErrors(self) -> int:
+        """
+            Override
+        """
         return self.__nb_errors
 
     # ---------------------------------------- PRIVATE ---------------------------------------- #
     def __load(self, filepath: str):
+        """
+            Private function for loading ontology.
+            :param filepath: path to the ontology file.
+        """
         self.__nb_errors = 0
         ontoOwlready = None
 
@@ -36,6 +47,10 @@ class OwlreadyOntology(AbstractOntology):
             self.__updateData(ontoOwlready)
 
     def __updateData(self, ontoOwlready: or2.Ontology):
+        """
+            Private method for updating data from Owlready ontology object.
+            :param ontoOwlready: the Owlready object.
+        """
         for clsOwlready in ontoOwlready.classes():
             clsData = ClsData()
             clsData.subClassOfIris = clsOwlready.is_a

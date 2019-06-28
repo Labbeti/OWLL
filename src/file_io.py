@@ -4,13 +4,34 @@ from src.util import prt
 from src.util import get_time
 
 
+def create_result_file(outputFilepath: str, inputFilepath: str = "", inputFileVersion: str = "") -> TextIO:
+    """
+        Write the default header for results .txt files.
+        :param outputFilepath:
+        :param inputFilepath:
+        :param inputFileVersion:
+        :return:
+    """
+
+    out = open(outputFilepath, "w", encoding="utf-8")
+    out.write("#! Version: %s\n" % get_time())
+    if inputFilepath != "":
+        if inputFileVersion != "":
+            out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (
+                inputFilepath, inputFileVersion))
+        else:
+            out.write("# This file has been generated with the file \"%s\"." % inputFilepath)
+    out.write("\n")
+    return out
+
+
 def load_ft_vectors(filepath: str, limit: int = 1_000_000) -> (map, int, int):
     """
-        Note: quelques mots non trouvé dans FastText :
-        ['copilote', 'primogenitor', 'sheading', 'coemperor', 'bourgmestre']
-        :param filepath:
-        :param limit:
-        :return:
+        OLD FUNCTION
+        Load the fasttext vector.
+        :param filepath: path to the .vec FastText file.
+        :param limit: maximum number of OP readed.
+        :return: a dict of vectors, nb elements, dimension of the vectors
     """
     prt("Loading \"%s\"..." % filepath)
     start = time()
@@ -32,14 +53,15 @@ def load_ft_vectors(filepath: str, limit: int = 1_000_000) -> (map, int, int):
     return data, n, d
 
 
-def save_ft_vectors(data, filename):
+def save_ft_vectors(data, filepath):
     """
+        OLD FUNCTION
         Save vectors to a CSV file.
-        :param data:
-        :param filename:
+        :param data: dict of vectors to save.
+        :param filepath: filepath where to save the vector as CSV.
         :return:
     """
-    file = open(filename, "w")
+    file = open(filepath, "w")
     n = len(data)
     d = len(list(data.values())[0])  # dim
     file.write("%s %s\n" % (n, d))
@@ -50,24 +72,3 @@ def save_ft_vectors(data, filename):
         tmp = tmp.replace(",", "")
         file.write(word + " " + tmp + "\n")
     file.close()
-
-
-def create_result_file(outputFilepath: str, inputFilepath: str = "", inputFileVersion: str = "") -> TextIO:
-    """
-        Write the default header for results .txt files.
-        :param outputFilepath:
-        :param inputFilepath:
-        :param inputFileVersion:
-        :return:
-    """
-
-    out = open(outputFilepath, "w", encoding="utf-8")
-    out.write("#! Version: %s\n" % get_time())
-    if inputFilepath != "":
-        if inputFileVersion != "":
-            out.write("# This file has been generated with the file \"%s\" (version %s)\n" % (
-                inputFilepath, inputFileVersion))
-        else:
-            out.write("# This file has been generated with the file \"%s\"." % inputFilepath)
-    out.write("\n")
-    return out

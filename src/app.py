@@ -12,6 +12,9 @@ from src.util import prt
 
 
 def main():
+    """
+        Main entry of OWLL GUI.
+    """
     prt("Starting application...")
     app = QApplication(sys.argv)
     centralWidget = QWidget()

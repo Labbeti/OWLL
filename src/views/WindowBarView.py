@@ -5,7 +5,15 @@ from src.controllers.ISaveController import ISaveController
 
 
 class WindowBarView:
-    def __init__(self, window: QMainWindow, controller: IClusteringController, saveController: ISaveController, opdController: IOpdController):
+    def __init__(self, window: QMainWindow, controller: IClusteringController, saveController: ISaveController,
+                 opdController: IOpdController):
+        """
+            Constructor of WindowBarView.
+            :param window: the main window of the application.
+            :param controller: the clustering controller of the application.
+            :param saveController: the save controller of the application.
+            :param opdController: the opd controller of the application.
+        """
         self.window = window
         self.controller = controller
         self.saveController = saveController
@@ -31,6 +39,9 @@ class WindowBarView:
         self.initUI()
 
     def initUI(self):
+        """
+            Private method for initialize the sliders.
+        """
         bar = self.window.menuBar()
 
         for menuName, config in self.menusConfig.items():
@@ -43,6 +54,10 @@ class WindowBarView:
             menu.triggered[QAction].connect(self.onMenuBarClick)
 
     def onMenuBarClick(self, act):
+        """
+            Method called when menu bar is clicked by user.
+            :param act: action object of the signal.
+        """
         actionName = act.text()
         # Search menu clicked
         fct = None

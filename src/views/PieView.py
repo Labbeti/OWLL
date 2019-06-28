@@ -63,6 +63,11 @@ class PieCanvas(FigureCanvas):
 
 class PieView(ClusteringObserver):
     def __init__(self, parent: QWidget, controller: IClusteringController):
+        """
+            Constructor of PieView.
+            :param parent: Parent widget of pie chart view. Must have set his layout.
+            :param controller: Clustering controller of the application.
+        """
         self.parent = parent
         self.controller = controller
 
@@ -73,22 +78,36 @@ class PieView(ClusteringObserver):
         self.initUI()
 
     def initUI(self):
+        """
+            Private method for initialize interface.
+        """
         self.parent.layout().addWidget(self.canvasWidget)
         self.canvasWidget.setLayout(self.canvasLayout)
         self.canvasLayout.addWidget(self.canvas)
-        self.canvasWidget.setMinimumSize(200, 200)
         self.canvas.updatePie([[1]], ["uninitialized"])
         self.handler.connect(self.canvas.getPie(), self.controller)
 
+    def update(self):
+        """
+            Private method for update the pie chart.
+        """
+        self.canvas.updatePie(self.controller.getModelClusters(), self.controller.getModelCenters())
+        self.handler.connect(self.canvas.getPie(), self.controller)
+
     def onClusteringBegan(self):
+        """
+            Override
+        """
         pass
 
     def onClusteringEnded(self):
+        """
+            Override
+        """
         self.update()
 
     def onModelLoaded(self):
+        """
+            Override
+        """
         self.update()
-
-    def update(self):
-        self.canvas.updatePie(self.controller.getModelClusters(), self.controller.getModelCenters())
-        self.handler.connect(self.canvas.getPie(), self.controller)

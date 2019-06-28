@@ -9,38 +9,71 @@ from src.util import is_restriction_id
 import rdflib as rl
 
 
-# Patterns:
-# - s type class
-# - s subClassOf o
 def _is_class(_, p, o) -> bool:
+    """
+        Check if iri triple indicates a OWL class.
+        Patterns:
+        - s type class
+        - s subClassOf o
+        :param _: the iri to check.
+        :param p: the current predicate.
+        :param o: the current range.
+        :return: True if _ represent a class.
+    """
     return (p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.CLASS) or \
            (p.toPython() == CST.IRI.SUB_CLASS_OF)
 
 
-# Patterns:
-# - s type ObjectProperty
 def _is_object_property(_, p, o) -> bool:
+    """
+        Check if iri triple indicates an OWL object property.
+        Patterns:
+        - s type ObjectProperty
+        :param _: the iri to check.
+        :param p: the current predicate.
+        :param o: the current range.
+        :return: True if _ represent an OP.
+    """
     return p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.OBJECT_PROPERTY
 
 
-# Patterns:
-# - s type Restriction
 def _is_restriction(_, p, o) -> bool:
+    """
+        Check if iri triple indicates an OWL restriction.
+        Patterns:
+        - s type Restriction
+        :param _: the iri to check.
+        :param p: the current predicate.
+        :param o: the current range.
+        :return: True if _ represent an OWL restriction.
+    """
     return p.toPython() == CST.IRI.RDF_TYPE and o.toPython() == CST.IRI.RESTRICTION
 
 
 class RdflibOntology(AbstractOntology):
     # ---------------------------------------- PUBLIC ---------------------------------------- #
     def __init__(self, filepath: str, fileFormat: str = None):
+        """
+            Constructor of RdflibOntology.
+            :param filepath: path to the ontology file.
+            :param fileFormat: format used for reading the ontology with Rdflib.
+        """
         super().__init__(filepath)
         self.__fileFormat = fileFormat
         self.__load()
 
     def getNbErrors(self) -> int:
+        """
+            Override
+        """
         return 0
 
     # ---------------------------------------- PRIVATE ---------------------------------------- #
     def __load(self):
+        """
+            Private function for loading ontology.
+            :param filepath: path to the ontology file.
+        """
         if self.__fileFormat is None:
             formats_to_test = CST.RDFLIB_FORMATS
         else:
@@ -61,6 +94,10 @@ class RdflibOntology(AbstractOntology):
             self.__updateData(graph)
 
     def __updateData(self, graph):
+        """
+            Private method for updating data from Rdflib ontology object.
+            :param graph: the Rdflib object.
+        """
         # Init class characteristics
         clssIris = [s.toPython() for s, p, o in graph if _is_class(s, p, o) and not is_restriction_id(s)]
         clssIris.append(CST.IRI.THING)

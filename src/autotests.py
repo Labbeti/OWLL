@@ -5,7 +5,9 @@
 import os
 
 from src.CST import CST
-from src.models.ontology import OPD
+from src.models.ontology.OPD import OPD
+from src.models.ontology.OwlreadyOntology import OwlreadyOntology
+from src.models.ontology.RdflibOntology import RdflibOntology
 from src.TenseDetector import TenseDetector
 from src.util import unordered_list_equals
 from src.util import is_obo_op
@@ -16,6 +18,9 @@ from src.util import split_op_name
 
 
 def test_split_name():
+    """
+        Test "split_name" function.
+    """
     tests = {
         "a": ["a"],
         "bonjourToi": ["bonjour", "Toi"],
@@ -38,6 +43,9 @@ def test_split_name():
 
 
 def test_get_object_properties():
+    """
+        Test of ontologies classes.
+    """
     tests = {
         "data/ontologies/tabletopgames.owl",
         "data/ontologies/dbpedia_2016-10.owl",
@@ -66,14 +74,17 @@ def test_get_object_properties():
 
 
 def test_cls_props():
+    """
+        Test 2 of ontologies classes.
+    """
     tests = {
         "data/ontologies/tabletopgames.owl"
     }
     for filepath in tests:
         ontoOr = OwlreadyOntology(filepath)
         ontoRl = RdflibOntology(filepath)
-        clsPropsOr = ontoOr.getAllClsProperties()
-        clsPropsRl = ontoRl.getAllClsProperties()
+        clsPropsOr = ontoOr.getAllClsData()
+        clsPropsRl = ontoRl.getAllClsData()
 
         if clsPropsOr.keys() != clsPropsRl.keys():
             raise Exception("test_cls_props keys length error")
@@ -87,6 +98,9 @@ def test_cls_props():
 
 
 def test_split_input():
+    """
+        Test "split_input" function.
+    """
     tests = {
         "gengensim results/tests.txt": ["gengensim", "results/tests.txt"],
         "ls -l \"dir\"": ["ls", "-l", "dir"],
@@ -106,6 +120,9 @@ def test_split_input():
 
 
 def test_is_obo_op():
+    """
+        Test "is_obo_op" function.
+    """
     tests = {
         "BFO_0000050": True,
         "RO_000050": True,
@@ -130,6 +147,9 @@ def test_is_obo_op():
 
 
 def test_is_restriction_id():
+    """
+        Test "is_restriction_id" function.
+    """
     tests = {
         "N0b283aab41a641c1a51c919c8ca0ba44": True,
         "Nc56bae244919441cb660e380a90085ee": True,
@@ -147,6 +167,9 @@ def test_is_restriction_id():
 
 
 def test_save_load_opd():
+    """
+        Test OPD class.
+    """
     filepath = CST.PATH.OPD
     filepathCopy = os.path.join(os.path.dirname(filepath), "opd_copy.txt")
 
@@ -162,16 +185,19 @@ def test_save_load_opd():
         d2 = opdCopy.getData()
         if len(d1) != len(d2):
             raise Exception("OPD has not the same number of op data.")
+
         for i in range(len(d1)):
             if d1[i] != d2[i]:
-                print(d1[i])
-                print(d2[i])
                 raise Exception("Foudn distincts op: ", d1[i].iri, d2[i].iri)
         raise Exception("test_save_load_opd opd error")
+
     prt("OK: test_save_load_opd")
 
 
 def test_tense_verb():
+    """
+        Test TenseDetector class.
+    """
     tests = {
         "added": ("add", ["past", "past participle"]),
         "taken": ("take", ["past participle"]),
@@ -189,6 +215,9 @@ def test_tense_verb():
 
 
 def test_all():
+    """
+        Run all tests.
+    """
     prt("Begin autotests.")
     test_split_name()
     test_get_object_properties()

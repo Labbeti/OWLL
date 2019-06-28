@@ -6,6 +6,11 @@ import os
 
 class OpData:
     def __init__(self, src: str, iri: str = ""):
+        """
+            Constructor of OpData.
+            :param src: source path of the OP.
+            :param iri: iri of the OP.
+        """
         self.src = os.path.basename(src)
         self.inverseOfIri = ""
         self.label = ""
@@ -24,9 +29,17 @@ class OpData:
         self.transitive = False
 
     def fromDict(self, d: dict):
+        """
+            Cast from dict.
+            :param d: the source dict where to get the attributes values.
+        """
         self.__dict__ = d
 
     def asDict(self) -> dict:
+        """
+            Cast to dict.
+            :return: the OpData object as a dict.
+        """
         return vars(self)
 
     # Getters
@@ -92,6 +105,11 @@ class OpData:
         return self.transitive
 
     def __eq__(self, other) -> bool:
+        """
+            Equals that ignore the "src" attributes.
+            :param other: another OpData to compare.
+            :return: True if they represent the same OP.
+        """
         return (
             self.inverseOfIri == other.inverseOfIri
             and self.label == other.label
@@ -111,6 +129,10 @@ class OpData:
         )
 
     def __str__(self) -> str:
+        """
+            Debug function for printing OpData.
+            :return: OpData as a string.
+        """
         return "%s %s %s %s %s %s  %s %s %s  %d %d %d %d %d %d" % (
             self.iri, self.domainsIris, self.rangesIris, self.subPropertyOfIris, self.inverseOfIri, self.nbInstDomains,
             self.nbInstRanges, self.label, self.asymmetric, self.functional, self.inverseFunctional, self.irreflexive,

@@ -5,6 +5,11 @@ from src.controllers.IClusteringController import IClusteringController
 
 class NamesView(ClusteringObserver):
     def __init__(self, parent: QWidget, controller: IClusteringController):
+        """
+            Constructor of NamesView.
+            :param parent: Parent widget of names view. Must have set his layout.
+            :param controller: Clustering controller of the application.
+        """
         self.parent = parent
         self.controller = controller
 
@@ -18,10 +23,12 @@ class NamesView(ClusteringObserver):
         self.initUI()
 
     def initUI(self):
+        """
+            Private method for initialize interface.
+        """
         self.parent.layout().addWidget(self.namesWidget)
 
         self.namesWidget.setLayout(self.namesLayout)
-        self.namesWidget.setMinimumSize(150, 150)
         self.contentWidget.setContentsMargins(10, 10, 10, 10)
         self.scrollArea.setWidget(self.contentWidget)
         self.scrollArea.setWidgetResizable(True)
@@ -31,6 +38,10 @@ class NamesView(ClusteringObserver):
         self.contentWidget.setText("")
 
     def showCluster(self, label: str):
+        """
+            Show the content of the cluster.
+            :param label: the center/label of the cluster.
+        """
         self.indCluster = -1
         for i, center in enumerate(self.controller.getModelCenters()):
             if center == label:
@@ -39,6 +50,9 @@ class NamesView(ClusteringObserver):
         self.updateContent()
 
     def updateContent(self):
+        """
+            Private method for update the text content.
+        """
         if self.indCluster != -1:
             clusters = self.controller.getModelClusters()
             centers = self.controller.getModelCenters()
@@ -55,11 +69,20 @@ class NamesView(ClusteringObserver):
             self.contentWidget.setText("")
 
     def onClusteringBegan(self):
+        """
+            Override
+        """
         pass
 
     def onClusteringEnded(self):
+        """
+            Override
+        """
         self.updateContent()
 
     def onModelLoaded(self):
+        """
+            Override
+        """
         self.indCluster = -1
         self.updateContent()

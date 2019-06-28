@@ -1,5 +1,8 @@
 class ClusteringParameters(dict):
     def __init__(self):
+        """
+            Constructor of ClusteringParameters.
+        """
         super().__init__()
         self["Algorithm"] = "KMeans"
         self["FilterENWords"] = False

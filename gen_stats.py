@@ -8,7 +8,7 @@ from src.WordDictionary import WordDictionary
 
 def searched_words_stats(opd: OPD, filepathResults: str):
     """
-        Generate some stats about connect word (Config.Words.getWordsSearched()) in "connect_words_stats.txt"
+        Generate some stats about connect word (Config.Words.getWordsSearched()) in "searched_words_stats.txt"
         :param opd: OPD to use.
         :param filepathResults: path to result file.
     """
@@ -213,7 +213,7 @@ def gen_unknown_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
         opName = opData.getName()
         opNameSplit = str_list_lower(opData.getNameSplit())
         for subWord in opNameSplit:
-            if wDict.existsInDictionary(subWord):
+            if not wDict.existsInDictionary(subWord):
                 unusedWordsData.append((subWord, opName, filepath))
 
     # Generate a result file with unrecognized words.
@@ -226,6 +226,11 @@ def gen_unknown_words(opd: OPD, filepathWords: str, filepathUnusedWords: str):
 
 
 def gen_particle_pairs_stats(opd: OPD, filepathResults: str):
+    """
+        Generate a TXT files with conditional probabilities of find an function word with another function word.
+        :param opd: the OPD to read.
+        :param filepathResults: the path to result file.
+    """
     fctWords = CST.WORDS.getWordsSearched()
     aloneColumn = "[alone]"
     totalColumn = "[nbOcc]"

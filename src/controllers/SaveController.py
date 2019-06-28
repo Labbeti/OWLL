@@ -1,5 +1,6 @@
 import json
 from PyQt5.QtWidgets import QMessageBox, QFileDialog, QWidget
+from src.CST import CST
 from src.controllers.ISaveController import ISaveController
 from src.models.ClusteringModel import ClusteringModel
 from src import PROJECT_VERSION
@@ -10,25 +11,12 @@ class SaveController(ISaveController):
         self.window = window
         self.model = model
 
-    def onOpenModel(self):
-        options = QFileDialog.Options()
-        # options |= QFileDialog.DontUseNativeDialog
-        filepath, _ = QFileDialog.getOpenFileName(
-            self.window, "Open model", "", "JSON Files (*.json);;All Files (*)", options=options)
-        if filepath:
-            self.loadFromFile(filepath)
-
-    def onSaveModel(self):
-        options = QFileDialog.Options()
-        # options |= QFileDialog.DontUseNativeDialog
-        filepath, _ = QFileDialog.getSaveFileName(
-            self.window, "Save model", "", "JSON Files (*.json);;All Files (*)", options=options)
-        if filepath:
-            if not filepath.endswith(".json"):
-                filepath += ".json"
-            self.saveInFile(filepath)
-
     def loadFromFile(self, filepath: str) -> bool:
+        """
+            Load clustering model from a JSON file.
+            :param filepath: Path to JSON file.
+            :return: Return True if loading was successfull.
+        """
         try:
             fIn = open(filepath, "r", encoding="utf-8")
         except IOError:
@@ -66,6 +54,10 @@ class SaveController(ISaveController):
         return True
 
     def saveInFile(self, filepath: str):
+        """
+            Save current clustering model to JSON file.
+            :param filepath: path to JSON file.
+        """
         data = dict()
         metaData = dict()
         metaData["OwllVersion"] = PROJECT_VERSION
@@ -83,3 +75,27 @@ class SaveController(ISaveController):
         fOut = open(filepath, "w", encoding="utf-8")
         json.dump(data, fOut, ensure_ascii=False, indent=4)
         fOut.close()
+
+    def onOpenModel(self):
+        """
+            Override
+        """
+        options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
+        filepath, _ = QFileDialog.getOpenFileName(
+            self.window, "Open model", CST.PATH.MODEL_DIRPATH, "JSON Files (*.json);;All Files (*)", options=options)
+        if filepath:
+            self.loadFromFile(filepath)
+
+    def onSaveModel(self):
+        """
+            Override
+        """
+        options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
+        filepath, _ = QFileDialog.getSaveFileName(
+            self.window, "Save model", CST.PATH.MODEL_DIRPATH, "JSON Files (*.json);;All Files (*)", options=options)
+        if filepath:
+            if not filepath.endswith(".json"):
+                filepath += ".json"
+            self.saveInFile(filepath)

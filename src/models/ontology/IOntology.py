@@ -25,7 +25,7 @@ class IOntology(object, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def getAllClsProperties(self) -> dict:
+    def getAllClsData(self) -> dict:
         """
             Return the list of ClsData.
             :return:
